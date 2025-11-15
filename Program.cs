@@ -25,18 +25,18 @@ builder.Services.AddCors(options =>
 //配置JSON序列化
 builder.Services.ConfigureHttpJsonOptions(options =>
 {
-    options.SerializerOptions.PropertyNamingPolicy =
-    System.Text.Json.JsonNamingPolicy.CamelCase;
+    options.SerializerOptions.PropertyNamingPolicy = System.Text.Json.JsonNamingPolicy.CamelCase;
+    options.SerializerOptions.ReferenceHandler = System.Text.Json.Serialization.ReferenceHandler.IgnoreCycles;
 });
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
-// 添加服务
+
+// 配置 MVC Controllers 的 JSON（用于 IActionResult）
 builder.Services.AddControllers()
     .AddJsonOptions(options =>
     {
-        // 让 JSON 字段变成 camelCase
-        options.JsonSerializerOptions.PropertyNamingPolicy =
-            System.Text.Json.JsonNamingPolicy.CamelCase;
+        options.JsonSerializerOptions.PropertyNamingPolicy = System.Text.Json.JsonNamingPolicy.CamelCase;
+        options.JsonSerializerOptions.ReferenceHandler = System.Text.Json.Serialization.ReferenceHandler.IgnoreCycles;
     });
 
 // 启用小写 URL 路由 ← 关键！
@@ -45,6 +45,8 @@ builder.Services.Configure<RouteOptions>(options =>
     options.LowercaseUrls = true;
 });
 
+
+builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
@@ -56,9 +58,14 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
 
 //添加仓储层
 builder.Services.AddScoped<IBookRepository, BookRepository>();
+//builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
+//builder.Services.AddScoped<IPublisherRepository, PublisherRepository>();
 //添加服务层
 builder.Services.AddScoped<IBookService, BookService>();
+//builder.Services.AddScoped<ICategoryService, CategoryService>();
+//builder.Services.AddScoped<IPublisherService, PublisherService>();
 
+//构建app
 var app = builder.Build();
 
 if (app.Environment.IsDevelopment())
