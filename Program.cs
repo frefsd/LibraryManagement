@@ -62,8 +62,8 @@ builder.Services.AddScoped<IBookRepository, BookRepository>();
 //builder.Services.AddScoped<IPublisherRepository, PublisherRepository>();
 //添加服务层
 builder.Services.AddScoped<IBookService, BookService>();
-//builder.Services.AddScoped<ICategoryService, CategoryService>();
-//builder.Services.AddScoped<IPublisherService, PublisherService>();
+builder.Services.AddScoped<ICategoryService, CategoryService>();
+builder.Services.AddScoped<IPublisherService, PublisherService>();
 
 //构建app
 var app = builder.Build();

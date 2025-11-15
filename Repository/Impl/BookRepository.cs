@@ -1,6 +1,7 @@
 ﻿using LibraryManagement.AppDbContext;
 using LibraryManagement.Models;
 using LibraryManagement.Result;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
 namespace LibraryManagement.Repository.Impl
@@ -54,7 +55,7 @@ namespace LibraryManagement.Repository.Impl
         /// </summary>
         /// <param name="book"></param>
         /// <returns></returns>
-       public async Task UpdateAsync(Book book)
+       public async Task UpdateAsync([FromBody]Book book)
         {
             _context.Entry(book).State = EntityState.Modified;
             await _context.SaveChangesAsync();

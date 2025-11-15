@@ -1,6 +1,7 @@
 ﻿using LibraryManagement.Models;
 using LibraryManagement.Repository;
 using LibraryManagement.Result;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
 namespace LibraryManagement.Services.Impl
@@ -82,7 +83,7 @@ namespace LibraryManagement.Services.Impl
         /// </summary>
         /// <param name="book"></param>
         /// <returns></returns>
-        public async Task UpdateAsync(Book book)
+        public async Task UpdateAsync([FromBody]Book book)
         {
             book.UpdateTime = DateTime.Now;
             await _bookRepository.UpdateAsync(book);

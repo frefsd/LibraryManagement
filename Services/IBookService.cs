@@ -1,5 +1,6 @@
 ﻿using LibraryManagement.Models;
 using LibraryManagement.Result;
+using Microsoft.AspNetCore.Mvc;
 
 namespace LibraryManagement.Services
 {
@@ -35,7 +36,7 @@ namespace LibraryManagement.Services
         /// </summary>
         /// <param name="book"></param>
         /// <returns></returns>
-        Task UpdateAsync(Book book);
+        Task UpdateAsync([FromBody]Book book);
 
         /// <summary>
         /// 删除图书

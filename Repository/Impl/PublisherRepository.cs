@@ -1,6 +1,7 @@
 ﻿namespace LibraryManagement.Repository.Impl
 {
-    public class PublisherRepository
+    public class PublisherRepository:IPublisherRepository
     {
+
     }
 }
