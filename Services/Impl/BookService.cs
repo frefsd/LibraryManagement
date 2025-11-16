@@ -83,10 +83,23 @@ namespace LibraryManagement.Services.Impl
         /// </summary>
         /// <param name="book"></param>
         /// <returns></returns>
-        public async Task UpdateAsync([FromBody]Book book)
+        public async Task UpdateAsync(BookUpdateDto dto)
         {
-            book.UpdateTime = DateTime.Now;
-            await _bookRepository.UpdateAsync(book);
+            var existingBook = await _bookRepository.GetByIdAsync(dto.Id);
+            if (existingBook == null)
+                throw new KeyNotFoundException($"图书ID {dto.Id} 不存在");
+
+            // 只更新标量字段，不碰导航属性！
+            existingBook.Name = dto.Name;
+            existingBook.Author = dto.Author;
+            existingBook.PublishDate = dto.PublishDate;
+            existingBook.Price = dto.Price;
+            existingBook.CategoryId = dto.CategoryId;
+            existingBook.PublisherId = dto.PublisherId;
+            existingBook.Status = dto.Status;
+            existingBook.UpdateTime = DateTime.Now;
+
+            await _bookRepository.UpdateAsync(existingBook); // ← 传已跟踪实体
         }
 
         /// <summary>

@@ -28,6 +28,7 @@ namespace LibraryManagement.Models
         public int PublisherId { get; set; }
 
         // 导航属性：指向出版商信息
+        [ForeignKey("PublisherId")]
         public virtual Publisher? Publisher { get; set; }
 
         public int Status { get; set; } = 1; // 状态：1-在库，2-已借出，3-已下架

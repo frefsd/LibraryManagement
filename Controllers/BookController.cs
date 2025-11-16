@@ -67,17 +67,27 @@ namespace LibraryManagement.Controllers
         /// <param name="book"></param>
         /// <returns></returns>
         [HttpPut]
-        public async Task<IActionResult> Update([FromBody]Book book)
+        public async Task<IActionResult> Update([FromBody] BookUpdateDto dto)
         {
-            await _bookService.UpdateAsync(book);
-            return Ok(new { code = true, msg = "修改成功" });
-        }
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(new { code = 400, msg = "参数验证失败", errors = ModelState });
+            }
 
-        /// <summary>
-        /// 删除图书
-        /// </summary>
-        /// <param name="id"></param>
-        /// <returns></returns>
+            try
+            {
+                await _bookService.UpdateAsync(dto);
+                return Ok(new { code = 200, msg = "更新成功" });
+            }
+            catch (Exception ex) when (ex.InnerException?.Message.Contains("FOREIGN KEY") == true)
+            {
+                return BadRequest(new { code = 400, msg = "出版社或分类不存在，请检查选择项。" });
+            }
+        }        /// <summary>
+                 /// 删除图书
+                 /// </summary>
+                 /// <param name="id"></param>
+                 /// <returns></returns>
         [HttpDelete]
         public async Task<IActionResult> Delete(int id)
         {
@@ -86,3 +96,4 @@ namespace LibraryManagement.Controllers
         }
     }
 }
+
