@@ -1,7 +1,6 @@
 ﻿using LibraryManagement.Models;
 using LibraryManagement.Repository;
 using LibraryManagement.Result;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
 namespace LibraryManagement.Services.Impl
@@ -19,6 +18,11 @@ namespace LibraryManagement.Services.Impl
         /// <summary>
         /// 分页查询
         /// </summary>
+        /// <param name="begin"></param>
+        /// <param name="end"></param>
+        /// <param name="name"></param>
+        /// <param name="page"></param>
+        /// <param name="pageSize"></param>
         /// <returns></returns>
         public async Task<PageResult<Book>> GetPageAsync(string? begin, string? end, string? name, int page = 1, int pageSize = 10)
         {

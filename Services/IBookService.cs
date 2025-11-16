@@ -12,7 +12,7 @@ namespace LibraryManagement.Services
         /// <param name="end"></param>
         /// <param name="name"></param>
         /// <param name="page"></param>
-        /// <param name="size"></param>
+        /// <param name="pageSize"></param>
         /// <returns></returns>
         Task<PageResult<Book>> GetPageAsync(string? begin, string? end, string? name, int page = 1, int pageSize = 10);
 
@@ -33,12 +33,12 @@ namespace LibraryManagement.Services
         /// <summary>
         /// 修改图书信息
         /// </summary>
-        /// <param name="book"></param>
+        /// <param name="dto"></param>
         /// <returns></returns>
         Task UpdateAsync(BookUpdateDto dto);
 
         /// <summary>
-        /// 删除图书
+        /// 删除图书信息
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>

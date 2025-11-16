@@ -24,6 +24,6 @@ namespace LibraryManagement.Models
         [Range(1, int.MaxValue, ErrorMessage = "出版社不能为空")]
         public int PublisherId { get; set; }
 
-        public int Status { get; set; } = 1;
+        public int Status { get; set; } = 1; //1.在库 2.已借出 3.下架
     }
 }

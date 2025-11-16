@@ -58,7 +58,7 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
 
 //添加仓储层
 builder.Services.AddScoped<IBookRepository, BookRepository>();
-//builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
+builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
 //builder.Services.AddScoped<IPublisherRepository, PublisherRepository>();
 //添加服务层
 builder.Services.AddScoped<IBookService, BookService>();

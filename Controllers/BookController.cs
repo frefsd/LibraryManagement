@@ -26,13 +26,13 @@ namespace LibraryManagement.Controllers
         /// <param name="end"></param>
         /// <param name="name"></param>
         /// <param name="page"></param>
-        /// <param name="size"></param>
+        /// <param name="pageSize"></param>
         /// <returns></returns>
         [HttpGet]
         public async Task<IActionResult> QueryPage(string? begin, string? end, string? name, int page = 1, int pageSize = 10)
         {
             var result = await _bookService.GetPageAsync(begin, end, name, page, pageSize);
-            return Ok(new {code = true, data = result});
+            return Ok(new { code = true, data = result });
         }
 
         /// <summary>
@@ -41,7 +41,7 @@ namespace LibraryManagement.Controllers
         /// <param name="book"></param>
         /// <returns></returns>
         [HttpPost]
-        public async Task<IActionResult> Add([FromBody]Book book)
+        public async Task<IActionResult> Add([FromBody] Book book)
         {
             await _bookService.AddAsync(book);
             return Ok(new { code = true, msg = "图书添加成功" });
@@ -83,11 +83,13 @@ namespace LibraryManagement.Controllers
             {
                 return BadRequest(new { code = 400, msg = "出版社或分类不存在，请检查选择项。" });
             }
-        }        /// <summary>
-                 /// 删除图书
-                 /// </summary>
-                 /// <param name="id"></param>
-                 /// <returns></returns>
+        }        
+
+        /// <summary>
+        /// 删除图书信息
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         [HttpDelete]
         public async Task<IActionResult> Delete(int id)
         {

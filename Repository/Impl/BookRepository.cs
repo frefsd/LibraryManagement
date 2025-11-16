@@ -2,6 +2,7 @@
 using LibraryManagement.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System.Formats.Asn1;
 
 namespace LibraryManagement.Repository.Impl
 {
@@ -76,6 +77,16 @@ namespace LibraryManagement.Repository.Impl
                 //保存
                 await _context.SaveChangesAsync();
             }
+        }
+
+        /// <summary>
+        /// 判断该分类下是否有书籍
+        /// </summary>
+        /// <param name="categoryId"></param>
+        /// <returns></returns>
+        public async Task<bool> HasBooksByCategoryIdAsync(int categoryId)
+        {
+            return await _context.Books.AnyAsync(b => b.CategoryId == categoryId);
         }
     }
 }

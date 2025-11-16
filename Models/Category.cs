@@ -12,7 +12,7 @@ namespace LibraryManagement.Models
         [Key]
         public int Id { get; set; } // 主键，自增ID
 
-        public string? Name { get; set; } // 分类名称，如“文学”、“计算机”等
+        public string? Name { get; set; } // 分类名称
         public int Sort { get; set; } // 排序序号，数值越小越靠前
         public int Status { get; set; } = 1; // 状态：1-启用，0-禁用
 

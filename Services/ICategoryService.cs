@@ -1,10 +1,59 @@
 ﻿using LibraryManagement.Models;
+using Microsoft.AspNetCore.Mvc;
 
 namespace LibraryManagement.Services
 {
     public interface ICategoryService
     {
-        //获取所有分类
-        Task<List<Category>> AddAsync();
+        /// <summary>
+        /// 获取所有分类
+        /// </summary>
+        /// <returns></returns>
+        Task<List<Category>> GetAllAsync(); //用于下拉框
+
+        /// <summary>
+        /// 分页查询
+        /// </summary>
+        /// <param name="page"></param>
+        /// <param name="pageSize"></param>
+        /// <returns></returns>
+        Task<(List<Category> Rows, int Total)> GetPageAsync(int page, int pageSize);
+
+        /// <summary>
+        /// 通过id获取分类
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        Task<Category?> GetByIdAsync(int id);
+
+        /// <summary>
+        /// 添加分类
+        /// </summary>
+        /// <param name="dto"></param>
+        /// <returns></returns>
+        Task AddAsync([FromBody]CategoryDto dto);
+
+        /// <summary>
+        /// 更新分类
+        /// </summary>
+        /// <param name="dto"></param>
+        /// <returns></returns>
+        Task UpdateAsync(int id, CategoryDto dto);
+
+        /// <summary>
+        /// 删除分类
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        Task DeleteAsync(int id);
+
+        /// <summary>
+        /// 判断该分类下是否有图书
+        /// </summary>
+        /// <param name="categoryId"></param>
+        /// <returns></returns>
+        Task<bool> HasBooksAsync(int categoryId); 
+
+
     }
 }

@@ -18,14 +18,14 @@ namespace LibraryManagement.Repository
         Task<Book?> GetByIdAsync(int id);
 
         /// <summary>
-        /// 添加图书
+        /// 添加图书信息
         /// </summary>
         /// <param name="book"></param>
         /// <returns></returns>
         Task AddAsync(Book book);
 
         /// <summary>
-        /// 更新图书
+        /// 更新图书信息
         /// </summary>
         /// <param name="book"></param>
         /// <returns></returns>
@@ -37,5 +37,13 @@ namespace LibraryManagement.Repository
         /// <param name="id"></param>
         /// <returns></returns>
         Task DeleteAsync(int id);
+
+        /// <summary>
+        /// 判断该分类下是否有书籍
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        Task<bool> HasBooksByCategoryIdAsync(int categoryId);
+
     }
 }
