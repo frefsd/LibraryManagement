@@ -14,7 +14,7 @@
         public DateTime DueDate { get; set; } //归还日期
         public DateTime? ActualReturnDate { get; set; } //实际归还日期（null == 未归还）
         public int Status { get; set; } // 1-借阅中，2-已归还，3-逾期
-        //判读借阅人是在借阅中，已归还或则逾期
+        //判读借阅人借书的状态是在借阅中，已归还或则逾期
         public bool IsOverdue => ActualReturnDate == null && DateTime.Now > DueDate;
     }
 }

@@ -3,7 +3,7 @@
 namespace LibraryManagement.Models
 {
     /// <summary>
-    /// 用于封装编辑图书返回的结果
+    /// 用于封装编辑图书返回的结果（前端展示的结果）
     /// </summary>
     public class BookUpdateDto
     {
