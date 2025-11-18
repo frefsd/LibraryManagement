@@ -1,4 +1,5 @@
-﻿using LibraryManagement.Models;
+﻿using LibraryManagement.Exceptions;
+using LibraryManagement.Models;
 using LibraryManagement.Repository;
 using LibraryManagement.Result;
 
@@ -62,15 +63,21 @@ namespace LibraryManagement.Services.Impl
         /// <returns></returns>
         public async Task BorrowAsync(BorrowRequestDto dto)
         {
+            //1.查询图书和用户
             var book = await _bookRepository.GetByIdAsync(dto.BookId);
             var user = await _userRepository.GetByIdAsync(dto.UserId);
+            //2.校验图书是否存在
+            if (book == null) throw new DomainException("图书不存在");
+            //3.校验用户是否存在
+            if (user == null) throw new DomainException("用户不存在");
+            //3.校验图书状态
+            if (book.Status != 1) throw new DomainException("该图书已下架，无法借阅");
+            //4.校验用户状态
+            if (user.Status != 1) throw new DomainException("改用户已被禁用");
+            //5.校验库存
+            if (book.BorrowedCopies >= book.TotalCopies) throw new DomainException("该图书暂无库存");
 
-            if (book == null) throw new InvalidOperationException("图书不存在");
-            if (user == null) throw new InvalidOperationException("用户不存在");
-            if (book.Status != 1) throw new InvalidOperationException("该图书已下架");
-            if (user.Status != 1) throw new InvalidOperationException("改用户已被禁用");
-            if (book.BorrowedCopies >= book.TotalCopies) throw new InvalidOperationException("该图书暂无库存");
-
+            //执行事务
             using var transaction = await _borrowRepository.BeginDbContextTransactionAsync();
             try
             {
@@ -80,12 +87,12 @@ namespace LibraryManagement.Services.Impl
                     UserId = dto.UserId,
                     BorrowDate = DateTime.Now,
                     DueDate = DateTime.Now.AddDays(30),
-                    Status = 1,
+                    Status = 1, //借阅中
                     CreateTime = DateTime.Now,
                     UpdateTime = DateTime.Now
                 };
                 await _borrowRepository.AddAsync(record);
-                book.BorrowedCopies++;
+                book.BorrowedCopies++; //增加已借数量
                 await _bookRepository.UpdateAsync(book);
 
                 await _borrowRepository.SaveChangesAsync();

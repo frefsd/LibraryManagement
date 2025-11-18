@@ -1,4 +1,5 @@
-﻿using LibraryManagement.Models;
+﻿using LibraryManagement.Exceptions;
+using LibraryManagement.Models;
 using LibraryManagement.Services;
 using Microsoft.AspNetCore.Mvc;
 
@@ -47,9 +48,12 @@ namespace LibraryManagement.Controllers
                 await _borrowService.BorrowAsync(dto);
                 return Ok(new { code = true, msg = "借阅成功" });
             }
-            catch (InvalidOperationException ex)
+            catch (DomainException ex)
             {
-                return Ok(new { code = false, msg = ex.Message });
+                return BadRequest(new {message = ex.Message});
+            }catch(Exception ex)
+            {
+                return StatusCode(500, new {message = "系统内部错误，请稍后重试！"});
             }
         }
 
