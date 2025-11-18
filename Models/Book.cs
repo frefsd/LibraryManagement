@@ -31,8 +31,17 @@ namespace LibraryManagement.Models
         [ForeignKey("PublisherId")]
         public virtual Publisher? Publisher { get; set; }
 
-        public int Status { get; set; } = 1; // 状态：1-在库，2-已借出，3-已下架
-        public DateTime UpdateTime { get; set; } = DateTime.Now; // 最后更新时间
-        public DateTime CreateTime { get; set; } = DateTime.Now; // 创建时间
+        public int TotalCopies { get; set; } = 1; //总册数
+
+        public int BorrowedCopies { get; set; } = 0; // 已借出册数
+
+        public int Status { get; set; } = 1; // 1-正常，2-已下架
+
+        public DateTime UpdateTime { get; set; } = DateTime.Now; //最后更新时间
+        public DateTime CreateTime { get; set; } = DateTime.Now; //创建时间
+
+        // 是否可借（未下架 + 有库存）
+        [NotMapped]
+        public bool IsAvailable => Status == 1 && BorrowedCopies < TotalCopies;
     }
 }

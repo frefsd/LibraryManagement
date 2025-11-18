@@ -23,10 +23,16 @@ namespace LibraryManagement.Models
         [ForeignKey("UserId")]
         public virtual User? User { get; set; }
 
-        public DateTime BorrowDate { get; set; } // 借阅日期
-        public DateTime ReturnDate { get; set; } // 应还日期（非实际归还时间）
-        public int Status { get; set; } = 1; // 借阅状态：1-借阅中，2-已归还，3-逾期
         public DateTime CreateTime { get; set; } // 记录创建时间
         public DateTime UpdateTime { get; set; } // 记录最后更新时间（如归还时更新）
+
+        public DateTime BorrowDate { get; set; } // 借出时间
+        public DateTime DueDate { get; set; } // 应还时间（如 BorrowDate + 30天）
+        public DateTime? ActualReturnDate { get; set; } // 实际归还时间（null=未还）
+        public int Status { get; set; } = 1;  // 状态：1-借阅中，2-已归还，3-逾期
+
+        // 计算是否逾期
+        [NotMapped]
+        public bool IsOverdue => ActualReturnDate == null && DateTime.Now > DueDate;
     }
 }
