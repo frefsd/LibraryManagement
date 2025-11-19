@@ -43,5 +43,6 @@ namespace LibraryManagement.Repository
         /// <param name="id"></param>
         /// <returns></returns>
         Task DeleteAsync(int id);
+        Task<int> CountAsync();
     }
 }

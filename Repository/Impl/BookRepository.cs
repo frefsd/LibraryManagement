@@ -87,5 +87,32 @@ namespace LibraryManagement.Repository.Impl
         {
             return await _context.Books.AnyAsync(b => b.CategoryId == categoryId);
         }
+
+        /// <summary>
+        /// 查询所有书籍不包括（已下架）
+        /// </summary>
+        /// <returns></returns>
+        public async Task<IQueryable<Book>> GetQueryableAsync()
+        {
+            return _context.Books.AsQueryable();
+        }
+
+        /// <summary>
+        /// 获取图书的总数量（不包括已下架，损坏等）
+        /// </summary>
+        /// <returns></returns>
+        public async Task<int> GetTotalCopiesAsync()
+        {
+            return await _context.Books.SumAsync(b => b.TotalCopies);
+        }
+
+        /// <summary>
+        /// 借阅出去的书籍总数量
+        /// </summary>
+        /// <returns></returns>
+        public async Task<int> GetBorrowedCopiesAsync()
+        {
+            return await _context.Books.SumAsync(b => b.BorrowedCopies);
+        }
     }
 }

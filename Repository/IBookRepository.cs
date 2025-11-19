@@ -45,5 +45,22 @@ namespace LibraryManagement.Repository
         /// <returns></returns>
         Task<bool> HasBooksByCategoryIdAsync(int categoryId);
 
+        /// <summary>
+        /// 获取图书的总数量（不包括已下架，损坏等）
+        /// </summary>
+        /// <returns></returns> 
+        Task<int> GetTotalCopiesAsync();
+
+        /// <summary>
+        /// 借阅出去的书籍总数量
+        /// </summary>
+        /// <returns></returns>
+        Task<int> GetBorrowedCopiesAsync();
+
+        /// <summary>
+        ///查询所有书籍不包括（已下架）
+        /// </summary>
+        /// <returns></returns>
+        Task<IQueryable<Book>> GetQueryableAsync();
     }
 }

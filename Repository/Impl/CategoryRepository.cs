@@ -91,5 +91,14 @@ namespace LibraryManagement.Repository.Impl
                 await _applicationDbContext.SaveChangesAsync();
             }
         }
+
+        /// <summary>
+        /// 获取分类的数量
+        /// </summary>
+        /// <returns></returns>
+        public async Task<int> CountAsync()
+        {
+            return await _applicationDbContext.Categories.CountAsync();
+        }
     }
 }

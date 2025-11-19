@@ -18,7 +18,7 @@ namespace LibraryManagement.Models
         public decimal Price { get; set; } // 图书价格（单位：元）
 
         // 外键：关联分类表 Category 的主键 Id
-        public int? CategoryId { get; set; }
+        public int CategoryId { get; set; }
 
         // 导航属性：指向所属的图书分类
         [ForeignKey("CategoryId")]
