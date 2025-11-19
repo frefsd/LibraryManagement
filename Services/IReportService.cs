@@ -18,5 +18,12 @@ namespace LibraryManagement.Services
         /// <param name="endYear"></param>
         /// <returns></returns>
         Task<List<ChartDataDto>> GetBookStatsAsync(string dimension, int? startYear, int? endYear);
+
+        /// <summary>
+        /// 获取分类统计数据
+        /// </summary>
+        /// <param name="type"></param>
+        /// <returns></returns>
+        Task<CategoryStatsResponseDto> GetCategoryStatsAsync(string type);
     }
 }

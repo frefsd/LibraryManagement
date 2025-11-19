@@ -81,5 +81,10 @@ namespace LibraryManagement.Repository.Impl
         {
             return await _applicationDbContext.SaveChangesAsync();
         }
+
+        public async Task<IQueryable<BorrowRecord>> GetQueryableAsync()
+        {
+            return _applicationDbContext.BorrowRecords.AsQueryable();
+        }
     }
 }

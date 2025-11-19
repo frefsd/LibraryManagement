@@ -1,7 +1,6 @@
 ﻿using LibraryManagement.Models;
 using LibraryManagement.Repository;
 using Microsoft.EntityFrameworkCore;
-using System.Formats.Asn1;
 
 namespace LibraryManagement.Services.Impl
 {
@@ -9,14 +8,18 @@ namespace LibraryManagement.Services.Impl
     {
         private readonly ICategoryRepository _categoryRepository;
         private readonly IBookRepository _bookRepository;
+        private readonly IBorrowRepository _borrowRepository;
 
         //依赖注入
         public ReportService(
             ICategoryRepository categoryRepository,
-            IBookRepository bookRepository)
+            IBookRepository bookRepository,
+            IBorrowRepository borrowRepository
+            )
         {
             _categoryRepository = categoryRepository;
             _bookRepository = bookRepository;
+            _borrowRepository = borrowRepository;
         }
 
         /// <summary>
@@ -151,6 +154,71 @@ namespace LibraryManagement.Services.Impl
                 .ToListAsync();
 
             return data;
+        }
+
+        /// <summary>
+        /// 图书分类统计
+        /// </summary>
+        /// <returns></returns>
+        public async Task<CategoryStatsResponseDto> GetCategoryStatsAsync(string type)
+        {
+            //1.获取所有分类
+            var allCategories = await _categoryRepository.GetAllAsync();
+            var categoryDict = allCategories.ToDictionary(c => c.Id, c => c.Name);
+
+
+            //2.查询每个分类的图书总册数
+            //2.1：先获取IQueryable<book>
+            var booksQuery = await _bookRepository.GetQueryableAsync();
+            //2.2:从IQueryable<book>中获取GroupBy（）方法
+            var bookCounts = await booksQuery
+                .GroupBy(b => b.CategoryId)
+                .ToDictionaryAsync(g => g.Key, g => g.Sum(x => x.TotalCopies));
+
+            //3.查询每个分类的借阅总次数
+            var borrowCounts = await (await _borrowRepository.GetQueryableAsync())
+                .Where(r => r.Status == 1)
+                .Join(
+                booksQuery, //关联book表
+                record => record.BookId, //BorrowRecord.BookId
+                book => book.Id, //Book.Id
+                (record, book) => book.CategoryId
+                )
+                .GroupBy(categoryId => categoryId)
+                .ToDictionaryAsync(g => g.Key, g => g.Count());
+
+            //4.构建stats列表（包含所有分类）
+            var stats = allCategories.Select(category =>
+            {
+                var bookCount = bookCounts.TryGetValue(category.Id, out var bc) ? bc : 0;
+                var borrowCount = borrowCounts.TryGetValue(category.Id, out var br) ? br : 0;
+
+                return new CategoryStatsItemDto
+                {
+                    Name = category.Name,
+                    BookCount = bookCount,
+                    BorrowCount = borrowCount
+                };
+            }).ToList();
+
+            //5.计算summary
+            var totalBookCopies = stats.Sum(s => s.BookCount);
+            var maxCategory = stats.OrderByDescending(s => s.BookCount).FirstOrDefault();
+
+            var summary = new CategorySummaryDto
+            {
+                TotalCategories = allCategories.Count,
+                EnabledCategories = allCategories.Count(c => c.Status == 1),
+                MaxBooksCategory = maxCategory?.Name ?? "无",
+                AvgBooksPerCategory = allCategories.Count > 0
+                ? Math.Round((decimal)totalBookCopies / allCategories.Count, 1) : 0
+            };
+
+            return new CategoryStatsResponseDto
+            {
+                Stats = stats,
+                Summary = summary
+            };
         }
     }
 }

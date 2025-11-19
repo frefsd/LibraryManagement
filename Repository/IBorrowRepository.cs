@@ -33,8 +33,15 @@ namespace LibraryManagement.Repository
         /// <param name="entity"></param>
         /// <returns></returns>
         Task UpdateAsync(BorrowRecord entity);
+
         Task<IDbContextTransaction> BeginDbContextTransactionAsync();
 
         Task<int> SaveChangesAsync();
+
+        /// <summary>
+        /// 获取借阅信息
+        /// </summary>
+        /// <returns></returns>
+        Task<IQueryable<BorrowRecord>> GetQueryableAsync();
     }
 }

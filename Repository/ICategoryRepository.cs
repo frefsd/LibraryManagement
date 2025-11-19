@@ -43,6 +43,11 @@ namespace LibraryManagement.Repository
         /// <param name="id"></param>
         /// <returns></returns>
         Task DeleteAsync(int id);
+
+        /// <summary>
+        /// 获取分类的数量
+        /// </summary>
+        /// <returns></returns>
         Task<int> CountAsync();
     }
 }
