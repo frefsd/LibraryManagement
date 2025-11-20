@@ -39,6 +39,13 @@ namespace LibraryManagement.Repository
         Task DeleteAsync(int id);
 
         /// <summary>
+        /// 软删除
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        Task SoftDeleteAsync(int id);
+
+        /// <summary>
         /// 判断该分类下是否有书籍
         /// </summary>
         /// <param name="id"></param>

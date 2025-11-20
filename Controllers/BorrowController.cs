@@ -48,7 +48,7 @@ namespace LibraryManagement.Controllers
                 await _borrowService.BorrowAsync(dto);
                 return Ok(new { code = true, msg = "借阅成功" });
             }
-            catch (DomainException ex)
+            catch (ExceptionHandlerMiddleware ex)
             {
                 return BadRequest(new {message = ex.Message});
             }catch(Exception ex)

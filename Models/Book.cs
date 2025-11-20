@@ -40,6 +40,8 @@ namespace LibraryManagement.Models
         public DateTime UpdateTime { get; set; } = DateTime.Now; //最后更新时间
         public DateTime CreateTime { get; set; } = DateTime.Now; //创建时间
 
+        public bool IsDeleted { get; set; } = false; // 默认未删除
+
         // 是否可借（未下架 + 有库存）
         [NotMapped]
         public bool IsAvailable => Status == 1 && BorrowedCopies < TotalCopies;

@@ -1,4 +1,5 @@
-﻿using LibraryManagement.Models;
+﻿using LibraryManagement.Exceptions;
+using LibraryManagement.Models;
 using LibraryManagement.Repository;
 using LibraryManagement.Result;
 using Microsoft.EntityFrameworkCore;
@@ -8,11 +9,14 @@ namespace LibraryManagement.Services.Impl
     public class BookService : IBookService
     {
         private readonly IBookRepository _bookRepository;
+        private readonly IBorrowRepository _borrowRepository;
 
         //依赖注入
-        public BookService(IBookRepository bookRepository)
+        public BookService(IBookRepository bookRepository,
+            IBorrowRepository borrowRepository)
         {
             _bookRepository = bookRepository;
+            _borrowRepository = borrowRepository;
         }
 
         /// <summary>
@@ -113,7 +117,15 @@ namespace LibraryManagement.Services.Impl
         /// <returns></returns>
         public async Task DeleteAsync(int id)
         {
-           await _bookRepository.DeleteAsync(id);
+            //检查是否还有未归还的借阅记录
+            var hasActiveBorrows = await _borrowRepository
+                .GetQueryableAsync()
+                .AnyAsync(r => r.BookId == id && r.Status == 1); //1.借阅中
+            if (hasActiveBorrows)
+            {
+                throw new CustomExceptionFilter("该图书正在被借阅，无法删除！");
+            }
+            await _bookRepository.SoftDeleteAsync(id);
         }
     }
 }

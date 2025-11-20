@@ -1,4 +1,5 @@
 using LibraryManagement.AppDbContext;
+using LibraryManagement.Exceptions;
 using LibraryManagement.Repository;
 using LibraryManagement.Repository.Impl;
 using LibraryManagement.Services;
@@ -77,6 +78,9 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+
+
+app.UseExceptionHandlerMiddleware();
 
 app.UseCors("AllowAll");
 

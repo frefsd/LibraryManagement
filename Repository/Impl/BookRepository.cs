@@ -79,6 +79,21 @@ namespace LibraryManagement.Repository.Impl
         }
 
         /// <summary>
+        /// 查询已归还的图书
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public async Task SoftDeleteAsync(int id)
+        {
+            var book = await _context.Books
+                .IgnoreQueryFilters()
+                .FirstOrDefaultAsync(b => b.Id == id);
+
+            book.IsDeleted = true;
+            _context.Books.Update(book);
+            await _context.SaveChangesAsync();
+        }
+        /// <summary>
         /// 判断该分类下是否有书籍
         /// </summary>
         /// <param name="categoryId"></param>

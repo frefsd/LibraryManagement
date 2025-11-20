@@ -67,15 +67,15 @@ namespace LibraryManagement.Services.Impl
             var book = await _bookRepository.GetByIdAsync(dto.BookId);
             var user = await _userRepository.GetByIdAsync(dto.UserId);
             //2.校验图书是否存在
-            if (book == null) throw new DomainException("图书不存在");
+            if (book == null) throw new CustomExceptionFilter("图书不存在");
             //3.校验用户是否存在
-            if (user == null) throw new DomainException("用户不存在");
+            if (user == null) throw new CustomExceptionFilter("用户不存在");
             //3.校验图书状态
-            if (book.Status != 1) throw new DomainException("该图书已下架，无法借阅");
+            if (book.Status != 1) throw new CustomExceptionFilter("该图书已下架，无法借阅");
             //4.校验用户状态
-            if (user.Status != 1) throw new DomainException("改用户已被禁用");
+            if (user.Status != 1) throw new CustomExceptionFilter("改用户已被禁用");
             //5.校验库存
-            if (book.BorrowedCopies >= book.TotalCopies) throw new DomainException("该图书暂无库存");
+            if (book.BorrowedCopies >= book.TotalCopies) throw new CustomExceptionFilter("该图书暂无库存");
 
             //执行事务
             using var transaction = await _borrowRepository.BeginDbContextTransactionAsync();

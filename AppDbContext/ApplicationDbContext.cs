@@ -23,7 +23,7 @@ namespace LibraryManagement.AppDbContext
             modelBuilder.Entity<User>().ToTable("User");
             modelBuilder.Entity<BorrowRecord>().ToTable("BorrowRecord");
             modelBuilder.Entity<Category>().ToTable("Category");
-            modelBuilder.Entity<Book>().ToTable("Book");
+            modelBuilder.Entity<Book>().HasQueryFilter(b => !b.IsDeleted).ToTable("Book");
             modelBuilder.Entity<Publisher>().ToTable("Publisher");
         }
     }
