@@ -305,13 +305,7 @@ const getChartTitle = () => {
 
 // 获取表格列属性
 const getTableColumnProp = () => {
-  const props = {
-    month: 'name',
-    book: 'bookName',
-    user: 'userName',
-    category: 'categoryName'
-  }
-  return props[searchForm.value.dimension] || 'name'
+  return 'name' 
 }
 
 // 获取表格列标签

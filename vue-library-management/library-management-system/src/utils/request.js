@@ -19,30 +19,41 @@ request.interceptors.request.use(
   }
 )
 
-//axios的响应 response 拦截器
+
+// axios的响应 response 拦截器
 request.interceptors.response.use(
-  (response) => { //成功回调
-    console.log('=== 响应拦截器 ===')
-    console.log('请求URL:', response.config.url)
-    console.log('完整响应:', response)
-    console.log('响应数据:', response.data)
-    console.log('响应状态:', response.status)
-    console.log('=================')
+  (response) => {
     return response.data
   },
-  (error) => { //失败回调
+  (error) => {
     console.log('=== 错误响应 ===')
     console.log('错误详情:', error)
     console.log('错误响应:', error.response)
     console.log('=================')
-    
-    // 修复：检查 error.response 是否存在
-    if (error.response && error.response.status === 401) {
-      ElMessage.error('登录失效, 请重新登录');
-      router.push('/login')
+
+    // 优先使用后端返回的 msg
+    let message = '请求失败'
+
+    if (error.response) {
+      const { status, data } = error.response
+
+      if (data && data.msg) {
+        message = data.msg
+      } else if (status === 401) {
+        message = '登录失效，请重新登录'
+        router.push('/login')
+      } else if (status >= 500) {
+        message = '服务器内部错误，请稍后重试'
+      } else if (status >= 400) {
+        message = '请求参数错误或操作不被允许'
+      }
+    } else if (error.request) {
+      message = '网络连接失败，请检查网络'
     } else {
-      ElMessage.error('请求失败: ' + (error.message || '网络错误'));
+      message = error.message || '未知错误'
     }
+
+    ElMessage.error(message)
     return Promise.reject(error)
   }
 )

@@ -41,16 +41,16 @@ const book = ref({
   author: '',
   publishDate: '',
   price: '',
-  category: '',      // 存 categoryId 字符串
-  publisherId: ''    // 存 publisherId 字符串
+  category: '',
+  publisherId: '',
+  status: 1 // 1=在库，2=已下架
 })
 
 const bookFormRef = ref()
 
 // ============ 状态映射 ============
 const getStatusText = (status) => {
-  const map = { 1: '在库', 2: '已借出', 3: '下架' }
-  return map[status] || '未知'
+  return status === 1 ? '在库' : status === 2 ? '已下架' : '未知'
 }
 
 // ============ 生命周期 ============
@@ -126,7 +126,8 @@ const clearBook = () => {
     publishDate: '',
     price: '',
     category: '',
-    publisherId: ''
+    publisherId: '',
+    status: 1
   }
 }
 
@@ -146,14 +147,12 @@ const updateBook = async (id) => {
   if (result.code && result.data) {
     const data = result.data
 
-    //从嵌套对象中提取 id
     const categoryId = data.category?.id ?? ''
     const publisherId = data.publisher?.id ?? ''
 
-    // 兼容 ISO 字符串 "2025-11-16T02:53:56.633Z"
     let publishDate = ''
     if (data.publishDate) {
-      publishDate = data.publishDate.split('T')[0] // 转为 YYYY-MM-DD
+      publishDate = data.publishDate.split('T')[0]
     }
 
     book.value = {
@@ -163,7 +162,8 @@ const updateBook = async (id) => {
       publishDate,
       price: String(data.price ?? ''),
       category: String(categoryId),
-      publisherId: String(publisherId)
+      publisherId: String(publisherId),
+      status: data.status ?? 1
     }
   }
 }
@@ -203,7 +203,6 @@ const save = async () => {
     const categoryIdStr = book.value.category.trim()
     const publisherIdStr = book.value.publisherId.trim()
 
-    // 转换并校验 categoryId（现在不允许为空！）
     const categoryId = parseInt(categoryIdStr)
     const publisherId = parseInt(publisherIdStr)
 
@@ -221,8 +220,9 @@ const save = async () => {
       author: book.value.author,
       publishDate: book.value.publishDate,
       price: parseFloat(book.value.price) || 0,
-      categoryId,     // 现在一定是 ≥1 的整数
-      publisherId     // 一定是 ≥1 的整数
+      categoryId,
+      publisherId,
+      status: parseInt(book.value.status) || 1
     }
 
     const bookId = parseInt(book.value.id)
@@ -246,7 +246,6 @@ const save = async () => {
   }
 }
 
-// ============ 删除 ============
 const delById = async (id) => {
   try {
     await ElMessageBox.confirm('确认删除此图书？', '提示', {
@@ -256,21 +255,27 @@ const delById = async (id) => {
     })
 
     const result = await deleteApi(id)
-    if (result.code) {
+    // 成功响应（HTTP 2xx）
+    if (result?.code) {
       ElMessage.success('删除成功')
       queryPage()
     } else {
-      ElMessage.error(result.msg || '删除失败')
+      ElMessage.error(result?.msg || '删除失败')
     }
   } catch (error) {
-    if (error !== 'cancel') {
-      ElMessage.error('操作异常')
+    // 用户取消
+    if (error === 'cancel') return
+
+    if (error.response?.data) {
+      const msg = error.response.data.msg || '删除失败'
+      ElMessage.error(msg)
+    } else {
+      ElMessage.error('网络错误，请稍后重试')
     }
   }
 }
 
 // ============ 日期格式化 ============
-//YYYY-MM-DD
 const formatDate = (dateStr) => {
   if (!dateStr) return ''
   const date = new Date(dateStr)
@@ -284,7 +289,6 @@ const formatDate = (dateStr) => {
   return `${year}-${month}-${day}`
 }
 
-//YYYY-MM-DD HH:mm:ss
 const formatDateTime = (dateStr) => {
   if (!dateStr) return ''
   const date = new Date(dateStr)
@@ -334,17 +338,20 @@ const formatDateTime = (dateStr) => {
         <template #default="scope">
           {{ scope.row.id }}
         </template>
-      </el-table-column> <el-table-column prop="name" label="图书名称" align="center" width="200" />
+      </el-table-column>
+      <el-table-column prop="name" label="图书名称" align="center" width="200" />
       <el-table-column prop="author" label="作者" align="center" width="100" />
       <el-table-column label="分类" align="center" width="100">
         <template #default="scope">
           {{ scope.row.category?.name || '未知' }}
         </template>
-      </el-table-column> <el-table-column label="出版日期" align="center" width="150">
+      </el-table-column>
+      <el-table-column label="出版日期" align="center" width="150">
         <template #default="scope">
           {{ formatDate(scope.row.publishDate) }}
         </template>
-      </el-table-column> <el-table-column prop="price" label="价格" align="center" width="100" />
+      </el-table-column>
+      <el-table-column prop="price" label="价格" align="center" width="100" />
       <el-table-column label="状态" align="center" width="100">
         <template #default="scope">
           {{ getStatusText(scope.row.status) }}
@@ -354,7 +361,8 @@ const formatDateTime = (dateStr) => {
         <template #default="scope">
           {{ formatDateTime(scope.row.updateTime) }}
         </template>
-      </el-table-column> <el-table-column label="操作" align="center" width="160">
+      </el-table-column>
+      <el-table-column label="操作" align="center" width="160">
         <template #default="scope">
           <el-button type="primary" size="small" @click="updateBook(scope.row.id)">编辑</el-button>
           <el-button type="danger" size="small" @click="delById(scope.row.id)">删除</el-button>
@@ -397,6 +405,14 @@ const formatDateTime = (dateStr) => {
         <el-form-item label="分类" :label-width="labelWidth" prop="category">
           <el-select v-model="book.category" placeholder="请选择分类" style="width: 100%">
             <el-option v-for="cat in categories" :key="cat.id" :label="cat.name" :value="String(cat.id)" />
+          </el-select>
+        </el-form-item>
+
+        <!-- 新增：状态选择 -->
+        <el-form-item label="状态" :label-width="labelWidth">
+          <el-select v-model="book.status" placeholder="请选择状态" style="width: 100%">
+            <el-option :value="1" label="在库（正常）" />
+            <el-option :value="2" label="已下架" />
           </el-select>
         </el-form-item>
       </el-form>

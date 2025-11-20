@@ -1,66 +1,26 @@
+// @/api/borrow.js
 import request from '@/utils/request'
 
-// 分页查询借阅记录
-export function queryPageApi(bookName, userName, status, page, pageSize) {
-  return request({
-    url: '/borrow/page',
+//分页查询
+export const queryPageApi = (page, pageSize) =>
+  request({
+    url: '/borrow/querypage',
     method: 'get',
-    params: {
-      bookName,
-      userName,
-      status,
-      page,
-      pageSize
-    }
+    params: { page, pageSize }
   })
-}
 
-// 查询所有用户
-export function queryAllUsersApi() {
-  return request({
-    url: '/user/all',
-    method: 'get'
-  })
-}
-
-// 根据图书名称搜索图书
-export function searchBooksApi(name) {
-  return request({
-    url: '/book/search',
-    method: 'get',
-    params: { name }
-  })
-}
-
-// 借阅图书
-export function borrowApi(borrowData) {
-  return request({
-    url: '/borrow',
+  //新增借阅人信息
+export const borrowApi = (data) =>
+  request({
+    url: '/borrow/borrow',
     method: 'post',
-    data: borrowData
+    data
   })
-}
 
-// 归还图书
-export function returnApi(id) {
-  return request({
-    url: `/borrow/return/${id}`,
-    method: 'put'
+  //修改借阅人信息
+export const returnApi = (id) =>
+  request({
+    url: '/borrow/return',
+    method: 'post',
+    params: { id }
   })
-}
-
-// 续借图书
-export function renewApi(id) {
-  return request({
-    url: `/borrow/renew/${id}`,
-    method: 'put'
-  })
-}
-
-// 删除借阅记录
-export function deleteApi(id) {
-  return request({
-    url: `/borrow/${id}`,
-    method: 'delete'
-  })
-}
