@@ -41,20 +41,11 @@ namespace LibraryManagement.Controllers
         [HttpPost]
         public async Task<IActionResult> Borrow([FromBody] BorrowRequestDto dto)
         {
-            if (!ModelState.IsValid) return Ok(new { code = false, msg = "参数无效" });
+            if (!ModelState.IsValid)
+                return Ok(new { code = false, msg = "参数无效" });
 
-            try
-            {
-                await _borrowService.BorrowAsync(dto);
-                return Ok(new { code = true, msg = "借阅成功" });
-            }
-            catch (DomainException ex)
-            {
-                return BadRequest(new {message = ex.Message});
-            }catch(Exception ex)
-            {
-                return StatusCode(500, new {message = "系统内部错误，请稍后重试！"});
-            }
+            await _borrowService.BorrowAsync(dto);
+            return Ok(new { code = true, msg = "借阅成功" });
         }
 
         /// <summary>
@@ -65,16 +56,9 @@ namespace LibraryManagement.Controllers
         [HttpPost]
         public async Task<IActionResult> Return(int id)
         {
-            try
-            {
-                await _borrowService.ReturnAsync(id);
-                return Ok(new { code = true, msg = "归还成功" });
-            }
-            catch (InvalidOperationException ex)
-            {
-                return Ok(new { code = false, msg = ex.Message });
-            }
-
+            await _borrowService.ReturnAsync(id);
+            return Ok(new { code = true, msg = "归还成功" });
         }
     }
 }
+

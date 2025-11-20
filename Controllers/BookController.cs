@@ -73,17 +73,9 @@ namespace LibraryManagement.Controllers
             {
                 return BadRequest(new { code = 400, msg = "参数验证失败", errors = ModelState });
             }
-
-            try
-            {
-                await _bookService.UpdateAsync(dto);
-                return Ok(new { code = 200, msg = "更新成功" });
-            }
-            catch (Exception ex) when (ex.InnerException?.Message.Contains("FOREIGN KEY") == true)
-            {
-                return BadRequest(new { code = 400, msg = "出版社或分类不存在，请检查选择项。" });
-            }
-        }        
+            await _bookService.UpdateAsync(dto);
+            return Ok(new { code = 200, msg = "更新成功" });
+        }  
 
         /// <summary>
         /// 删除图书信息

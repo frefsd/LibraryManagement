@@ -10,7 +10,7 @@ namespace LibraryManagement.Controllers
     /// </summary>
     [ApiController]
     [Route("[controller]/[action]")]
-    public class CategoryController: ControllerBase
+    public class CategoryController : ControllerBase
     {
         private readonly ICategoryService _categoryService;
 
@@ -28,7 +28,7 @@ namespace LibraryManagement.Controllers
         public async Task<IActionResult> QueryAll()
         {
             var categories = await _categoryService.GetAllAsync();
-            return Ok(new { code = true, data = categories});
+            return Ok(new { code = true, data = categories });
         }
 
         /// <summary>
@@ -70,16 +70,9 @@ namespace LibraryManagement.Controllers
         [HttpPost]
         public async Task<IActionResult> Add([FromBody] CategoryDto dto)
         {
-            try
-            {
-                await _categoryService.AddAsync(dto);
-                return Ok(new { code = true, msg = "添加成功" });
-            }
-            catch (Exception ex)
-            {
 
-                return BadRequest(new { code = false, msg = ex.Message });
-            }
+            await _categoryService.AddAsync(dto);
+            return Ok(new { code = true, msg = "添加成功" });
         }
 
         /// <summary>
@@ -90,15 +83,8 @@ namespace LibraryManagement.Controllers
         [HttpDelete]
         public async Task<IActionResult> Delete(int id)
         {
-            try
-            {
-                await _categoryService.DeleteAsync(id);
-                return Ok(new { code = true, msg = "删除成功"});
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(new { code = false, msg = ex.Message });
-            }
+            await _categoryService.DeleteAsync(id);
+            return Ok(new { code = true, msg = "删除成功" });
         }
 
         /// <summary>
@@ -109,16 +95,9 @@ namespace LibraryManagement.Controllers
         /// <returns></returns>
         [HttpPut]
         public async Task<IActionResult> Update(int id, [FromBody] CategoryDto dto)
-        {
-            try
-            {
+        {         
                 await _categoryService.UpdateAsync(id, dto);
-                return Ok(new {code = true, msg = "修改成功"});
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(new { code = false, msg = ex.Message });
-            }
+                return Ok(new { code = true, msg = "修改成功" });                     
         }
     }
 }
