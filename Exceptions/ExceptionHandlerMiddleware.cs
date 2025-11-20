@@ -22,19 +22,35 @@ namespace LibraryManagement.Exceptions
             }
             catch (Exception ex)
             {
-                //记录日志
                 var logger = context.RequestServices.GetRequiredService<ILogger<ExceptionHandlerMiddleware>>();
-                logger.LogError(ex, "发生未处理的异常");
-
-                //统一返回JSON错误
                 var response = context.Response;
                 response.ContentType = "application/json";
-                response.StatusCode = StatusCodes.Status400BadRequest;
+
+                int statusCode;
+                string message;
+
+                // 判断是否是业务异常（DomainException）
+                if (ex is DomainException)
+                {
+                    // 业务异常：返回 400，暴露具体提示
+                    statusCode = StatusCodes.Status400BadRequest;
+                    message = ex.Message;
+                    logger.LogWarning(ex, "业务异常: {Message}", message);
+                }
+                else
+                {
+                    // 系统异常：返回 500，不暴露细节（安全）
+                    statusCode = StatusCodes.Status500InternalServerError;
+                    message = "服务器内部错误，请稍后重试。";
+                    logger.LogError(ex, "未处理的系统异常");
+                }
+
+                response.StatusCode = statusCode;
 
                 var result = new
                 {
-                    code = 400,
-                    msg = ex.Message,
+                    code = statusCode,
+                    msg = message,
                     success = false
                 };
 

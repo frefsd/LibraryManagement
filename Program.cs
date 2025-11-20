@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
-//CORS
+//=========Services 配置============
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowAll",policy =>
@@ -23,7 +23,7 @@ builder.Services.AddCors(options =>
     });
 });
 
-//配置JSON序列化
+// JSON 全局配置（HttpResults + MVC）
 builder.Services.ConfigureHttpJsonOptions(options =>
 {
     options.SerializerOptions.PropertyNamingPolicy = System.Text.Json.JsonNamingPolicy.CamelCase;
@@ -31,8 +31,6 @@ builder.Services.ConfigureHttpJsonOptions(options =>
 });
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
-
-// 配置 MVC Controllers 的 JSON（用于 IActionResult）
 builder.Services.AddControllers()
     .AddJsonOptions(options =>
     {
@@ -46,8 +44,6 @@ builder.Services.Configure<RouteOptions>(options =>
     options.LowercaseUrls = true;
 });
 
-
-builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
@@ -80,14 +76,15 @@ if (app.Environment.IsDevelopment())
 }
 
 
-app.UseExceptionHandlerMiddleware();
+app.UseExceptionHandlerMiddleware(); //异常捕获
 
-app.UseCors("AllowAll");
+app.UseHttpsRedirection(); //Https重定向
 
-app.UseHttpsRedirection();
+app.UseCors("AllowAll");  //CORS
 
 //app.UseAuthorization(); //TODO: 等待开发
 
-app.MapControllers();
+app.UseRouting(); //启用路由
+app.MapControllers(); //映射控制器
 
 app.Run();

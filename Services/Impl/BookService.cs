@@ -123,7 +123,7 @@ namespace LibraryManagement.Services.Impl
                 .AnyAsync(r => r.BookId == id && r.Status == 1); //1.借阅中
             if (hasActiveBorrows)
             {
-                throw new CustomExceptionFilter("该图书正在被借阅，无法删除！");
+                throw new DomainException("该图书正在被借阅，无法删除！");
             }
             await _bookRepository.SoftDeleteAsync(id);
         }
