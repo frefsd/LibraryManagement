@@ -55,5 +55,17 @@ namespace LibraryManagement.Controllers
             var data = await _reportService.GetCategoryStatsAsync(type);
             return Ok(new { code = true, data });
         }
+
+        /// <summary>
+        /// 获取借阅统计数据
+        /// </summary>
+        /// <param name="request"></param>
+        /// <returns></returns>
+        [HttpGet("borrow/stats")]
+        public async Task<IActionResult> BorrowStats([FromQuery]BorrowStatsRequestDto request)
+        {
+            var data = await _reportService.GetBorrowStatsAsync(request);
+            return Ok(new { code = true, data});
+        }
     }
 }

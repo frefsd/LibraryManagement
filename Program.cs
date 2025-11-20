@@ -39,7 +39,7 @@ builder.Services.AddControllers()
         options.JsonSerializerOptions.ReferenceHandler = System.Text.Json.Serialization.ReferenceHandler.IgnoreCycles;
     });
 
-// 启用小写 URL 路由 ← 关键！
+// 启用小写 URL 路由
 builder.Services.Configure<RouteOptions>(options =>
 {
     options.LowercaseUrls = true;

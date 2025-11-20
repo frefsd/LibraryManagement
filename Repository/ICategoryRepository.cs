@@ -49,5 +49,6 @@ namespace LibraryManagement.Repository
         /// </summary>
         /// <returns></returns>
         Task<int> CountAsync();
+        IQueryable<Category> GetQueryableAsync();
     }
 }

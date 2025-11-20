@@ -27,6 +27,9 @@
         public int BorrowCount { get; set; }
     }
 
+    /// <summary>
+    /// 分类信息统计
+    /// </summary>
     public class CategorySummaryDto
     {
         public int TotalCategories { get; set; }
@@ -39,5 +42,34 @@
     {
         public List<CategoryStatsItemDto> Stats { get; set; } = new();
         public CategorySummaryDto Summary { get; set; } = new();
+    }
+
+
+    public class BorrowStatsRequestDto
+    {
+        public string Dimension { get; set; } = "month";
+        public int Limit { get; set; } = 10;
+        public string? StartDate { get; set; } // "2025-06"
+        public string? EndDate { get; set; }   // "2025-11"
+    }
+
+    public class BorrowStatItemDto
+    {
+        public string Name { get; set; } = string.Empty;
+        public int BorrowCount { get; set; }
+    }
+
+    public class BorrowSummaryDto
+    {
+        public int TotalBorrows { get; set; }
+        public int CurrentBorrowing { get; set; }
+        public int OverdueCount { get; set; }
+        public int AvgBorrowDays { get; set; }
+    }
+
+    public class BorrowStatsResponseDto
+    {
+        public List<BorrowStatItemDto> Stats { get; set; } = new();
+        public BorrowSummaryDto Summary { get; set; } = new();
     }
 }

@@ -92,9 +92,9 @@ namespace LibraryManagement.Repository.Impl
         /// 查询所有书籍不包括（已下架）
         /// </summary>
         /// <returns></returns>
-        public async Task<IQueryable<Book>> GetQueryableAsync()
+        public IQueryable<Book> GetQueryableAsync()
         {
-            return _context.Books.AsQueryable();
+            return _context.Books;
         }
 
         /// <summary>

@@ -25,5 +25,12 @@ namespace LibraryManagement.Services
         /// <param name="type"></param>
         /// <returns></returns>
         Task<CategoryStatsResponseDto> GetCategoryStatsAsync(string type);
+
+        /// <summary>
+        /// 获取借阅统计数据
+        /// </summary>
+        /// <param name="request"></param>
+        /// <returns></returns>
+        Task<BorrowStatsResponseDto> GetBorrowStatsAsync(BorrowStatsRequestDto request);
     }
 }

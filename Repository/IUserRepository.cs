@@ -9,5 +9,6 @@ namespace LibraryManagement.Repository
         /// </summary>
         /// <returns></returns>
         Task<User?> GetByIdAsync(int id);
+        IQueryable<User> GetQueryableAsync();
     }
 }

@@ -61,6 +61,6 @@ namespace LibraryManagement.Repository
         ///查询所有书籍不包括（已下架）
         /// </summary>
         /// <returns></returns>
-        Task<IQueryable<Book>> GetQueryableAsync();
+        IQueryable<Book> GetQueryableAsync();
     }
 }

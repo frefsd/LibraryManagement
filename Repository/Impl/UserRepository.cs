@@ -22,5 +22,10 @@ namespace LibraryManagement.Repository.Impl
         {
             return await _applicationDbContext.Users.FindAsync(id);
         }
+
+        public IQueryable<User> GetQueryableAsync()
+        {
+            return _applicationDbContext.Users;
+        }
     }
 }

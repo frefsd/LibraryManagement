@@ -100,5 +100,10 @@ namespace LibraryManagement.Repository.Impl
         {
             return await _applicationDbContext.Categories.CountAsync();
         }
+
+        public IQueryable<Category> GetQueryableAsync()
+        {
+            return _applicationDbContext.Categories.AsQueryable();
+        }
     }
 }

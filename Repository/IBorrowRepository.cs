@@ -42,6 +42,6 @@ namespace LibraryManagement.Repository
         /// 获取借阅信息
         /// </summary>
         /// <returns></returns>
-        Task<IQueryable<BorrowRecord>> GetQueryableAsync();
+        IQueryable<BorrowRecord> GetQueryableAsync();
     }
 }
