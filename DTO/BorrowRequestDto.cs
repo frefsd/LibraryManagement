@@ -1,4 +1,4 @@
-﻿namespace LibraryManagement.Models
+﻿namespace LibraryManagement.DTO
 {
     /// <summary>
     /// 用户前端发起借书请求时传参

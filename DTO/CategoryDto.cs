@@ -1,4 +1,4 @@
-﻿namespace LibraryManagement.Models
+﻿namespace LibraryManagement.DTO
 {
     /// <summary>
     /// 用于封装分类返回的结果

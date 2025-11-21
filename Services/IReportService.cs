@@ -1,4 +1,4 @@
-﻿using LibraryManagement.Models;
+﻿using LibraryManagement.DTO;
 
 namespace LibraryManagement.Services
 {

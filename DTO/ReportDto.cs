@@ -1,4 +1,4 @@
-﻿namespace LibraryManagement.Models
+﻿namespace LibraryManagement.DTO
 {
     /// <summary>
     /// 图书信息统计

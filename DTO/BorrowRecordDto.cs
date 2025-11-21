@@ -1,4 +1,4 @@
-﻿namespace LibraryManagement.Models
+﻿namespace LibraryManagement.DTO
 {
     /// <summary>
     /// 用户封装用户借阅记录返回的结果

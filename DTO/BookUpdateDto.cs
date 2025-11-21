@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace LibraryManagement.Models
+namespace LibraryManagement.DTO
 {
     /// <summary>
     /// 用于封装编辑图书返回的结果（前端展示的结果）
