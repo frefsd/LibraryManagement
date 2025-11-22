@@ -14,6 +14,7 @@ namespace LibraryManagement.AppDbContext
         public DbSet<Category> Categories { get; set; }
         public DbSet<User> Users { get; set; }
         public DbSet<Publisher> Publishers { get; set; }
+        public DbSet<Admin> Admin { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -25,6 +26,7 @@ namespace LibraryManagement.AppDbContext
             modelBuilder.Entity<Category>().ToTable("Category");
             modelBuilder.Entity<Book>().HasQueryFilter(b => !b.IsDeleted).ToTable("Book");
             modelBuilder.Entity<Publisher>().ToTable("Publisher");
+            modelBuilder.Entity<Admin>().ToTable("Admin");
         }
     }
 }

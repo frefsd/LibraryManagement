@@ -23,6 +23,7 @@ builder.Services.AddCors(options =>
     });
 });
 
+
 // JSON 全局配置（HttpResults + MVC）
 builder.Services.ConfigureHttpJsonOptions(options =>
 {
@@ -65,6 +66,7 @@ builder.Services.AddScoped<ICategoryService, CategoryService>();
 builder.Services.AddScoped<IPublisherService, PublisherService>();
 builder.Services.AddScoped<IBorrowService, BorrowService>();
 builder.Services.AddScoped<IReportService, ReportService>();
+builder.Services.AddScoped<IAdminService, AdminService>();
 
 //构建app
 var app = builder.Build();
