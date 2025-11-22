@@ -11,8 +11,8 @@ const loginName = ref('')
 onMounted(() => {
   //获取登录用户名
   let loginUser = JSON.parse(localStorage.getItem('loginUser'))
-  if (loginUser && loginUser.name) {
-    loginName.value = loginUser.name
+  if (loginUser && loginUser.user.realName) {
+    loginName.value = loginUser.user.realName
   }
 })
 
@@ -114,7 +114,7 @@ const logout = () => {
 
 <style scoped>
 .header {
-  background-image: linear-gradient(to right, #00547d, #007fa4, #00aaa0, #00d072, #a8eb12);
+  background-image: linear-gradient(to right, #667eea 0%, #764ba2 100%);
 }
 
 .title {

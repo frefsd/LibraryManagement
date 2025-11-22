@@ -2,9 +2,10 @@ import axios from 'axios'
 import { ElMessage } from 'element-plus'
 import router from '../router'
 
+
 //创建axios实例对象
 const request = axios.create({
-  baseURL: '/api',
+  baseURL: 'https://localhost:7297',
   timeout: 600000
 })
 
@@ -13,9 +14,13 @@ request.interceptors.request.use(
   (config) => {
     const loginUser = JSON.parse(localStorage.getItem('loginUser'))
     if (loginUser && loginUser.token) {
-      config.headers.token = loginUser.token
+      //使用Authorization
+      config.headers.Authorization = `Bearer ${loginUser.token}`
     }
     return config
+  },
+  (error) =>{
+    return Promise.reject(error)
   }
 )
 

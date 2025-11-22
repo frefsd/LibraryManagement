@@ -2,10 +2,11 @@
 import { ref } from 'vue'
 import { loginApi } from '@/api/login'
 import { ElMessage } from 'element-plus'
-import { useRouter } from 'vue-router'
+import { useRouter, useRoute } from 'vue-router'
 
 let loginForm = ref({ username: '', password: '' })
 let router = useRouter()
+let route = useRoute()
 
 //登录
 const login = async () => {
@@ -13,7 +14,9 @@ const login = async () => {
   if (result.code) {// 登录成功
     ElMessage.success('登录成功')
     localStorage.setItem('loginUser', JSON.stringify(result.data))
-    router.push('/')// 跳转
+    // 跳转到原页面或首页
+    const redirect = route.query.redirect || '/index'
+    router.push(redirect)
   } else {
     ElMessage.error(result.msg)
   }

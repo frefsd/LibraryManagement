@@ -11,14 +11,15 @@ export default defineConfig({
       '@': fileURLToPath(new URL('./src', import.meta.url))
     }
   },
-     server: {
-    proxy: {
-      '/api': {
-        target: 'https://localhost:7297',
-        secure: false,
-        changeOrigin: true,
-        rewrite: (path) => path.replace(/^\/api/, ''),
-      }
-    }
+  server: {
+    port: 6060,
+    // proxy: {
+    //   '/api': {
+    //     target: 'https://localhost:7297',
+    //     secure: false,
+    //     changeOrigin: true,
+    //     rewrite: (path) => path.replace(/^\/api/, ''),
+    //   }
+    // }
   }
 })

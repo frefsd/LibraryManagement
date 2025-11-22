@@ -39,3 +39,12 @@ export const deleteApi = (id) =>
     method: 'delete',
     params: { id }
   })
+
+  // 获取可借阅的图书列表（未删除 + 有库存）
+  export function getAvailableBooksApi(params) {
+  return request({
+    url: '/book/available',
+    method: 'get',
+    params
+  })
+}

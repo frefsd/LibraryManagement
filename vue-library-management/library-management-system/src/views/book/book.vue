@@ -307,77 +307,93 @@ const formatDateTime = (dateStr) => {
 </script>
 
 <template>
-  <div>
+  <div class="book-management-container">
     <!-- 标题 -->
-    <div id="title">图书管理</div><br />
+    <div class="page-header">
+      <h1 class="page-title">图书管理</h1>
+    </div>
 
     <!-- 搜索表单 -->
-    <el-form :inline="true" :model="searchBook" class="demo-form-inline">
-      <el-form-item label="图书名称">
-        <el-input v-model="searchBook.name" placeholder="请输入图书名称" />
-      </el-form-item>
+    <div class="search-card">
+      <el-form :inline="true" :model="searchBook" class="search-form">
+        <el-form-item label="图书名称">
+          <el-input v-model="searchBook.name" placeholder="请输入图书名称" class="search-input" />
+        </el-form-item>
 
-      <el-form-item label="出版日期">
-        <el-date-picker v-model="searchBook.date" type="daterange" range-separator=" 至 " start-placeholder="开始时间"
-          end-placeholder="结束时间" value-format="YYYY-MM-DD" />
-      </el-form-item>
+        <el-form-item label="出版日期">
+          <el-date-picker v-model="searchBook.date" type="daterange" range-separator=" 至 " start-placeholder="开始时间"
+            end-placeholder="结束时间" value-format="YYYY-MM-DD" class="date-picker" />
+        </el-form-item>
 
-      <el-form-item>
-        <el-button type="primary" @click="queryPage">查询</el-button>
-        <el-button type="info" @click="clear">清空</el-button>
-      </el-form-item>
-    </el-form>
+        <el-form-item class="search-actions">
+          <el-button type="primary" @click="queryPage" class="search-btn">查询</el-button>
+          <el-button type="info" @click="clear" class="clear-btn">清空</el-button>
+        </el-form-item>
+      </el-form>
+    </div>
 
-    <!-- 新增按钮 -->
-    <el-button type="success" @click="addBook">+ 新增图书</el-button>
-    <br /><br />
+    <!-- 操作区域 -->
+    <div class="action-area">
+      <el-button type="success" @click="addBook" class="add-btn">
+        <i class="el-icon-plus"></i> 新增图书
+      </el-button>
+    </div>
 
     <!-- 图书列表 -->
-    <el-table :data="tableData" border style="width: 100%" fit>
-      <el-table-column label="序号" width="55" align="center">
-        <template #default="scope">
-          {{ scope.row.id }}
-        </template>
-      </el-table-column>
-      <el-table-column prop="name" label="图书名称" align="center" width="200" />
-      <el-table-column prop="author" label="作者" align="center" width="100" />
-      <el-table-column label="分类" align="center" width="100">
-        <template #default="scope">
-          {{ scope.row.category?.name || '未知' }}
-        </template>
-      </el-table-column>
-      <el-table-column label="出版日期" align="center" width="150">
-        <template #default="scope">
-          {{ formatDate(scope.row.publishDate) }}
-        </template>
-      </el-table-column>
-      <el-table-column prop="price" label="价格" align="center" width="100" />
-      <el-table-column label="状态" align="center" width="100">
-        <template #default="scope">
-          {{ getStatusText(scope.row.status) }}
-        </template>
-      </el-table-column>
-      <el-table-column label="最后修改时间" align="center" width="180">
-        <template #default="scope">
-          {{ formatDateTime(scope.row.updateTime) }}
-        </template>
-      </el-table-column>
-      <el-table-column label="操作" align="center" width="160">
-        <template #default="scope">
-          <el-button type="primary" size="small" @click="updateBook(scope.row.id)">编辑</el-button>
-          <el-button type="danger" size="small" @click="delById(scope.row.id)">删除</el-button>
-        </template>
-      </el-table-column>
-    </el-table>
-    <br />
+    <div class="table-card">
+      <el-table :data="tableData" border style="width: 100%" fit class="data-table">
+        <el-table-column label="序号" width="70" align="center">
+          <template #default="scope">
+            {{ scope.$index + 1 + (pagination.currentPage - 1) * pagination.pageSize }}
+          </template>
+        </el-table-column>
+        <el-table-column prop="name" label="图书名称" align="center" min-width="180" />
+        <el-table-column prop="author" label="作者" align="center" width="110" />
+        <el-table-column label="分类" align="center" width="110">
+          <template #default="scope">
+            <el-tag type="info" size="small">{{ scope.row.category?.name || '未知' }}</el-tag>
+          </template>
+        </el-table-column>
+        <el-table-column label="出版日期" align="center" width="130">
+          <template #default="scope">
+            {{ formatDate(scope.row.publishDate) }}
+          </template>
+        </el-table-column>
+        <el-table-column prop="price" label="价格" align="center" width="100">
+          <template #default="scope">
+            <span class="price">¥{{ scope.row.price }}</span>
+          </template>
+        </el-table-column>
+        <el-table-column label="状态" align="center" width="100">
+          <template #default="scope">
+            <el-tag :type="scope.row.status === 1 ? 'success' : 'info'" size="small">
+              {{ getStatusText(scope.row.status) }}
+            </el-tag>
+          </template>
+        </el-table-column>
+        <el-table-column label="最后修改时间" align="center" width="160">
+          <template #default="scope">
+            {{ formatDateTime(scope.row.updateTime) }}
+          </template>
+        </el-table-column>
+        <el-table-column label="操作" align="center" width="160" fixed="right">
+          <template #default="scope">
+            <el-button type="primary" size="small" @click="updateBook(scope.row.id)" class="action-btn">编辑</el-button>
+            <el-button type="danger" size="small" @click="delById(scope.row.id)" class="action-btn">删除</el-button>
+          </template>
+        </el-table-column>
+      </el-table>
 
-    <!-- 分页 -->
-    <el-pagination v-model:current-page="pagination.currentPage" v-model:page-size="pagination.pageSize"
-      :page-sizes="[5, 10, 20, 50, 100]" layout="total, sizes, prev, pager, next, jumper" :total="pagination.total"
-      @size-change="handleSizeChange" @current-change="handleCurrentChange" />
+      <!-- 分页 -->
+      <div class="pagination-container">
+        <el-pagination v-model:current-page="pagination.currentPage" v-model:page-size="pagination.pageSize"
+          :page-sizes="[5, 10, 20, 50, 100]" layout="total, sizes, prev, pager, next, jumper" :total="pagination.total"
+          @size-change="handleSizeChange" @current-change="handleCurrentChange" class="pagination" />
+      </div>
+    </div>
 
     <!-- 新增/编辑对话框 -->
-    <el-dialog v-model="dialogFormVisible" :title="formTitle" width="400px">
+    <el-dialog v-model="dialogFormVisible" :title="formTitle" width="450px" class="form-dialog">
       <el-form :model="book" ref="bookFormRef" :rules="rules" label-position="left">
         <el-form-item label="图书名称" :label-width="labelWidth" prop="name">
           <el-input v-model="book.name" placeholder="请输入图书名称" />
@@ -393,7 +409,9 @@ const formatDateTime = (dateStr) => {
         </el-form-item>
 
         <el-form-item label="价格" :label-width="labelWidth" prop="price">
-          <el-input v-model="book.price" placeholder="请输入价格（元）" />
+          <el-input v-model="book.price" placeholder="请输入价格（元）">
+            <template #prefix>¥</template>
+          </el-input>
         </el-form-item>
 
         <el-form-item label="出版社" :label-width="labelWidth" prop="publisherId">
@@ -419,8 +437,8 @@ const formatDateTime = (dateStr) => {
 
       <template #footer>
         <span class="dialog-footer">
-          <el-button @click="dialogFormVisible = false">取消</el-button>
-          <el-button type="primary" @click="save">保存</el-button>
+          <el-button @click="dialogFormVisible = false" class="cancel-btn">取消</el-button>
+          <el-button type="primary" @click="save" class="save-btn">保存</el-button>
         </span>
       </template>
     </el-dialog>
@@ -428,9 +446,125 @@ const formatDateTime = (dateStr) => {
 </template>
 
 <style scoped>
-#title {
-  font-size: 20px;
+.book-management-container {
+  padding: 20px;
+  background-color: #f5f7fa;
+  min-height: calc(100vh - 40px);
+}
+
+.page-header {
+  margin-bottom: 20px;
+}
+
+.page-title {
+  font-size: 24px;
   font-weight: 600;
-  margin-bottom: 16px;
+  color: #303133;
+  margin: 0;
+  line-height: 1.2;
+}
+
+.page-subtitle {
+  font-size: 14px;
+  color: #909399;
+  margin-top: 5px;
+}
+
+.search-card {
+  background: #ffffff;
+  border-radius: 6px;
+  padding: 20px;
+  margin-bottom: 20px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.search-form {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 15px;
+}
+
+.search-input {
+  width: 220px;
+}
+
+.date-picker {
+  width: 240px;
+}
+
+.search-actions {
+  margin-left: auto;
+}
+
+.search-btn, .clear-btn {
+  border-radius: 4px;
+  padding: 10px 20px;
+}
+
+.action-area {
+  margin-bottom: 20px;
+}
+
+.add-btn {
+  border-radius: 4px;
+  padding: 10px 20px;
+  font-weight: 500;
+}
+
+.table-card {
+  background: #ffffff;
+  border-radius: 6px;
+  padding: 20px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+  margin-bottom: 20px;
+}
+
+.data-table {
+  border-radius: 6px;
+  overflow: hidden;
+}
+
+.data-table :deep(.el-table__header) th {
+  background-color: #f5f7fa;
+  color: #606266;
+  font-weight: 600;
+}
+
+.price {
+  color: #f56c6c;
+  font-weight: 500;
+}
+
+.action-btn {
+  border-radius: 4px;
+  padding: 7px 15px;
+}
+
+.pagination-container {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 20px;
+}
+
+.pagination {
+  margin-top: 20px;
+}
+
+.form-dialog :deep(.el-dialog__header) {
+  padding: 20px 20px 10px;
+  border-bottom: 1px solid #e8e8e8;
+}
+
+.form-dialog :deep(.el-dialog__body) {
+  padding: 20px;
+}
+
+.form-dialog :deep(.el-form-item) {
+  margin-bottom: 18px;
+}
+
+.cancel-btn, .save-btn {
+  border-radius: 4px;
+  padding: 10px 20px;
 }
 </style>
