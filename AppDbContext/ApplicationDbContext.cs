@@ -22,7 +22,13 @@ namespace LibraryManagement.AppDbContext
 
             //显示处理User表（避免SQL server关键字冲突）
             modelBuilder.Entity<User>().ToTable("User");
-            modelBuilder.Entity<BorrowRecord>().ToTable("BorrowRecord");
+            modelBuilder.Entity<BorrowRecord>()
+                .ToTable("BorrowRecord")
+                .HasOne(br => br.Book)
+                .WithMany(b => b.BorrowRecords)
+                .HasForeignKey(br => br.BookId)
+                .IsRequired(false);
+                
             modelBuilder.Entity<Category>().ToTable("Category");
             modelBuilder.Entity<Book>().HasQueryFilter(b => !b.IsDeleted).ToTable("Book");
             modelBuilder.Entity<Publisher>().ToTable("Publisher");

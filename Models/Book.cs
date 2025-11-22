@@ -42,6 +42,8 @@ namespace LibraryManagement.Models
 
         public bool IsDeleted { get; set; } = false; // 默认未删除
 
+        public virtual ICollection<BorrowRecord> BorrowRecords { get; set; } = new List<BorrowRecord>();
+
         // 是否可借（未下架 + 有库存）
         [NotMapped]
         public bool IsAvailable => Status == 1 && BorrowedCopies < TotalCopies;

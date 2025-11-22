@@ -2,6 +2,7 @@
 using LibraryManagement.Models;
 using LibraryManagement.Services;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace LibraryManagement.Controllers
 {
@@ -12,7 +13,7 @@ namespace LibraryManagement.Controllers
     [Route("[controller]/[action]")]
     public class BookController : ControllerBase
     {
-        private readonly IBookService _bookService;
+        private readonly IBookService _bookService; 
 
         //依赖注入
         public BookController(IBookService bookService)
@@ -76,7 +77,7 @@ namespace LibraryManagement.Controllers
             }
             await _bookService.UpdateAsync(dto);
             return Ok(new { code = 200, msg = "更新成功" });
-        }  
+        }
 
         /// <summary>
         /// 删除图书信息
@@ -88,6 +89,20 @@ namespace LibraryManagement.Controllers
         {
             await _bookService.DeleteAsync(id);
             return Ok(new { code = true, msg = "删除成功" });
+        }
+
+        /// <summary>
+        /// 获取可借阅的图书（未删除且有库存）
+        /// </summary>
+        /// <param name="keyword"></param>
+        /// <param name="page"></param>
+        /// <param name="pageSize"></param>
+        /// <returns></returns>
+        [HttpGet]
+        public async Task<IActionResult> Available( [FromQuery] string keyword = "",[FromQuery] int page = 1,int pageSize = 20)
+        {
+            var result = await _bookService.GetAvailableBooksAsync(keyword, page, pageSize);
+            return Ok(result);
         }
     }
 }

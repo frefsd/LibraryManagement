@@ -14,12 +14,10 @@ builder.Services.AddCors(options =>
     options.AddPolicy("AllowAll",policy =>
     {
         policy.WithOrigins(
-            "http://localhost:5173", //vite默认端口
-            "https://localhost:5173"
+            "http://localhost:6060"
             )
         .AllowAnyHeader()
-        .AllowAnyMethod()
-        .AllowCredentials(); //允许凭证
+        .AllowAnyMethod();
     });
 });
 

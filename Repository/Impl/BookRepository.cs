@@ -1,7 +1,9 @@
 ﻿using LibraryManagement.AppDbContext;
 using LibraryManagement.Models;
+using LibraryManagement.Result;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System.Linq.Dynamic.Core;
 
 namespace LibraryManagement.Repository.Impl
 {
@@ -128,6 +130,41 @@ namespace LibraryManagement.Repository.Impl
         public async Task<int> GetBorrowedCopiesAsync()
         {
             return await _context.Books.SumAsync(b => b.BorrowedCopies);
+        }
+
+        /// <summary>
+        /// 获取可借阅的图书（未删除且有库存）
+        /// </summary>
+        /// <param name="keyword"></param>
+        /// <param name="page"></param>
+        /// <param name="pageSize"></param>
+        /// <returns></returns>
+        public async Task<PageResult<Book>> GetAvailableBooksAsync(string keyword, int page, int pageSize)
+        {
+            //从数据库中获取没有没软删除的图书
+            var query = _context.Books
+                .Where(b => !b.IsDeleted && b.TotalCopies > b.BorrowedCopies);
+
+            if (!string.IsNullOrWhiteSpace(keyword))
+            {
+                query = query.Where(b =>
+                b.Name.Contains(keyword) || b.Author.Contains(keyword));
+            }
+
+            var total = await query.CountAsync();
+            var books = await query
+                .OrderBy(b => b.Id)
+                .Skip((page - 1) * pageSize)
+                .Take(pageSize)
+                .ToListAsync();
+
+            return new PageResult<Book>
+            {
+                Total = total,
+                Page = page,
+                PageSize = pageSize,
+                Rows = books
+            };
         }
     }
 }

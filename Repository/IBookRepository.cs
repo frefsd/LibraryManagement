@@ -1,4 +1,6 @@
 ﻿using LibraryManagement.Models;
+using LibraryManagement.Result;
+using System.Linq.Dynamic.Core;
 
 namespace LibraryManagement.Repository
 {
@@ -69,5 +71,14 @@ namespace LibraryManagement.Repository
         /// </summary>
         /// <returns></returns>
         IQueryable<Book> GetQueryableAsync();
+
+        /// <summary>
+        /// 获取可借阅的图书（未删除且有库存）
+        /// </summary>
+        /// <param name="keyword"></param>
+        /// <param name="page"></param>
+        /// <param name="pageSize"></param>
+        /// <returns></returns>
+        Task<PageResult<Book>> GetAvailableBooksAsync(string keyword, int page, int pageSize);
     }
 }
