@@ -86,5 +86,16 @@ namespace LibraryManagement.Repository.Impl
         {
             return _applicationDbContext.BorrowRecords;
         }
+
+        /// <summary>
+        /// 检查图书是否正在被借阅（存在未归还记录）
+        /// </summary>
+        /// <param name="userId"></param>
+        /// <returns></returns>
+        /// <exception cref="NotImplementedException"></exception>
+        public async Task<bool> HasActiveBorrowAsync(int userId)
+        {
+            return await _applicationDbContext.BorrowRecords.AnyAsync(br => br.UserId == userId && br.ActualReturnDate == null);
+        }
     }
 }

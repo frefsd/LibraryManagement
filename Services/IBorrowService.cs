@@ -27,5 +27,12 @@ namespace LibraryManagement.Services
         /// <param name="id"></param>
         /// <returns></returns>
         Task ReturnAsync(int id);
+
+        /// <summary>
+        /// 检查图书是否正在被借阅（存在未归还记录）
+        /// </summary>
+        /// <param name="userId"></param>
+        /// <returns></returns>
+        Task<bool> HasActiveBorrowAsync(int userId);
     }
 }

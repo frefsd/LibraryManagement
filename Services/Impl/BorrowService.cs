@@ -9,7 +9,7 @@ namespace LibraryManagement.Services.Impl
     /// <summary>
     /// 借阅管理业务逻辑实现
     /// </summary>
-    public class BorrowService:IBorrowService
+    public class BorrowService : IBorrowService
     {
         private readonly IBorrowRepository _borrowRepository;
         private readonly IBookRepository _bookRepository;
@@ -17,8 +17,8 @@ namespace LibraryManagement.Services.Impl
 
         //依赖注入
         public BorrowService(
-            IBorrowRepository borrowRepository, 
-            IBookRepository bookRepository, 
+            IBorrowRepository borrowRepository,
+            IBookRepository bookRepository,
             IUserRepository userRepository)
         {
             _borrowRepository = borrowRepository;
@@ -142,6 +142,17 @@ namespace LibraryManagement.Services.Impl
                 await transaction.RollbackAsync();
                 throw;
             }
+        }
+
+        /// <summary>
+        /// 检查图书是否正在被借阅（存在未归还记录）
+        /// </summary>
+        /// <param name="userId"></param>
+        /// <returns></returns>
+        /// <exception cref="NotImplementedException"></exception>
+        public async Task<bool> HasActiveBorrowAsync(int userId)
+        {
+            return await _borrowRepository.HasActiveBorrowAsync(userId);
         }
     }
 }

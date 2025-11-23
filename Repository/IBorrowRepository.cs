@@ -43,5 +43,12 @@ namespace LibraryManagement.Repository
         /// </summary>
         /// <returns></returns>
         IQueryable<BorrowRecord> GetQueryableAsync();
+
+        /// <summary>
+        /// 检查图书是否正在被借阅（存在未归还记录）
+        /// </summary>
+        /// <param name="userId"></param>
+        /// <returns></returns>
+        Task<bool> HasActiveBorrowAsync(int userId);
     }
 }
