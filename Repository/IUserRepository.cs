@@ -66,5 +66,11 @@ namespace LibraryManagement.Repository
         /// <returns></returns>
         Task<bool> SetStatusAsync(int id, int status);
 
+        /// <summary>
+        /// 检查用户是否有未归还的借阅记录
+        /// </summary>
+        /// <param name="userId"></param>
+        /// <returns></returns>
+        Task<bool> HasActiveBorrowAsync(int userId);
     }
 }

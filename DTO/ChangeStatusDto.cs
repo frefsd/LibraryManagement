@@ -5,6 +5,6 @@ namespace LibraryManagement.DTO
     public class ChangeStatusDto
     {
         [Required]
-        public bool Status { get; set; }
+        public int Status { get; set; }
     }
 }

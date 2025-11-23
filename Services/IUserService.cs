@@ -52,6 +52,14 @@ namespace LibraryManagement.Services
         /// <param name="id"></param>
         /// <param name="status"></param>
         /// <returns></returns>
-        Task<bool> ChangeStatusAsync(int id, bool status);
+        Task<bool> ChangeStatusAsync(int id, int status);
+
+        /// <summary>
+        /// 检查用户是否有未归还的记录
+        /// </summary>
+        /// <param name="userId"></param>
+        /// <returns></returns>
+        Task<bool> HasActiveBorrowAsync(int userId);
+
     }
 }

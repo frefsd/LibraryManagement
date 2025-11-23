@@ -2,6 +2,7 @@
 using LibraryManagement.Models;
 using LibraryManagement.Services;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.JSInterop.Infrastructure;
 
 namespace LibraryManagement.Controllers
 {
@@ -121,13 +122,13 @@ namespace LibraryManagement.Controllers
             if (hasActiveBorrow)
             {
                 //返回业务错误
-                return BadRequest(new { code = false, msg = "该用户有未归还的书籍，不能删除"});
+                return BadRequest(new { code = false, msg = "该用户有未归还的书籍，不能删除" });
             }
 
             var result = await _userService.DeleteUserAsync(id);
             if (!result)
             {
-                return NotFound(new { code = false, msg = "用户不存在或已被删除"});
+                return NotFound(new { code = false, msg = "用户不存在或已被删除" });
             }
 
             return Ok(new { code = true, msg = "删除成功" });
@@ -139,13 +140,28 @@ namespace LibraryManagement.Controllers
         [HttpPut]
         public async Task<IActionResult> Status(int id, [FromBody] ChangeStatusDto dto)
         {
-            var updated = await _userService.ChangeStatusAsync(id, dto.Status);
-            if (!updated)
+            if (id <= 0 || (dto.Status != 0 && dto.Status != 1))
+                return BadRequest(new { code = false, msg = "参数无效" });
+
+            //如果要禁用用户（status = 0）检查是否有未归还书籍
+            if (dto.Status == 0)
+            {
+                bool hasActiveBorrow = await _userService.HasActiveBorrowAsync(id);
+                if (hasActiveBorrow)
+                {
+                    return BadRequest(new { code = false, msg = "该用户有未归的书籍，无法禁用，请先归还所有书籍" });
+
+                }
+            }
+
+            //执行更新状态
+            var result = await _userService.ChangeStatusAsync(id, dto.Status);
+            if (!result)
             {
                 return NotFound(new { code = false, msg = "用户不存在" });
             }
-            string msg = dto.Status ? "用户已启用" : "用户已禁用";
-            return Ok(new { code = true, msg = msg });
+            return Ok(new { code = true, msg = "状态更新成功" });
+
         }
     }
 }

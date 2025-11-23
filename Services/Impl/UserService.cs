@@ -1,9 +1,6 @@
 ﻿using LibraryManagement.Models;
 using LibraryManagement.Repository;
 using LibraryManagement.Result;
-using Microsoft.AspNetCore.Mvc;
-using System.Diagnostics;
-using System.Linq.Dynamic.Core;
 
 namespace LibraryManagement.Services.Impl
 {
@@ -118,10 +115,19 @@ namespace LibraryManagement.Services.Impl
         /// <param name="status"></param>
         /// <returns></returns>
         /// <exception cref="NotImplementedException"></exception>
-        public async Task<bool> ChangeStatusAsync(int id, bool status)
+        public async Task<bool> ChangeStatusAsync(int id, int status)
         {
-          return await _userRepository.SetStatusAsync(id, status ? 1 : 0);
+          return await _userRepository.SetStatusAsync(id, status);
         }
 
+        /// <summary>
+        /// 检查用户是否有未归还的借阅记录
+        /// </summary>
+        /// <param name="userId"></param>
+        /// <returns></returns>
+        public async Task<bool> HasActiveBorrowAsync(int userId)
+        {
+            return await _userRepository.HasActiveBorrowAsync(userId);
+        }
     }
 }
