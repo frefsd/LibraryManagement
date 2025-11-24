@@ -3,9 +3,10 @@ import { createRouter, createWebHistory } from 'vue-router'
 import IndexView from '@/views/index/index.vue';
 import BookView from '@/views/book/book.vue';
 import BorrowView from '@/views/borrow/borrow.vue'
+import CategoryView from '@/views/category/category.vue';
+import UserView from '@/views/user/user.vue';
 import LoginView from '@/views/login/login.vue';
 import LayoutView from '@/views/layout/index.vue';
-import CategoryView from '@/views/category/category.vue';
 import BookReportView from '@/views/report/book/index.vue'
 import BorrowReportView from '@/views/report/borrow/index.vue'
 import CategoryReportView from '@/views/report/category/index.vue'
@@ -27,6 +28,7 @@ const routes = [
       { path: 'book', component: BookView },
       { path: 'borrow', component: BorrowView },
       { path: 'category', component: CategoryView },
+      {path: 'user', component: UserView},
       { path: 'report/book', component: BookReportView },
       { path: 'report/borrow', component: BorrowReportView },
       { path: 'report/category', component: CategoryReportView },

@@ -136,6 +136,7 @@ namespace LibraryManagement.Services.Impl
             {
                 throw new DomainException("该图书正在被借阅，无法删除！");
             }
+
             await _bookRepository.SoftDeleteAsync(id);
         }
 

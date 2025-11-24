@@ -45,6 +45,7 @@ namespace LibraryManagement.Services
         /// <returns></returns>
         Task DeleteAsync(int id);
 
+
         /// <summary>
         /// 获取可借阅的图书（未删除且有库存）
         /// </summary>

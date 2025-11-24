@@ -72,6 +72,7 @@ namespace LibraryManagement.Repository
         /// <returns></returns>
         IQueryable<Book> GetQueryableAsync();
 
+
         /// <summary>
         /// 获取可借阅的图书（未删除且有库存）
         /// </summary>

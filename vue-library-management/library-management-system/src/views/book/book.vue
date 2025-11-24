@@ -48,6 +48,9 @@ const book = ref({
 
 const bookFormRef = ref()
 
+// 👇 新增：用于保存编辑前的原始状态（关键！）
+const originalStatus = ref(1)
+
 // ============ 状态映射 ============
 const getStatusText = (status) => {
   return status === 1 ? '在库' : status === 2 ? '已下架' : '未知'
@@ -165,6 +168,7 @@ const updateBook = async (id) => {
       publisherId: String(publisherId),
       status: data.status ?? 1
     }
+    originalStatus.value = data.status ?? 1
   }
 }
 
@@ -239,10 +243,18 @@ const save = async () => {
       queryPage()
     } else {
       ElMessage.error(result.msg || '操作失败')
+
+      if (
+        result.msg &&
+        result.msg.includes('无法下架') &&
+        book.value.status === 2 &&
+        bookId > 0
+      ) {
+        book.value.status = originalStatus.value
+      }
     }
   } catch (error) {
     console.error('保存失败:', error)
-    ElMessage.warning('请检查表单内容')
   }
 }
 
@@ -255,7 +267,6 @@ const delById = async (id) => {
     })
 
     const result = await deleteApi(id)
-    // 成功响应（HTTP 2xx）
     if (result?.code) {
       ElMessage.success('删除成功')
       queryPage()
@@ -263,12 +274,9 @@ const delById = async (id) => {
       ElMessage.error(result?.msg || '删除失败')
     }
   } catch (error) {
-    // 用户取消
     if (error === 'cancel') return
-
     if (error.response?.data) {
       const msg = error.response.data.msg || '删除失败'
-      ElMessage.error(msg)
     } else {
       ElMessage.error('网络错误，请稍后重试')
     }

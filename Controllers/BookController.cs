@@ -2,8 +2,6 @@
 using LibraryManagement.Models;
 using LibraryManagement.Services;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.JSInterop.Infrastructure;
 
 namespace LibraryManagement.Controllers
 {
@@ -120,7 +118,7 @@ namespace LibraryManagement.Controllers
         /// <param name="pageSize"></param>
         /// <returns></returns>
         [HttpGet]
-        public async Task<IActionResult> Available( [FromQuery] string keyword = "",[FromQuery] int page = 1,int pageSize = 20)
+        public async Task<IActionResult> Available([FromQuery] string keyword = "", [FromQuery] int page = 1, int pageSize = 20)
         {
             var result = await _bookService.GetAvailableBooksAsync(keyword, page, pageSize);
             return Ok(result);

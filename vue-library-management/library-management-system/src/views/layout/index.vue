@@ -2,7 +2,7 @@
 import { ref, onMounted } from 'vue'
 import { ElMessage, ElMessageBox } from 'element-plus';
 import { useRouter } from 'vue-router'
-import { Coin, Document, Grid, Reading, User } from '@element-plus/icons-vue';
+import { Check, Coin, Document, Grid, Reading, User } from '@element-plus/icons-vue';
 
 let router = useRouter()
 
@@ -72,10 +72,15 @@ const logout = () => {
                   <Reading />
                 </el-icon>图书管理
               </el-menu-item>
-               <el-menu-item index="/category">
+              <el-menu-item index="/category">
                 <el-icon>
                   <Grid />
                 </el-icon>分类管理
+              </el-menu-item>
+              <el-menu-item index="/user">
+                <el-icon>
+                <Stamp />
+                </el-icon>用户管理
               </el-menu-item>
               <el-menu-item index="/borrow">
                 <el-icon>
@@ -84,19 +89,27 @@ const logout = () => {
               </el-menu-item>
             </el-sub-menu>
 
-               <!-- 数据统计管理 -->
+            <!-- 数据统计管理 -->
             <el-sub-menu index="/report">
               <template #title>
-                <el-icon><Histogram /></el-icon>数据统计管理
+                <el-icon>
+                  <Histogram />
+                </el-icon>数据统计管理
               </template>
               <el-menu-item index="/report/book">
-                <el-icon><InfoFilled /></el-icon>图书信息统计
+                <el-icon>
+                  <InfoFilled />
+                </el-icon>图书信息统计
               </el-menu-item>
               <el-menu-item index="/report/category">
-                <el-icon><Share /></el-icon>图书分类统计
+                <el-icon>
+                  <Share />
+                </el-icon>图书分类统计
               </el-menu-item>
-               <el-menu-item index="/report/borrow">
-                <el-icon><Document /></el-icon>借阅信息统计
+              <el-menu-item index="/report/borrow">
+                <el-icon>
+                  <Document />
+                </el-icon>借阅信息统计
               </el-menu-item>
             </el-sub-menu>
           </el-menu>

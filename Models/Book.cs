@@ -40,7 +40,7 @@ namespace LibraryManagement.Models
         public DateTime UpdateTime { get; set; } = DateTime.Now; //最后更新时间
         public DateTime CreateTime { get; set; } = DateTime.Now; //创建时间
 
-        public bool IsDeleted { get; set; } = false; // 默认未删除
+       public bool IsDeleted { get; set; } = false; // 默认未删除
 
         public virtual ICollection<BorrowRecord> BorrowRecords { get; set; } = new List<BorrowRecord>();
 

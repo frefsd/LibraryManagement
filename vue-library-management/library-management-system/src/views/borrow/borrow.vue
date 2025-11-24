@@ -226,7 +226,6 @@ const handleBorrowConfirm = () => {
         else if (msg.includes('借出') || msg.includes('已被借')) msg = '该图书已被借出，无法重复借阅'
         else if (msg.includes('库存')) msg = '该图书库存不足，无法借阅'
       }
-      ElMessage.error(msg)
     } finally {
       borrowLoading.value = false
     }

@@ -30,7 +30,7 @@ namespace LibraryManagement.AppDbContext
                 .IsRequired(false);
                 
             modelBuilder.Entity<Category>().ToTable("Category");
-            modelBuilder.Entity<Book>().HasQueryFilter(b => !b.IsDeleted).ToTable("Book");
+            modelBuilder.Entity<Book>().HasQueryFilter(x => !x.IsDeleted);
             modelBuilder.Entity<Publisher>().ToTable("Publisher");
             modelBuilder.Entity<Admin>().ToTable("Admin");
         }

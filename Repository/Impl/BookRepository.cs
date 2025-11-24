@@ -3,7 +3,6 @@ using LibraryManagement.Models;
 using LibraryManagement.Result;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using System.Linq.Dynamic.Core;
 
 namespace LibraryManagement.Repository.Impl
 {
@@ -56,7 +55,7 @@ namespace LibraryManagement.Repository.Impl
         /// </summary>
         /// <param name="book"></param>
         /// <returns></returns>
-       public async Task UpdateAsync([FromBody]Book book)
+        public async Task UpdateAsync([FromBody] Book book)
         {
             _context.Entry(book).State = EntityState.Modified;
             await _context.SaveChangesAsync();
@@ -131,6 +130,7 @@ namespace LibraryManagement.Repository.Impl
         {
             return await _context.Books.SumAsync(b => b.BorrowedCopies);
         }
+
 
         /// <summary>
         /// 获取可借阅的图书（未删除且有库存）
