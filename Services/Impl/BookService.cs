@@ -98,6 +98,16 @@ namespace LibraryManagement.Services.Impl
             if (existingBook == null)
                 throw new KeyNotFoundException($"图书ID {dto.Id} 不存在");
 
+            // 2. 如果用户尝试将状态从 1（在库）改为 2（下架）
+            if (existingBook.Status == 1 && dto.Status == 2)
+            {
+                // 3. 检查是否有未归还记录
+                bool hasUnreturned = await _borrowRepository.HasUnreturnRecordAsync(dto.Id);
+                if (hasUnreturned)
+                {
+                    throw new InvalidOperationException("该图书还有未归还的借阅记录，无法下架");
+                }
+            }
             // 只更新标量字段，不碰导航属性！
             existingBook.Name = dto.Name;
             existingBook.Author = dto.Author;

@@ -36,7 +36,7 @@ namespace LibraryManagement.Repository.Impl
                 query = query.Where(u => u.CardNumber!.Contains(cardNumber));
 
             return await query
-                .OrderByDescending(u => u.CreateTime)
+                .OrderBy(u => u.CreateTime)
                 .Skip((page - 1) * pageSize)
                 .Take(pageSize)
                 .ToListAsync();

@@ -50,5 +50,12 @@ namespace LibraryManagement.Repository
         /// <param name="userId"></param>
         /// <returns></returns>
         Task<bool> HasActiveBorrowAsync(int userId);
+
+        /// <summary>
+        /// 检查指定图书是否存在未归还的借阅记录
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        Task<bool> HasUnreturnRecordAsync(int bookId);
     }
 }

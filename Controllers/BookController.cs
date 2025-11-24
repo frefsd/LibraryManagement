@@ -3,6 +3,7 @@ using LibraryManagement.Models;
 using LibraryManagement.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.JSInterop.Infrastructure;
 
 namespace LibraryManagement.Controllers
 {
@@ -13,12 +14,14 @@ namespace LibraryManagement.Controllers
     [Route("[controller]/[action]")]
     public class BookController : ControllerBase
     {
-        private readonly IBookService _bookService; 
+        private readonly IBookService _bookService;
+        private readonly IBorrowService _borrowService;
 
         //依赖注入
-        public BookController(IBookService bookService)
+        public BookController(IBookService bookService, IBorrowService borrowService)
         {
             _bookService = bookService;
+            _borrowService = borrowService;
         }
 
         /// <summary>
@@ -74,6 +77,24 @@ namespace LibraryManagement.Controllers
             if (!ModelState.IsValid)
             {
                 return BadRequest(new { code = 400, msg = "参数验证失败", errors = ModelState });
+            }
+
+            //获取当前图书信息
+            var existingBook = await _bookService.GetByIdAsync(dto.Id);
+            if (existingBook == null)
+            {
+                return NotFound(new { code = false, msg = "图书不存在"});
+            }
+
+            if (dto.Status == 2 && existingBook.Status != 2)
+            {
+                //检查是否有未归还的图书借阅信息
+                bool hasUnreturnRecord = await _borrowService.HasUnreturnRecordAsync(dto.Id);
+                if (hasUnreturnRecord)
+                {
+                    return BadRequest(new { code = 400, msg = "该图书还有未归还的借阅记录，无法下架" });
+                }
+               
             }
             await _bookService.UpdateAsync(dto);
             return Ok(new { code = 200, msg = "更新成功" });

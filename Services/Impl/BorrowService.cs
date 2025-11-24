@@ -154,5 +154,16 @@ namespace LibraryManagement.Services.Impl
         {
             return await _borrowRepository.HasActiveBorrowAsync(userId);
         }
+
+        /// <summary>
+        /// 检查指定图书是否存在未归还的借阅记录
+        /// </summary>
+        /// <param name="bookId"></param>
+        /// <returns></returns>
+        /// <exception cref="NotImplementedException"></exception>
+        public async Task<bool> HasUnreturnRecordAsync(int bookId)
+        {
+            return await _borrowRepository.HasUnreturnRecordAsync(bookId);
+        }
     }
 }

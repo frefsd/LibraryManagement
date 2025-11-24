@@ -29,10 +29,17 @@ namespace LibraryManagement.Services
         Task ReturnAsync(int id);
 
         /// <summary>
-        /// 检查图书是否正在被借阅（存在未归还记录）
+        /// 检查指定用户是否存在未归还的借阅记录
         /// </summary>
         /// <param name="userId"></param>
         /// <returns></returns>
         Task<bool> HasActiveBorrowAsync(int userId);
+
+        /// <summary>
+        /// 检查指定图书是否存在未归还的借阅记录
+        /// </summary>
+        /// <param name="bookId"></param>
+        /// <returns></returns>
+        Task<bool> HasUnreturnRecordAsync(int bookId);
     }
 }
