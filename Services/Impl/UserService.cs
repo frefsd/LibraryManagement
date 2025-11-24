@@ -92,7 +92,7 @@ namespace LibraryManagement.Services.Impl
             existing.Phone = user.Phone;
             existing.Email = user.Email;
             existing.CardNumber = user.CardNumber;
-
+            existing.Status = user.Status;
             await _userRepository.UpdateAsync(existing);
             return existing;
         }

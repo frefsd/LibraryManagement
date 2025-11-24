@@ -95,6 +95,14 @@ namespace LibraryManagement.Controllers
                 return NotFound(new { code = false, msg = "用户不存在" });
             }
 
+            if (existing.Status == 1 && dto.Status == 0)
+            {
+                bool hasActiveBorrow = await _userService.HasActiveBorrowAsync(id);
+                if (hasActiveBorrow)
+                {
+                    return BadRequest(new { code = false, msg = "该用户有未归还的书籍，无法禁用，请先归还所有书籍"});
+                }
+            }
             var user = new User
             {
                 Id = id,
@@ -102,7 +110,7 @@ namespace LibraryManagement.Controllers
                 Phone = dto.Phone,
                 Email = dto.Email,
                 CardNumber = dto.CardNumber,
-                Status = existing.Status,
+                Status = dto.Status,
                 CreateTime = existing.CreateTime
             };
 
