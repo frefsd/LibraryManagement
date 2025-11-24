@@ -1,4 +1,5 @@
 ﻿using LibraryManagement.DTO;
+using LibraryManagement.Exceptions;
 using LibraryManagement.Models;
 using LibraryManagement.Repository;
 using Microsoft.AspNetCore.Mvc;
@@ -67,12 +68,12 @@ namespace LibraryManagement.Services.Impl
         {
             //判断
             if (string.IsNullOrWhiteSpace(dto.Name))         
-                throw new ArgumentException("分类名称不能为空");
+                throw new DomainException("分类名称不能为空");
 
             //判断：如果添加的分类与数据库中的分类相同
             var exists = await _categoryRepository.AnyAsync(c => c.Name == dto.Name);
             if (exists)          
-                throw new InvalidOperationException("分类名称已存在");
+                throw new DomainException("分类名称已存在");
             
             var category = new Category
             {
@@ -95,14 +96,14 @@ namespace LibraryManagement.Services.Impl
             var category = await _categoryRepository.GetByIdAsync(id);
             if (category == null)
             {
-                throw new ArgumentException("分类不存在");
+                throw new DomainException("分类不存在");
             }
             if (string.IsNullOrWhiteSpace(dto.Name))
-                throw new ArgumentException("分类名称不能为空");
+                throw new DomainException("分类名称不能为空");
 
             var nameExists = await _categoryRepository.AnyAsync(c => c.Name == dto.Name && c.Id != id);
             if (nameExists)
-                throw new InvalidOperationException("该分类名称已被警用");
+                throw new DomainException("该分类名称已被警用");
 
             category.Name = dto.Name.Trim();
             category.Sort = dto.Sort;
@@ -120,7 +121,7 @@ namespace LibraryManagement.Services.Impl
         {
             var hasBooks = await _bookRepository.HasBooksByCategoryIdAsync(id);
             if (hasBooks)
-                throw new InvalidOperationException("该分类下存在图书，无法删除");
+                throw new DomainException("该分类下存在图书，无法删除");
 
             await _categoryRepository.DeleteAsync(id);
         }
