@@ -1,5 +1,4 @@
-﻿using BCrypt.Net;
-using LibraryManagement.AppDbContext;
+﻿using LibraryManagement.AppDbContext;
 using LibraryManagement.Models;
 using Microsoft.EntityFrameworkCore;
 
@@ -47,7 +46,6 @@ namespace LibraryManagement.Services.Impl
         /// <param name="username"></param>
         /// <param name="password"></param>
         /// <returns></returns>
-        /// <exception cref="NotImplementedException"></exception>
         public async Task<Admin?> ValidateCredentialsAsync(string username, string password)
         {
             var admin = await _applicationDbContext.Admin

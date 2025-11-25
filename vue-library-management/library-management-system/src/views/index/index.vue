@@ -3,9 +3,7 @@
 </script>
 
 <template>
-  <img src="../../assets/cd.jpg"></img>
+  <img src="../../assets/R-C.jfif"></img>
 </template>
 
-<style scoped>
-
-</style>
+<style scoped></style>

@@ -2,7 +2,7 @@
 import { ref, onMounted } from 'vue'
 import { ElMessage, ElMessageBox } from 'element-plus';
 import { useRouter } from 'vue-router'
-import { Check, Coin, Document, Grid, Reading, User } from '@element-plus/icons-vue';
+import { Document, Grid, Reading } from '@element-plus/icons-vue';
 
 let router = useRouter()
 
@@ -79,7 +79,7 @@ const logout = () => {
               </el-menu-item>
               <el-menu-item index="/user">
                 <el-icon>
-                <Stamp />
+                  <Stamp />
                 </el-icon>用户管理
               </el-menu-item>
               <el-menu-item index="/borrow">

@@ -11,7 +11,7 @@ export const queryPageApi = (name, phone, cardNumber, page, pageSize) =>
 // 获取用户信息
 export const queryInfoApi = (id) =>
   request({
-    url: '/user/user',
+    url: '/user/getuser',
     method: 'get',
     params: { id }
   })
