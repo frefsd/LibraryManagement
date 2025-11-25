@@ -41,7 +41,7 @@ namespace LibraryManagement.Controllers
         /// 根据id获取用户信息
         /// </summary>
         [HttpGet]
-        public async Task<IActionResult> User(int id)
+        public async Task<IActionResult> GetUser(int id)
         {
             var user = await _userService.GetByIdAsync(id);
             if (user == null)
