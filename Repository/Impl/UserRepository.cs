@@ -154,5 +154,15 @@ namespace LibraryManagement.Repository.Impl
         {
             return await _applicationDbContext.BorrowRecords.AnyAsync(br => br.UserId == userId && br.ActualReturnDate == null);
         }
+
+        /// <summary>
+        /// 通过用户名查询该用户是否存在
+        /// </summary>
+        /// <param name="username"></param>
+        /// <returns></returns>
+        public async Task<User?> GetByUsernameAsync(string username)
+        {
+            return await _applicationDbContext.Users.FirstOrDefaultAsync(u => u.Name == username);
+        }
     }
 }

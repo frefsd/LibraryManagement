@@ -6,6 +6,6 @@
     public class BorrowRequestDto
     {
             public int BookId { get; set; }
-            public int UserId { get; set; }
+            public string? UserInput { get; set; }
     }
 }

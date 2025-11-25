@@ -72,5 +72,12 @@ namespace LibraryManagement.Repository
         /// <param name="userId"></param>
         /// <returns></returns>
         Task<bool> HasActiveBorrowAsync(int userId);
+
+        /// <summary>
+        /// 通过用户名查询该用户是否存在
+        /// </summary>
+        /// <param name="v"></param>
+        /// <returns></returns>
+        Task<User?> GetByUsernameAsync(string username);
     }
 }

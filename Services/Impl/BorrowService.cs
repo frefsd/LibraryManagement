@@ -64,28 +64,39 @@ namespace LibraryManagement.Services.Impl
         /// <returns></returns>
         public async Task BorrowAsync(BorrowRequestDto dto)
         {
-            //1.查询图书和用户
+            if(string.IsNullOrWhiteSpace(dto.UserInput)) throw new DomainException("用户信息不能为空");
+
+            //1.查询图书
             var book = await _bookRepository.GetByIdAsync(dto.BookId);
-            var user = await _userRepository.GetByIdAsync(dto.UserId);
             //2.校验图书是否存在
-            if (book == null) throw new DomainException("图书不存在");
-            //3.校验用户是否存在
-            if (user == null) throw new DomainException("用户不存在");
+            if (book == null) throw new DomainException("图书不存在");      
             //3.校验图书状态
             if (book.Status != 1) throw new DomainException("该图书已下架，无法借阅");
-            //4.校验用户状态
-            if (user.Status != 1) throw new DomainException("改用户已被禁用");
-            //5.校验库存
+            //4.校验库存
             if (book.BorrowedCopies >= book.TotalCopies) throw new DomainException("该图书暂无库存");
 
-            //执行事务
+            //根据ID或者用户搜索
+            User? user;
+            if (int.TryParse(dto.UserInput, out int userId))
+            {
+                user = await _userRepository.GetByIdAsync(userId);
+            }
+            else
+            {
+                user = await _userRepository.GetByUsernameAsync(dto.UserInput);
+            }
+
+            if (user == null) throw new DomainException("用户不存在，请检查输入的ID或用户名");
+            if (user.Status != 1) throw new DomainException("该用户已被禁用");
+
+            //执行借阅事务
             using var transaction = await _borrowRepository.BeginDbContextTransactionAsync();
             try
             {
                 var record = new BorrowRecord
                 {
                     BookId = dto.BookId,
-                    UserId = dto.UserId,
+                    UserId = user.Id,
                     BorrowDate = DateTime.Now,
                     DueDate = DateTime.Now.AddDays(30),
                     Status = 1, //借阅中
@@ -116,10 +127,10 @@ namespace LibraryManagement.Services.Impl
         {
             var record = await _borrowRepository.GetByIdAsync(id);
             if (record == null || record.ActualReturnDate.HasValue)
-                throw new InvalidOperationException("借阅记录不存在或已归还");
+                throw new DomainException("借阅记录不存在或已归还");
 
             var book = await _bookRepository.GetByIdAsync(record.BookId);
-            if (book == null) throw new InvalidOperationException("关联图书不存在");
+            if (book == null) throw new DomainException("关联图书不存在");
 
             using var transaction = await _borrowRepository.BeginDbContextTransactionAsync();
             try
