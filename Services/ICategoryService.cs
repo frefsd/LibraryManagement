@@ -47,14 +47,5 @@ namespace LibraryManagement.Services
         /// <param name="id"></param>
         /// <returns></returns>
         Task DeleteAsync(int id);
-
-        /// <summary>
-        /// 判断该分类下是否有图书
-        /// </summary>
-        /// <param name="categoryId"></param>
-        /// <returns></returns>
-        Task<bool> HasBooksAsync(int categoryId); 
-
-
     }
 }

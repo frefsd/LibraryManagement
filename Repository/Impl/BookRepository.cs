@@ -101,7 +101,7 @@ namespace LibraryManagement.Repository.Impl
         /// <returns></returns>
         public async Task<bool> HasBooksByCategoryIdAsync(int categoryId)
         {
-            return await _context.Books.AnyAsync(b => b.CategoryId == categoryId);
+            return await _context.Books.AnyAsync(b => b.CategoryId == categoryId && b.IsDeleted == false);
         }
 
         /// <summary>

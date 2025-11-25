@@ -101,10 +101,17 @@ namespace LibraryManagement.Services.Impl
             if (string.IsNullOrWhiteSpace(dto.Name))
                 throw new DomainException("分类名称不能为空");
 
+            //检查名称是否与其他分类名称重复
             var nameExists = await _categoryRepository.AnyAsync(c => c.Name == dto.Name && c.Id != id);
             if (nameExists)
-                throw new DomainException("该分类名称已被警用");
+                throw new DomainException("分类名称已存在");
 
+            //如果要禁用分类，必须确保下面没有图书
+            if (dto.Status == 0 && category.Status == 1) //启用 ->禁用
+            {
+                var hasBooks = await _bookRepository.HasBooksByCategoryIdAsync(id);
+                if (hasBooks) throw new DomainException("该分类下存在图书，无法禁用");
+            }
             category.Name = dto.Name.Trim();
             category.Sort = dto.Sort;
             category.Status = dto.Status;
@@ -124,16 +131,6 @@ namespace LibraryManagement.Services.Impl
                 throw new DomainException("该分类下存在图书，无法删除");
 
             await _categoryRepository.DeleteAsync(id);
-        }
-
-        /// <summary>
-        /// 判断该分类下是否有书籍
-        /// </summary>
-        /// <param name="categoryId"></param>
-        /// <returns></returns>
-        public async Task<bool> HasBooksAsync(int categoryId)
-        {
-            return await _bookRepository.HasBooksByCategoryIdAsync(categoryId);
         }
     }
 }
