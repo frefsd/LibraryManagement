@@ -66,6 +66,7 @@ builder.Services.AddScoped<IBorrowService, BorrowService>();
 builder.Services.AddScoped<IReportService, ReportService>();
 builder.Services.AddScoped<IAdminService, AdminService>();
 builder.Services.AddScoped<IUserService, UserService>();
+builder.Services.AddScoped<IOssService, OssService>();
 
 //¹¹½¨app
 var app = builder.Build();
