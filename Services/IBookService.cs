@@ -36,7 +36,7 @@ namespace LibraryManagement.Services
         /// </summary>
         /// <param name="dto"></param>
         /// <returns></returns>
-        Task UpdateAsync(BookUpdateDto dto);
+        Task UpdateAsync(Book book);
 
         /// <summary>
         /// 删除图书信息

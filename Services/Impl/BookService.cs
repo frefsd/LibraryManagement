@@ -92,30 +92,33 @@ namespace LibraryManagement.Services.Impl
         /// </summary>
         /// <param name="book"></param>
         /// <returns></returns>
-        public async Task UpdateAsync(BookUpdateDto dto)
+        public async Task UpdateAsync(Book book)
         {
-            var existingBook = await _bookRepository.GetByIdAsync(dto.Id);
+            var existingBook = await _bookRepository.GetByIdAsync(book.Id);
             if (existingBook == null)
-                throw new KeyNotFoundException($"图书ID {dto.Id} 不存在");
+                throw new DomainException($"图书ID {book.Id} 不存在");
+            if (book == null)
+                throw new DomainException("书名不能为空");
 
             // 2. 如果用户尝试将状态从 1（在库）改为 2（下架）
-            if (existingBook.Status == 1 && dto.Status == 2)
+            if (existingBook.Status == 1 && book.Status == 2)
             {
                 // 3. 检查是否有未归还记录
-                bool hasUnreturned = await _borrowRepository.HasUnreturnRecordAsync(dto.Id);
+                bool hasUnreturned = await _borrowRepository.HasUnreturnRecordAsync(book.Id);
                 if (hasUnreturned)
                 {
-                    throw new InvalidOperationException("该图书还有未归还的借阅记录，无法下架");
+                    throw new DomainException("该图书还有未归还的借阅记录，无法下架");
                 }
             }
-            // 只更新标量字段，不碰导航属性！
-            existingBook.Name = dto.Name;
-            existingBook.Author = dto.Author;
-            existingBook.PublishDate = dto.PublishDate;
-            existingBook.Price = dto.Price;
-            existingBook.CategoryId = dto.CategoryId;
-            existingBook.PublisherId = dto.PublisherId;
-            existingBook.Status = dto.Status;
+            
+            existingBook.Name = book.Name;
+            existingBook.Author = book.Author;
+            existingBook.PublishDate = book.PublishDate;
+            existingBook.Price = book.Price;
+            existingBook.CategoryId = book.CategoryId;
+            existingBook.PublisherId = book.PublisherId;
+            existingBook.TotalCopies = book.TotalCopies;
+            existingBook.Status = book.Status;
             existingBook.UpdateTime = DateTime.Now;
 
             await _bookRepository.UpdateAsync(existingBook); // ← 传已跟踪实体

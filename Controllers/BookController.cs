@@ -14,12 +14,14 @@ namespace LibraryManagement.Controllers
     {
         private readonly IBookService _bookService;
         private readonly IBorrowService _borrowService;
+        private readonly IOssService _ossService;
 
         //依赖注入
-        public BookController(IBookService bookService, IBorrowService borrowService)
+        public BookController(IBookService bookService, IBorrowService borrowService, IOssService ossService)
         {
             _bookService = bookService;
             _borrowService = borrowService;
+            _ossService = ossService;
         }
 
         /// <summary>
@@ -44,10 +46,42 @@ namespace LibraryManagement.Controllers
         /// <param name="book"></param>
         /// <returns></returns>
         [HttpPost]
-        public async Task<IActionResult> Add([FromBody] Book book)
+        public async Task<IActionResult> Add([FromForm] CreateBookRequest request)
         {
+            //验证模型
+            if (string.IsNullOrWhiteSpace(request.Name))
+                return BadRequest(new { code = false, msg = "书名不能为空"});
+
+            string? coverUrl = null;
+            if (request.CoverFile != null)
+            {
+                try
+                {
+                    coverUrl = await _ossService.UploadFileAsync(request.CoverFile, "bok-covers");
+                }
+                catch ( Exception ex)
+                {
+                    return BadRequest(new { code = false, msg = "封面上传失败：" +ex.Message});
+                }
+            }
+
+            var book = new Book
+            {
+                Name = request.Name,
+                Author = request.Author,
+                PublishDate = request.PublishDate,
+                CategoryId = request.CategoryId,
+                PublisherId = request.PublisherId,
+                TotalCopies = request.TotalCopies,
+                CoverUrl = coverUrl, //保存URL
+                Status = 1, //默认启动
+                IsDeleted = false, 
+                CreateTime = DateTime.Now,
+                UpdateTime = DateTime.Now
+            };
+
             await _bookService.AddAsync(book);
-            return Ok(new { code = true, msg = "图书添加成功" });
+            return Ok(new { code = true, msg = "图书添加成功", data = new { book.Id, book.CoverUrl} });
         }
 
         /// <summary>
@@ -70,21 +104,14 @@ namespace LibraryManagement.Controllers
         /// <param name="book"></param>
         /// <returns></returns>
         [HttpPut]
-        public async Task<IActionResult> Update([FromBody] BookUpdateDto dto)
+        public async Task<IActionResult> Update([FromForm] UpdateBookRequest request)
         {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(new { code = 400, msg = "参数验证失败", errors = ModelState });
-            }
-
             //获取当前图书信息
-            var existingBook = await _bookService.GetByIdAsync(dto.Id);
+            var existingBook = await _bookService.GetByIdAsync(request.Id);
             if (existingBook == null)
-            {
                 return NotFound(new { code = false, msg = "图书不存在"});
-            }
 
-            if (dto.Status == 2 && existingBook.Status != 2)
+            if (request.Status == 2 && existingBook.Status != 2)
             {
                 //检查是否有未归还的图书借阅信息
                 bool hasUnreturnRecord = await _borrowService.HasUnreturnRecordAsync(dto.Id);
@@ -94,8 +121,33 @@ namespace LibraryManagement.Controllers
                 }
                
             }
-            await _bookService.UpdateAsync(dto);
-            return Ok(new { code = 200, msg = "更新成功" });
+
+            string? coverUrl = existingBook.CoverUrl; //默认保留原图
+            if (request.CoverFile != null)
+            {
+                try
+                {
+                    coverUrl = await _ossService.UploadFileAsync(request.CoverFile, "book-covers");
+                }
+                catch (Exception ex)
+                {
+                    return BadRequest(new { code = false, msg = "封面图片上传失败" + ex.Message});
+                }
+            }
+
+            existingBook.Name = request.Name;
+            existingBook.Author = request.Author;
+            existingBook.PublishDate = request.PublishDate;
+            existingBook.Price = request.Price;
+            existingBook.CategoryId = request.CategoryId;
+            existingBook.PublisherId = request.PublisherId;
+            existingBook.TotalCopies = request.TotalCopies;
+            existingBook.Status = request.Status;
+            existingBook.CoverUrl = coverUrl; //更新封面图片
+            existingBook.UpdateTime = DateTime.Now;
+
+            await _bookService.UpdateAsync(existingBook);
+            return Ok(new { code = true, msg = "更新成功", data = new { existingBook.Id, existingBook.CoverUrl} });
         }
 
         /// <summary>
