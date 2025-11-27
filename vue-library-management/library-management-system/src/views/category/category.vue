@@ -122,8 +122,8 @@ const getStatusText = (status) => (status == 1 ? '启用' : '禁用')
       </el-table-column>
       <el-table-column label="操作" width="160" align="center">
         <template #default="scope">
-          <el-button size="small" type="primary" @click="openDialog('edit', scope.row.id)">编辑</el-button>
-          <el-button size="small" type="danger" @click="delCategory(scope.row.id)">删除</el-button>
+          <el-button size="default" type="primary" @click="openDialog('edit', scope.row.id)">编辑</el-button>
+          <el-button size="default" type="danger" @click="delCategory(scope.row.id)">删除</el-button>
         </template>
       </el-table-column>
     </el-table>

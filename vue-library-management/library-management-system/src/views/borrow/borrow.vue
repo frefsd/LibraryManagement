@@ -213,7 +213,7 @@ onMounted(() => {
         </el-table-column>
         <el-table-column label="操作" width="100" align="center">
           <template #default="{ row }">
-            <el-button v-if="!row.actualReturnDate" size="small" type="primary" @click="handleReturn(row.id)">
+            <el-button v-if="!row.actualReturnDate" size="default" type="primary" @click="handleReturn(row.id)">
               归还
             </el-button>
             <span v-else>—</span>

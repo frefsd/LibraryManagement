@@ -237,24 +237,24 @@ const delById = async (id) => {
     <div class="search-card">
       <el-form :inline="true" :model="searchUser" class="search-form">
         <el-form-item label="姓名">
-          <el-input v-model="searchUser.name" placeholder="请输入姓名" />
+          <el-input size="large" v-model="searchUser.name" placeholder="请输入姓名" />
         </el-form-item>
         <el-form-item label="电话">
-          <el-input v-model="searchUser.phone" placeholder="请输入电话" />
+          <el-input size="large" v-model="searchUser.phone" placeholder="请输入电话" />
         </el-form-item>
         <el-form-item label="借书卡号">
-          <el-input v-model="searchUser.cardNumber" placeholder="请输入借书卡号" />
+          <el-input size="large" v-model="searchUser.cardNumber" placeholder="请输入借书卡号" />
         </el-form-item>
         <el-form-item class="search-actions">
-          <el-button type="primary" @click="queryPage">查询</el-button>
-          <el-button type="info" @click="clear">清空</el-button>
+          <el-button size="default" type="primary" @click="queryPage">查询</el-button>
+          <el-button size="default" type="info" @click="clear">清空</el-button>
         </el-form-item>
       </el-form>
     </div>
 
     <!-- 操作区域 -->
     <div class="action-area">
-      <el-button type="success" @click="addUser">
+      <el-button size="default" type="success" @click="addUser">
         <i class="el-icon-plus"></i> 新增用户
       </el-button>
     </div>
@@ -285,8 +285,10 @@ const delById = async (id) => {
         </el-table-column>
         <el-table-column label="操作" align="center" width="150" fixed="right">
           <template #default="scope">
-            <el-button type="primary" size="small" @click="updateUser(scope.row.id)">编辑</el-button>
-            <el-button type="danger" size="small" @click="delById(scope.row.id)">删除</el-button>
+            <el-space size="default" :align="'center'">
+              <el-button type="primary" size="default" @click="updateUser(scope.row.id)">编辑</el-button>
+              <el-button type="danger" size="" @click="delById(scope.row.id)">删除</el-button>
+            </el-space>
           </template>
         </el-table-column>
       </el-table>
