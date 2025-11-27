@@ -57,6 +57,7 @@ namespace LibraryManagement.Controllers
             {
                 try
                 {
+                    //图片上传到aliyun的文件夹名称
                     coverUrl = await _ossService.UploadFileAsync(request.CoverFile, "bok-covers");
                 }
                 catch ( Exception ex)
@@ -114,7 +115,7 @@ namespace LibraryManagement.Controllers
             if (request.Status == 2 && existingBook.Status != 2)
             {
                 //检查是否有未归还的图书借阅信息
-                bool hasUnreturnRecord = await _borrowService.HasUnreturnRecordAsync(dto.Id);
+                bool hasUnreturnRecord = await _borrowService.HasUnreturnRecordAsync(request.Id);
                 if (hasUnreturnRecord)
                 {
                     return BadRequest(new { code = 400, msg = "该图书还有未归还的借阅记录，无法下架" });

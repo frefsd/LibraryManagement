@@ -119,6 +119,7 @@ namespace LibraryManagement.Services.Impl
             existingBook.PublisherId = book.PublisherId;
             existingBook.TotalCopies = book.TotalCopies;
             existingBook.Status = book.Status;
+            existingBook.CoverUrl = book.CoverUrl;
             existingBook.UpdateTime = DateTime.Now;
 
             await _bookRepository.UpdateAsync(existingBook); // ← 传已跟踪实体
