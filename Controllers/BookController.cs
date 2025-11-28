@@ -75,8 +75,8 @@ namespace LibraryManagement.Controllers
                 PublisherId = request.PublisherId,
                 TotalCopies = request.TotalCopies,
                 CoverUrl = coverUrl, //保存URL
-                Status = 1, //默认启动
-                IsDeleted = false, 
+                Status = 1, //默认启动 1.在库 2.下架
+                IsDeleted = false,  //软删除
                 CreateTime = DateTime.Now,
                 UpdateTime = DateTime.Now
             };

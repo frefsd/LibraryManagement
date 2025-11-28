@@ -4,6 +4,9 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace LibraryManagement.Services
 {
+    /// <summary>
+    /// 分类管理接口实现
+    /// </summary>
     public interface ICategoryService
     {
         /// <summary>

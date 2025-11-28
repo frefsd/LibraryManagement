@@ -4,6 +4,9 @@ using Microsoft.EntityFrameworkCore;
 
 namespace LibraryManagement.Services.Impl
 {
+    /// <summary>
+    /// 出版社
+    /// </summary>
     public class PublisherService:IPublisherService
     {
         public readonly ApplicationDbContext _applicationDbContext;

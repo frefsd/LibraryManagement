@@ -3,7 +3,7 @@
 namespace LibraryManagement.Services.Impl
 {
     /// <summary>
-    /// 文件上传
+    /// 配置阿里云OSS文件上传
     /// </summary>
     public class OssService : IOssService
     {

@@ -1,5 +1,4 @@
-﻿using LibraryManagement.DTO;
-using LibraryManagement.Exceptions;
+﻿using LibraryManagement.Exceptions;
 using LibraryManagement.Models;
 using LibraryManagement.Repository;
 using LibraryManagement.Result;
@@ -7,6 +6,9 @@ using Microsoft.EntityFrameworkCore;
 
 namespace LibraryManagement.Services.Impl
 {
+    /// <summary>
+    /// 图书管理业务代码开发
+    /// </summary>
     public class BookService : IBookService
     {
         private readonly IBookRepository _bookRepository;
@@ -49,13 +51,15 @@ namespace LibraryManagement.Services.Impl
                 query = query.Where(b => b.PublishDate <= endDate.Date.AddDays(1).AddTicks(-1)); //包含整数 ;
             }
 
-            var total = await query.CountAsync();
+            var total = await query.CountAsync(); //查询总图书数量
             var skip = (page - 1) * pageSize;
+            //每页展示的图书数量
             var rows = await query
                 .OrderBy(b => b.Id)
                 .Skip(skip)
                 .Take(pageSize)
                 .ToListAsync();
+
             return new PageResult<Book>
             {
                 Total = total,
@@ -151,7 +155,6 @@ namespace LibraryManagement.Services.Impl
         /// <param name="page"></param>
         /// <param name="pageSize"></param>
         /// <returns></returns>
-        /// <exception cref="NotImplementedException"></exception>
         public async Task<PageResult<Book>> GetAvailableBooksAsync(string keyword, int page, int pageSize)
         {
             return await _bookRepository.GetAvailableBooksAsync(keyword, page, pageSize);

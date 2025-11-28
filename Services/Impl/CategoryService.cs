@@ -7,6 +7,9 @@ using Microsoft.EntityFrameworkCore;
 
 namespace LibraryManagement.Services.Impl
 {
+    /// <summary>
+    /// 分类管理业务代码实现
+    /// </summary>
     public class CategoryService: ICategoryService
     {
         private readonly ICategoryRepository _categoryRepository;

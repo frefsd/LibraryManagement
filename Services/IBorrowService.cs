@@ -4,7 +4,7 @@ using LibraryManagement.Result;
 namespace LibraryManagement.Services
 {
     /// <summary>
-    /// 借阅管理模块接口
+    /// 借阅管理接口实现
     /// </summary>
     public interface IBorrowService
     {

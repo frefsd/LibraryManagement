@@ -3,7 +3,7 @@
 namespace LibraryManagement.Services
 {
     /// <summary>
-    /// 系统管理员
+    /// 管理员接口实现
     /// </summary>
     public interface IAdminService
     {

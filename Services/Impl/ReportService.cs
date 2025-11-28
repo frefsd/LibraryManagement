@@ -2,10 +2,12 @@
 using LibraryManagement.Models;
 using LibraryManagement.Repository;
 using Microsoft.EntityFrameworkCore;
-using System.Security.AccessControl;
 
 namespace LibraryManagement.Services.Impl
 {
+    /// <summary>
+    /// 数据报表统计
+    /// </summary>
     public class ReportService : IReportService
     {
         private readonly ICategoryRepository _categoryRepository;

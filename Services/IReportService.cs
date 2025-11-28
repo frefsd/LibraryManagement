@@ -2,6 +2,9 @@
 
 namespace LibraryManagement.Services
 {
+    /// <summary>
+    /// 数据报表统计接口
+    /// </summary>
     public interface IReportService
     {
         /// <summary>

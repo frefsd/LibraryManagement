@@ -1,9 +1,11 @@
-﻿using LibraryManagement.DTO;
-using LibraryManagement.Models;
+﻿using LibraryManagement.Models;
 using LibraryManagement.Result;
 
 namespace LibraryManagement.Services
 {
+    /// <summary>
+    /// 图书管理接口实现
+    /// </summary>
     public interface IBookService
     {
         /// <summary>
@@ -34,7 +36,7 @@ namespace LibraryManagement.Services
         /// <summary>
         /// 修改图书信息
         /// </summary>
-        /// <param name="dto"></param>
+        /// <param name="book"></param>
         /// <returns></returns>
         Task UpdateAsync(Book book);
 

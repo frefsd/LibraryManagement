@@ -1,7 +1,7 @@
 ﻿namespace LibraryManagement.Services
 {
     /// <summary>
-    /// 文件上传
+    /// OSS文件上传
     /// </summary>
     public interface IOssService
     {

@@ -5,7 +5,7 @@ using LibraryManagement.Result;
 namespace LibraryManagement.Services.Impl
 {
     /// <summary>
-    /// 用户管理模块
+    /// 用户管理业务代码开发
     /// </summary>
     public class UserService : IUserService
     {
