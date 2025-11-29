@@ -42,7 +42,6 @@ namespace LibraryManagement.Repository
         /// <returns></returns>
         Task<User?> GetByIdAsync(int id);
 
-
         Task<int> GetCountAsync(string? name, string? phone, string? cardNumber);
 
         /// <summary>

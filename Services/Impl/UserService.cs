@@ -1,4 +1,5 @@
-﻿using LibraryManagement.Models;
+﻿using LibraryManagement.Exceptions;
+using LibraryManagement.Models;
 using LibraryManagement.Repository;
 using LibraryManagement.Result;
 
@@ -53,9 +54,8 @@ namespace LibraryManagement.Services.Impl
         /// <exception cref="NotImplementedException"></exception>
         public async Task<User?> AddUserAsync(User user)
         {
-            if (string.IsNullOrWhiteSpace(user.CardNumber)) throw new ArgumentException("借书卡号不能为空");
-            if (await _userRepository.ExistsByCardNumberAsync(user.CardNumber)) throw new InvalidOperationException($"借书卡号{user.CardNumber}已存在");
-
+            if (string.IsNullOrWhiteSpace(user.CardNumber)) throw new DomainException("借书卡号不能为空");
+            if (await _userRepository.ExistsByCardNumberAsync(user.CardNumber)) throw new DomainException($"借书卡号{user.CardNumber}已存在");
             user.CreateTime = DateTime.Now;
             user.Status = 1; //默认启用
 
@@ -79,13 +79,13 @@ namespace LibraryManagement.Services.Impl
         {
             //获取用户
             var existing = await _userRepository.GetByIdAsync(user.Id);
-            if (existing == null) throw new KeyNotFoundException("用户不存在");
+            if (existing == null) throw new DomainException("用户不存在");
 
                 if (!string.Equals(existing.CardNumber, user.CardNumber))
             {
 
                 if (await _userRepository.ExistsByCardNumberAsync(user.CardNumber))
-                    throw new InvalidOperationException($"借书卡号{user.CardNumber}已存在");
+                    throw new DomainException($"借书卡号{user.CardNumber}已存在");
             }
 
             existing.Name = user.Name;
