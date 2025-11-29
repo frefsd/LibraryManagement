@@ -76,6 +76,19 @@ namespace LibraryManagement.Services.Impl
         /// <returns></returns>
         public async Task AddAsync(Book book)
         {
+            if (string.IsNullOrWhiteSpace(book.Name))
+                throw new DomainException("书名不能为空");
+
+            //检查是否已存在同名同作者的有效图书
+            var existingBook = await _bookRepository.GetQueryable()
+                .FirstOrDefaultAsync(b =>
+                b.Name == book.Name &&
+                b.Author == book.Author &&
+                b.IsDeleted == false);
+
+            if (existingBook != null)
+                throw new DomainException($"图书《{book.Name}》（作者：{book.Author}）已存在");
+
             book.CreateTime = DateTime.Now;
             book.UpdateTime = DateTime.Now;
             await _bookRepository.AddAsync(book);
@@ -115,8 +128,8 @@ namespace LibraryManagement.Services.Impl
                 }
             }
             
-            existingBook.Name = book.Name;
-            existingBook.Author = book.Author;
+           // existingBook.Name = book.Name;
+            //existingBook.Author = book.Author;
             existingBook.PublishDate = book.PublishDate;
             existingBook.Price = book.Price;
             existingBook.CategoryId = book.CategoryId;
