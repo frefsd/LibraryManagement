@@ -70,7 +70,7 @@ namespace LibraryManagement.Controllers
                 issuer: _configuration["Jwt:Issuer"],
                 audience: _configuration["Jwt:Audience"],
                 claims: claims,
-                expires: DateTime.Now.AddHours(8),
+                expires: DateTime.UtcNow.AddHours(24), //登录过期时间为24小时
                 signingCredentials: creds
                 );
 

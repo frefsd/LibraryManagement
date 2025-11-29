@@ -17,29 +17,6 @@ namespace LibraryManagement.Services.Impl
             _applicationDbContext = applicationDbContext;
         }
 
-
-        /*public async Task CreateDefaultAdminIfNotExistsAsync()
-        {
-            //判读是否数据库中是否有管理员
-            if (await _applicationDbContext.Admin.AnyAsync())
-                return;
-
-            var defaultAdmin = new Admin
-            {
-                Username = "admin",
-                Password = BCrypt.Net.BCrypt.HashPassword("123456"),
-                RealName = "系统管理员",
-                Role = "SuperAdmin",
-                IsActive = true,
-                CreatedAt = DateTime.Now
-            };
-
-            _applicationDbContext.Admin.Add(defaultAdmin);
-            await _applicationDbContext.SaveChangesAsync();
-
-            Console.WriteLine("默认管理员已创建");
-        }*/
-
         /// <summary>
         /// 创建管理员
         /// </summary>

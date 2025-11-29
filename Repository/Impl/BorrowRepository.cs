@@ -69,7 +69,6 @@ namespace LibraryManagement.Repository.Impl
         {
             _applicationDbContext.Entry(entity).State = EntityState.Modified;
             return Task.CompletedTask;
-            //await _applicationDbContext.SaveChangesAsync();
         }
         
         public async Task<IDbContextTransaction> BeginDbContextTransactionAsync()
@@ -82,6 +81,10 @@ namespace LibraryManagement.Repository.Impl
             return await _applicationDbContext.SaveChangesAsync();
         }
 
+        /// <summary>
+        /// 获取借阅信息
+        /// </summary>
+        /// <returns></returns>
         public IQueryable<BorrowRecord> GetQueryableAsync()
         {
             return _applicationDbContext.BorrowRecords;
@@ -106,6 +109,29 @@ namespace LibraryManagement.Repository.Impl
         public async Task<bool> HasUnreturnRecordAsync(int bookId)
         {
             return await _applicationDbContext.BorrowRecords.AnyAsync(br => br.BookId == bookId && br.Status == 1); //1.借阅中
+        }
+
+        /// <summary>
+        /// 检查该借阅人借阅书籍的数量
+        /// </summary>
+        /// <param name="userId"></param>
+        /// <returns></returns>
+        public async Task<int> GetActiveBorrowCountAsync(int userId)
+        {
+            return await _applicationDbContext.BorrowRecords
+                .CountAsync(r => r.UserId == userId && r.ActualReturnDate == null); //ActualReturnDate == null 表示”尚未归还“ 正在借阅中
+        }
+
+        /// <summary>
+        /// 检查该用户是否已借阅此书且未归还
+        /// </summary>
+        /// <param name="userId"></param>
+        /// <param name="bookId"></param>
+        /// <returns></returns>
+        public async Task<BorrowRecord?> GetByUserIdAndBookIdAsync(int userId, int bookId)
+        {
+            return await _applicationDbContext.BorrowRecords
+                .FirstOrDefaultAsync(r => r.UserId == userId && r.BookId == bookId && r.ActualReturnDate == null);
         }
     }
 }

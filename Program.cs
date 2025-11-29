@@ -77,14 +77,13 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-
 app.UseExceptionHandlerMiddleware(); //异常捕获
 
 app.UseHttpsRedirection(); //Https重定向
 
 app.UseCors("AllowAll");  //CORS
 
-//app.UseAuthorization(); //TODO: 等待开发
+app.UseAuthorization(); //授权
 
 app.UseRouting(); //启用路由
 app.MapControllers(); //映射控制器

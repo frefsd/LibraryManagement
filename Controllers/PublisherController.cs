@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace LibraryManagement.Controllers
 {
     /// <summary>
-    /// 出版社类
+    /// 出版社
     /// </summary>
     [ApiController]
     [Route("[controller]/[action]")]
