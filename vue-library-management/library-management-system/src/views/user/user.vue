@@ -110,13 +110,17 @@ const clearUser = () => {
 const addUser = () => {
   dialogFormVisible.value = true
   formTitle.value = '新增用户'
+  isEditing.value = false
   clearUser()
   resetForm()
 }
 
+const isEditing = ref(false) //用于判断当前是编辑模式
+
 const updateUser = async (id) => {
   dialogFormVisible.value = true
   formTitle.value = '编辑用户'
+  isEditing.value = true //编辑用户信息时不应许修改姓名
 
   try {
     const res = await queryInfoApi(id)
@@ -246,15 +250,15 @@ const delById = async (id) => {
           <el-input size="large" v-model="searchUser.cardNumber" placeholder="请输入借书卡号" />
         </el-form-item>
         <el-form-item class="search-actions">
-          <el-button size="default" type="primary" @click="queryPage">查询</el-button>
-          <el-button size="default" type="info" @click="clear">清空</el-button>
+          <el-button type="primary" @click="queryPage">查询</el-button>
+          <el-button type="info" @click="clear">清空</el-button>
         </el-form-item>
       </el-form>
     </div>
 
     <!-- 操作区域 -->
     <div class="action-area">
-      <el-button size="default" type="success" @click="addUser">
+      <el-button type="success" @click="addUser">
         <i class="el-icon-plus"></i> 新增用户
       </el-button>
     </div>
@@ -287,7 +291,7 @@ const delById = async (id) => {
           <template #default="scope">
             <el-space size="default" :align="'center'">
               <el-button type="primary" size="default" @click="updateUser(scope.row.id)">编辑</el-button>
-              <el-button type="danger" size="" @click="delById(scope.row.id)">删除</el-button>
+              <el-button type="danger" size="default" @click="delById(scope.row.id)">删除</el-button>
             </el-space>
           </template>
         </el-table-column>
@@ -297,35 +301,46 @@ const delById = async (id) => {
       <div class="pagination-container">
         <el-pagination v-model:current-page="pagination.currentPage" v-model:page-size="pagination.pageSize"
           :page-sizes="[5, 10, 20, 50]" layout="total, sizes, prev, pager, next, jumper" :total="pagination.total"
-          @size-change="handleSizeChange" @current-change="handleCurrentChange" />
+          @size-change="handleSizeChange" @current-change="handleCurrentChange" class="pagination" background />
       </div>
     </div>
 
     <!-- 新增/编辑对话框 -->
-    <el-dialog v-model="dialogFormVisible" :title="formTitle" width="480px">
-      <el-form :model="user" ref="userFormRef" :rules="rules" label-position="left" :label-width="labelWidth + 'px'">
-        <el-form-item label="姓名" prop="name">
-          <el-input v-model="user.name" placeholder="请输入姓名" />
-        </el-form-item>
-        <el-form-item label="电话" prop="phone">
-          <el-input v-model="user.phone" placeholder="请输入电话（可选）" />
-        </el-form-item>
-        <el-form-item label="邮箱" prop="email">
-          <el-input v-model="user.email" placeholder="请输入邮箱（可选）" />
-        </el-form-item>
-        <el-form-item label="借书卡号" prop="cardNumber">
-          <el-input v-model="user.cardNumber" placeholder="请输入借书卡号" />
-        </el-form-item>
-        <el-form-item label="状态">
-          <el-select v-model="user.status" style="width: 100%">
-            <el-option :value="1" label="启用" />
-            <el-option :value="0" label="禁用" />
-          </el-select>
-        </el-form-item>
-      </el-form>
+    <el-dialog v-model="dialogFormVisible" :title="formTitle" width="520px" :close-on-click-modal="false" align-center
+      class="user-form-dialog">
+      <div class="dialog-content">
+        <el-form :model="user" ref="userFormRef" :rules="rules" label-position="right" :label-width="'90px'"
+          class="user-form">
+          <el-form-item label="姓名" prop="name">
+            <el-input v-model="user.name" placeholder="请输入姓名" size="large" clearable :disabled="isEditing" />
+          </el-form-item>
+
+          <el-form-item label="电话" prop="phone">
+            <el-input v-model="user.phone" placeholder="请输入电话" size="large" clearable />
+          </el-form-item>
+
+          <el-form-item label="邮箱" prop="email">
+            <el-input v-model="user.email" placeholder="请输入邮箱" size="large" clearable />
+          </el-form-item>
+
+          <el-form-item label="借书卡号" prop="cardNumber">
+            <el-input v-model="user.cardNumber" placeholder="请输入借书卡号" size="large" clearable />
+          </el-form-item>
+
+          <el-form-item label="状态" prop="status">
+            <el-select v-model="user.status" size="large" style="width: 100%">
+              <el-option :value="1" label="启用" />
+              <el-option :value="0" label="禁用" />
+            </el-select>
+          </el-form-item>
+        </el-form>
+      </div>
+
       <template #footer>
-        <el-button @click="dialogFormVisible = false">取消</el-button>
-        <el-button type="primary" @click="save">保存</el-button>
+        <div class="dialog-footer">
+          <el-button @click="dialogFormVisible = false" size="large">取消</el-button>
+          <el-button type="primary" @click="save" size="large">保存</el-button>
+        </div>
       </template>
     </el-dialog>
   </div>
@@ -378,9 +393,134 @@ const delById = async (id) => {
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
 }
 
+/* 分页容器样式 */
 .pagination-container {
   display: flex;
+  justify-content: center;
+  margin-top: 30px;
+  padding: 20px 0;
+}
+
+/* 大型分页样式 */
+.pagination :deep(.el-pagination) {
+  --el-pagination-bg-color: #f5f7fa;
+  --el-pagination-button-bg-color: #ffffff;
+  --el-pagination-button-disabled-bg-color: #f5f7fa;
+  --el-pagination-hover-color: #409EFF;
+}
+
+.pagination :deep(.el-pagination.is-background) {
+  padding: 8px 16px;
+  border-radius: 12px;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+}
+
+.pagination :deep(.el-pagination.is-background .btn-prev),
+.pagination :deep(.el-pagination.is-background .btn-next),
+.pagination :deep(.el-pagination.is-background .el-pager li) {
+  background-color: rgba(255, 255, 255, 0.9);
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  border-radius: 8px;
+  color: #333;
+  font-weight: 600;
+  min-width: 42px;
+  height: 42px;
+  margin: 0 4px;
+  transition: all 0.3s ease;
+}
+
+.pagination :deep(.el-pagination.is-background .btn-prev:hover),
+.pagination :deep(.el-pagination.is-background .btn-next:hover),
+.pagination :deep(.el-pagination.is-background .el-pager li:hover) {
+  background-color: #ffffff;
+  border-color: #409EFF;
+  color: #409EFF;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(64, 158, 255, 0.3);
+}
+
+.pagination :deep(.el-pagination.is-background .btn-prev:disabled),
+.pagination :deep(.el-pagination.is-background .btn-next:disabled) {
+  background-color: rgba(255, 255, 255, 0.5);
+  border-color: rgba(255, 255, 255, 0.2);
+  color: #ccc;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+}
+
+.pagination :deep(.el-pagination.is-background .el-pager li.active) {
+  background: linear-gradient(135deg, #409EFF, #3375b9);
+  border-color: #409EFF;
+  color: #ffffff;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 15px rgba(64, 158, 255, 0.4);
+}
+
+.pagination :deep(.el-pagination.is-background .el-pager li.active:hover) {
+  background: linear-gradient(135deg, #3375b9, #2661a3);
+  border-color: #3375b9;
+  color: #ffffff;
+}
+
+/* 对话框样式 */
+.user-form-dialog {
+  border-radius: 8px;
+}
+
+.user-form-dialog :deep(.el-dialog__header) {
+  padding: 20px 20px 10px;
+  margin: 0;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.user-form-dialog :deep(.el-dialog__title) {
+  font-size: 18px;
+  font-weight: 600;
+  color: #303133;
+}
+
+.user-form-dialog :deep(.el-dialog__body) {
+  padding: 20px;
+}
+
+.dialog-content {
+  padding: 10px 0;
+  display: flex;
+}
+
+.user-form {
+  width: 100%;
+}
+
+.user-form :deep(.el-form-item) {
+  margin-bottom: 20px;
+}
+
+.user-form :deep(.el-form-item__label) {
+  font-weight: 500;
+  color: #606266;
+  padding-right: 12px;
+}
+
+.user-form :deep(.el-input__wrapper) {
+  border-radius: 6px;
+}
+
+.user-form :deep(.el-select) {
+  width: 100%;
+}
+
+.dialog-footer {
+  display: flex;
   justify-content: flex-end;
-  margin-top: 20px;
+  gap: 12px;
+  padding: 10px 0 0;
+}
+
+.user-form-dialog :deep(.el-dialog__footer) {
+  padding: 0 20px 20px;
+  border-top: none;
 }
 </style>

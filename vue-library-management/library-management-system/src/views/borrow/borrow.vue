@@ -181,7 +181,7 @@ onMounted(() => {
     <!-- 标题与操作 -->
     <div class="header-section">
       <h2 class="page-title">借阅管理</h2>
-      <el-button type="primary" @click="showBorrowDialog = true" icon="Plus">新增借阅</el-button>
+      <el-button type="primary" @click="showBorrowDialog = true" icon="Plus" class="add-button">新增借阅</el-button>
     </div>
 
     <!-- 借阅表格 -->
@@ -222,19 +222,22 @@ onMounted(() => {
       </el-table>
 
       <!-- 分页 -->
-      <el-pagination v-if="total > 0" @size-change="handleSizeChange" @current-change="handleCurrentChange"
-        :current-page="page" :page-sizes="[10, 20, 50]" :page-size="pageSize"
-        layout="total, sizes, prev, pager, next, jumper" :total="total"
-        style="margin-top: 20px; justify-content: center; display: flex;" />
+      <div class="pagination-container">
+        <el-pagination v-if="total > 0" @size-change="handleSizeChange" @current-change="handleCurrentChange"
+          :current-page="page" :page-sizes="[10, 20, 50]" :page-size="pageSize"
+          layout="total, sizes, prev, pager, next, jumper" :total="total" is-background class="pagination" background />
+      </div>
     </el-card>
 
     <!-- 新增借阅弹窗 -->
-    <el-dialog v-model="showBorrowDialog" title="新增借阅" width="500px" destroy-on-close @closed="handleDialogClosed">
-      <el-form :model="borrowForm" :rules="borrowRules" ref="borrowFormRef" label-position="left" label-width="90px">
-        <el-form-item label="图书名称" prop="bookId">
+    <el-dialog v-model="showBorrowDialog" title="新增借阅" width="500px" destroy-on-close @closed="handleDialogClosed"
+      class="borrow-dialog">
+      <el-form :model="borrowForm" :rules="borrowRules" ref="borrowFormRef" label-position="left" label-width="90px"
+        class="borrow-form">
+        <el-form-item label="图书名称" prop="bookId" class="form-item-enhanced">
           <el-select v-model="borrowForm.bookId" filterable remote reserve-keyword placeholder="请输入书名或作者进行搜索"
             :remote-method="loadBooks" :loading="booksLoading" :clearable="true" style="width: 100%"
-            @focus="handleBookSelectFocus">
+            @focus="handleBookSelectFocus" class="enhanced-select">
             <el-option v-for="book in bookOptions" :key="book.id" :value="book.id"
               :label="`${book.name} - ${book.author}`">
               <div class="book-option-item">
@@ -265,13 +268,17 @@ onMounted(() => {
           </el-select>
         </el-form-item>
         <!-- 修改：用户输入框改为普通文本输入 -->
-        <el-form-item label="用户名称" prop="userInput">
-          <el-input v-model="borrowForm.userInput" placeholder="请输入用户ID或用户名" clearable style="width: 100%" />
+        <el-form-item label="用户名称" prop="userInput" class="form-item-enhanced">
+          <el-input v-model="borrowForm.userInput" placeholder="请输入用户ID或用户名" clearable style="width: 100%"
+            class="enhanced-input" />
         </el-form-item>
       </el-form>
       <template #footer>
-        <el-button @click="showBorrowDialog = false">取消</el-button>
-        <el-button type="primary" @click="handleBorrowConfirm" :loading="borrowLoading">确定</el-button>
+        <div class="dialog-footer">
+          <el-button @click="showBorrowDialog = false" class="cancel-btn">取消</el-button>
+          <el-button type="primary" @click="handleBorrowConfirm" :loading="borrowLoading"
+            class="confirm-btn">确定</el-button>
+        </div>
       </template>
     </el-dialog>
   </div>
@@ -298,6 +305,19 @@ onMounted(() => {
   font-weight: 600;
   color: #333;
   margin: 0;
+}
+
+.add-button {
+  border-radius: 6px;
+  padding: 10px 16px;
+  font-weight: 500;
+  box-shadow: 0 2px 4px rgba(64, 158, 255, 0.2);
+  transition: all 0.3s ease;
+}
+
+.add-button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(64, 158, 255, 0.3);
 }
 
 .el-table .el-table__header th {
@@ -371,5 +391,118 @@ onMounted(() => {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+}
+
+/* 新增借阅对话框优化样式 */
+:deep(.borrow-dialog) {
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+}
+
+:deep(.borrow-dialog .el-dialog__header) {
+  padding: 20px 24px 10px;
+  margin-right: 0;
+  background: linear-gradient(135deg, #f5f7fa 0%, #ffffff 100%);
+  border-bottom: 1px solid #eef0f3;
+}
+
+:deep(.borrow-dialog .el-dialog__title) {
+  font-size: 18px;
+  font-weight: 600;
+  color: #2c3e50;
+  letter-spacing: 0.5px;
+}
+
+:deep(.borrow-dialog .el-dialog__body) {
+  padding: 24px;
+}
+
+.borrow-form {
+  padding: 0 8px;
+}
+
+.form-item-enhanced {
+  margin-bottom: 24px;
+}
+
+:deep(.form-item-enhanced .el-form-item__label) {
+  font-weight: 600;
+  color: #34495e;
+  padding-right: 16px;
+  font-size: 14px;
+}
+
+.enhanced-select:deep(.el-input__inner) {
+  border-radius: 8px;
+  border: 1px solid #dcdfe6;
+  padding: 10px 12px;
+  height: 40px;
+  transition: all 0.3s ease;
+  font-size: 14px;
+}
+
+.enhanced-select:deep(.el-input__inner:focus) {
+  border-color: #409eff;
+  box-shadow: 0 0 0 2px rgba(64, 158, 255, 0.1);
+}
+
+.enhanced-input:deep(.el-input__inner) {
+  border-radius: 8px;
+  border: 1px solid #dcdfe6;
+  padding: 10px 12px;
+  height: 40px;
+  transition: all 0.3s ease;
+  font-size: 14px;
+}
+
+.enhanced-input:deep(.el-input__inner:focus) {
+  border-color: #409eff;
+  box-shadow: 0 0 0 2px rgba(64, 158, 255, 0.1);
+}
+
+:deep(.borrow-dialog .el-dialog__footer) {
+  padding: 16px 24px 20px;
+  border-top: 1px solid #eef0f3;
+}
+
+.dialog-footer {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+}
+
+.cancel-btn {
+  border-radius: 6px;
+  padding: 10px 20px;
+  border: 1px solid #dcdfe6;
+  transition: all 0.3s ease;
+}
+
+.cancel-btn:hover {
+  border-color: #c0c4cc;
+  background-color: #f5f7fa;
+  transform: translateY(-1px);
+}
+
+.confirm-btn {
+  border-radius: 6px;
+  padding: 10px 20px;
+  font-weight: 500;
+  background: linear-gradient(135deg, #409eff 0%, #337ecc 100%);
+  border: none;
+  box-shadow: 0 2px 4px rgba(64, 158, 255, 0.3);
+  transition: all 0.3s ease;
+}
+
+.confirm-btn:hover {
+  background: linear-gradient(135deg, #66b1ff 0%, #409eff 100%);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 8px rgba(64, 158, 255, 0.4);
+}
+
+.confirm-btn:active {
+  transform: translateY(0);
+  box-shadow: 0 2px 4px rgba(64, 158, 255, 0.3);
 }
 </style>

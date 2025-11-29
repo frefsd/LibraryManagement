@@ -143,14 +143,18 @@ const clearBook = () => {
 const addBook = () => {
   dialogFormVisible.value = true
   formTitle.value = '新增图书'
+  isEditing.value = false //新增时可输入完整图书信息
   clearBook()
   resetForm()
 }
+
+const isEditing = ref(false) //用于判断当前是编辑模式
 
 const updateBook = async (id) => {
   clearBook()
   dialogFormVisible.value = true
   formTitle.value = '编辑图书'
+  isEditing.value = true //编辑图书信息时不应许修改图书名称和作者
 
   const result = await queryInfoApi(id)
   if (result.code && result.data) {
@@ -214,6 +218,7 @@ const handleCoverPreview = (uploadFile) => {
   coverPreviewUrl.value = uploadFile.url || URL.createObjectURL(uploadFile.raw)
   coverPreviewVisible.value = true
 }
+
 
 // ============ 表单校验规则 ============
 const rules = ref({
@@ -312,7 +317,6 @@ const delById = async (id) => {
     }
   } catch (error) {
     if (error === 'cancel') return
-    ElMessage.error('操作已取消或网络错误')
   }
 }
 
@@ -435,11 +439,11 @@ const formatDateTime = (dateStr) => {
     <el-dialog v-model="dialogFormVisible" :title="formTitle" width="450px" class="form-dialog">
       <el-form :model="book" ref="bookFormRef" :rules="rules" label-position="left">
         <el-form-item label="图书名称" :label-width="labelWidth" prop="name">
-          <el-input v-model="book.name" placeholder="请输入图书名称" />
+          <el-input v-model="book.name" placeholder="请输入图书名称" :disabled="isEditing" />
         </el-form-item>
 
         <el-form-item label="作者" :label-width="labelWidth" prop="author">
-          <el-input v-model="book.author" placeholder="请输入作者" />
+          <el-input v-model="book.author" placeholder="请输入作者" :disabled="isEditing"/>
         </el-form-item>
 
         <el-form-item label="出版日期" :label-width="labelWidth" prop="publishDate">
@@ -459,7 +463,7 @@ const formatDateTime = (dateStr) => {
           </el-select>
         </el-form-item>
 
-        <!-- 封面上传 -->
+        <!-- 封面图片上传 -->
         <el-form-item label="封面" :label-width="labelWidth">
           <el-upload v-model:file-list="coverFileList" list-type="picture-card" :auto-upload="false"
             :on-change="handleCoverUploadChange" :on-remove="handleCoverRemove" :on-preview="handleCoverPreview"
@@ -470,19 +474,20 @@ const formatDateTime = (dateStr) => {
           </el-upload>
           <div class="upload-tip">最多只能上传 1 张图片</div>
 
-          <!-- 预览对话框 -->
+          <!-- 预览上传的封面图片对话框 -->
           <el-dialog v-model="coverPreviewVisible">
             <img w-full :src="coverPreviewUrl" alt="封面预览" />
           </el-dialog>
         </el-form-item>
 
+        <!-- 选择图书所属分类-->
         <el-form-item label="分类" :label-width="labelWidth" prop="category">
           <el-select v-model="book.category" placeholder="请选择分类" style="width: 100%">
             <el-option v-for="cat in categories" :key="cat.id" :label="cat.name" :value="String(cat.id)" />
           </el-select>
         </el-form-item>
 
-        <!-- 新增：状态选择 -->
+        <!-- 状态选择 -->
         <el-form-item label="状态" :label-width="labelWidth">
           <el-select v-model="book.status" placeholder="请选择状态" style="width: 100%">
             <el-option :value="1" label="在库（正常）" />

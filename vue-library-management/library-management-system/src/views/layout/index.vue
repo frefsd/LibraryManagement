@@ -124,6 +124,7 @@ const logout = () => {
     </el-container>
   </div>
 </template>
+
 <style scoped>
 .common-layout {
   height: 100vh;

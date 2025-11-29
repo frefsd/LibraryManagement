@@ -46,12 +46,13 @@ namespace LibraryManagement.Services.Impl
                Rows = users
             };
         }
+
         /// <summary>
         /// 新增用户信息
         /// </summary>
         /// <param name="user"></param>
         /// <returns></returns>
-        /// <exception cref="NotImplementedException"></exception>
+        /// <exception cref="DomainException"></exception>
         public async Task<User?> AddUserAsync(User user)
         {
             if (string.IsNullOrWhiteSpace(user.CardNumber)) throw new DomainException("借书卡号不能为空");
@@ -68,13 +69,13 @@ namespace LibraryManagement.Services.Impl
         /// <param name="id"></param>
         /// <returns></returns>
         public async Task<bool> DeleteUserAsync(int id) => await _userRepository.DeleteUserAsync(id);
-        
+
         /// <summary>
         /// 编辑用户信息
         /// </summary>
         /// <param name="user"></param>
         /// <returns></returns>
-        /// <exception cref="NotImplementedException"></exception>
+        /// <exception cref="DomainException"></exception>
         public async Task<User?> UpdateUserAsync(User user)
         {
             //获取用户
@@ -101,7 +102,6 @@ namespace LibraryManagement.Services.Impl
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        /// <exception cref="NotImplementedException"></exception>
         public async Task<User?> GetByIdAsync(int id)
         {
             return await _userRepository.GetByIdAsync(id);
@@ -113,7 +113,6 @@ namespace LibraryManagement.Services.Impl
         /// <param name="id"></param>
         /// <param name="status"></param>
         /// <returns></returns>
-        /// <exception cref="NotImplementedException"></exception>
         public async Task<bool> ChangeStatusAsync(int id, int status)
         {
           return await _userRepository.SetStatusAsync(id, status);
