@@ -128,8 +128,6 @@ namespace LibraryManagement.Services.Impl
                 }
             }
             
-           // existingBook.Name = book.Name;
-            //existingBook.Author = book.Author;
             existingBook.PublishDate = book.PublishDate;
             existingBook.Price = book.Price;
             existingBook.CategoryId = book.CategoryId;

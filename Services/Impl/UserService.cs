@@ -88,7 +88,6 @@ namespace LibraryManagement.Services.Impl
                     throw new DomainException($"借书卡号{user.CardNumber}已存在");
             }
 
-            existing.Name = user.Name;
             existing.Phone = user.Phone;
             existing.Email = user.Email;
             existing.CardNumber = user.CardNumber;
