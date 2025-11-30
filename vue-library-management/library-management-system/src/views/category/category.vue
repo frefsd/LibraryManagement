@@ -106,41 +106,67 @@ const getStatusText = (status) => (status == 1 ? '启用' : '禁用')
 </script>
 
 <template>
-  <div>
-    <div id="title">分类管理</div><br />
+  <div class="category-management-container">
+    <!-- 标题 -->
+    <div class="section-header">
+      <h1 class="page-title">分类管理</h1>
+    </div>
 
-    <el-button type="success" @click="openDialog('add')">+ 新增分类</el-button>
-    <br /><br />
+    <!-- 操作区域 -->
+    <div class="section-header">
+      <el-button type="success" @click="openDialog('add')" class="add-btn">
+        新增分类
+      </el-button>
+    </div>
 
-    <el-table :data="tableData" border style="width: 100%">
-      <el-table-column prop="id" label="ID" width="60" align="center" />
-      <el-table-column prop="name" label="分类名称" />
-      <el-table-column label="状态" width="80" align="center">
-        <template #default="scope">
-          {{ getStatusText(scope.row.status) }}
-        </template>
-      </el-table-column>
-      <el-table-column label="操作" width="160" align="center">
-        <template #default="scope">
-          <el-button size="default" type="primary" @click="openDialog('edit', scope.row.id)">编辑</el-button>
-          <el-button size="default" type="danger" @click="delCategory(scope.row.id)">删除</el-button>
-        </template>
-      </el-table-column>
-    </el-table>
+    <!-- 表格卡片 -->
+    <div class="table-card">
+      <el-table :data="tableData" border style="width: 100%" fit class="data-table">
+        <el-table-column prop="id" label="ID" width="60" align="center" />
+        <el-table-column prop="name" label="分类名称" min-width="180" />
+        <el-table-column label="状态" width="100" align="center">
+          <template #default="scope">
+            {{ getStatusText(scope.row.status) }}
+          </template>
+        </el-table-column>
+        <el-table-column label="操作" width="160" align="center" fixed="right">
+          <template #default="scope">
+            <el-button size="default" type="primary" @click="openDialog('edit', scope.row.id)">编辑</el-button>
+            <el-button size="default" type="danger" @click="delCategory(scope.row.id)">删除</el-button>
+          </template>
+        </el-table-column>
+      </el-table>
 
-    <el-pagination v-model:current-page="pagination.currentPage" v-model:page-size="pagination.pageSize"
-      :total="pagination.total" :page-sizes="[5, 10, 20]" layout="total, sizes, prev, pager, next"
-      @size-change="handleSizeChange" @current-change="handleCurrentChange" />
+      <!-- 分页 -->
+      <div class="pagination-container">
+        <el-pagination
+          v-model:current-page="pagination.currentPage"
+          v-model:page-size="pagination.pageSize"
+          :total="pagination.total"
+          :page-sizes="[5, 10, 20]"
+          layout="total, sizes, prev, pager, next"
+          @size-change="handleSizeChange"
+          @current-change="handleCurrentChange"
+          class="pagination"
+          background
+        />
+      </div>
+    </div>
 
     <!-- 对话框 -->
-    <el-dialog v-model="dialogVisible" :title="formTitle" width="400px">
+    <el-dialog v-model="dialogVisible" :title="formTitle" width="400px" class="form-dialog">
       <el-form :model="category" :rules="rules" ref="categoryFormRef" label-width="80px">
         <el-form-item label="分类名称" prop="name">
           <el-input v-model="category.name" placeholder="请输入分类名称" />
         </el-form-item>
         <el-form-item label="状态">
-          <el-switch v-model="category.status" :active-value="1" :inactive-value="0" active-text="启用"
-            inactive-text="禁用" />
+          <el-switch
+            v-model="category.status"
+            :active-value="1"
+            :inactive-value="0"
+            active-text="启用"
+            inactive-text="禁用"
+          />
         </el-form-item>
       </el-form>
       <template #footer>
@@ -152,9 +178,52 @@ const getStatusText = (status) => (status == 1 ? '启用' : '禁用')
 </template>
 
 <style scoped>
-#title {
-  font-size: 20px;
+.category-management-container {
+  padding: 20px;
+  background-color: #f5f7fa;
+  min-height: calc(100vh - 40px);
+}
+
+/* 关键：统一样式容器，确保左对齐 */
+.section-header {
+  padding: 0; /* 不加额外 padding */
+  margin-bottom: 20px;
+}
+
+.page-title {
+  font-size: 24px;
   font-weight: 600;
-  margin-bottom: 16px;
+  color: #303133;
+  margin: 0; /* 清除默认 margin */
+  line-height: 1.2;
+}
+
+.add-btn {
+  border-radius: 4px;
+  font-weight: 500;
+  padding: 10px 20px;
+  margin: 0; /* 防止按钮自带 margin */
+}
+
+/* 表格卡片 */
+.table-card {
+  background: #ffffff;
+  border-radius: 6px;
+  padding: 20px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.data-table :deep(.el-table__header) th {
+  background-color: #f5f7fa;
+  color: #606266;
+  font-weight: 600;
+}
+
+.pagination-container {
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+  padding-top: 20px;
+  border-top: 1px solid #eee;
 }
 </style>

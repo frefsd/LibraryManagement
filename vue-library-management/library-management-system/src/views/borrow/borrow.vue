@@ -1,6 +1,6 @@
 <script setup>
 import { ref, onMounted, nextTick } from 'vue'
-import { queryPageApi, borrowApi, returnApi } from '@/api/borrow'
+import { queryPageApi, borrowApi, returnApi, renewApi } from '@/api/borrow'
 import { getAvailableBooksApi } from '@/api/book'
 import { ElMessage, ElMessageBox } from 'element-plus'
 
@@ -123,6 +123,25 @@ const handleReturn = async (id) => {
   }
 }
 
+const handleRenew = async (id) => {
+  try {
+    await ElMessageBox.confirm("确认为该图书办理续借？续借将延长应还日期。", '续借提示', {
+      confirmButtonText: '确认续借',
+      cancelButtonClass: '取消',
+      type: 'warning'
+    })
+
+    await renewApi(id) //调用续借接口
+    ElMessage.success('续借成功')
+    loadTableData() //刷新列表
+  } catch (err) {
+    if (err !== 'cancel') {
+      console.error('续借失败:', err)
+    }
+  }
+}
+
+
 const handleBorrowConfirm = () => {
   borrowFormRef.value?.validate(async (valid) => {
     if (!valid) return
@@ -211,12 +230,18 @@ onMounted(() => {
             </el-tag>
           </template>
         </el-table-column>
-        <el-table-column label="操作" width="100" align="center">
+        <el-table-column label="操作" width="180" align="center">
           <template #default="{ row }">
+            <!--归还按钮（仅未归还时显示）-->
             <el-button v-if="!row.actualReturnDate" size="default" type="primary" @click="handleReturn(row.id)">
               归还
             </el-button>
-            <span v-else>—</span>
+            <!--续借按钮（仅未归还和 "借阅中" 时显示）-->
+            <el-button v-if="!row.actualReturnDate && row.status == 1" size="default" type="warning"
+              @click="handleRenew(row.id)">
+              续借
+            </el-button>
+            <span v-else-if="row.actualReturnDate">—</span>
           </template>
         </el-table-column>
       </el-table>
