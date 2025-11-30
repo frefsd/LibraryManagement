@@ -11,7 +11,7 @@ var builder = WebApplication.CreateBuilder(args);
 //=========Services 配置============
 builder.Services.AddCors(options =>
 {
-    options.AddPolicy("AllowAll",policy =>
+    options.AddPolicy("AllowAll", policy =>
     {
         policy.WithOrigins(
             "http://localhost:6060"
@@ -48,9 +48,9 @@ builder.Services.AddSwaggerGen();
 
 // 添加数据库上下文
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
-    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"))
-    .LogTo(Console.WriteLine, LogLevel.Information) //输出SQL语句到控制台
-    );
+    options.UseSqlServer(
+        builder.Configuration.GetConnectionString("DefaultConnection")));
+
 
 //添加仓储层
 builder.Services.AddScoped<IBookRepository, BookRepository>();
