@@ -58,7 +58,7 @@ namespace LibraryManagement.Services.Impl
         }
 
         /// <summary>
-        /// 获取借阅信息
+        /// 新增借阅
         /// </summary>
         /// <param name="dto"></param>
         /// <returns></returns>
@@ -131,7 +131,7 @@ namespace LibraryManagement.Services.Impl
         }
 
         /// <summary>
-        /// 获取图书归还信息
+        /// 归还图书
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
@@ -168,11 +168,65 @@ namespace LibraryManagement.Services.Impl
         }
 
         /// <summary>
-        /// 检查图书是否正在被借阅（存在未归还记录）
+        /// 续借图书
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public async Task RenewAsync(int id)
+        {
+            //获取借阅信息
+            var record = await _borrowRepository.GetByIdAsync(id);
+            if (record == null) 
+                throw new DomainException("借阅记录不存在");
+
+            //已归还的不能续借
+            if (record.ActualReturnDate.HasValue)
+                throw new DomainException("该图书已归还，无法续借");
+
+            //逾期的图书不能续借
+            if (record.Status != 1)
+                throw new DomainException("只用借阅中的图书才能续借");
+
+            //限制续借次数
+            if (record.RenewCount >= 1)
+                throw new DomainException("该图书已续借，无法再次续借");
+
+            //禁止逾期超过N天的续借
+            if (DateTime.Now > record.DueDate.AddDays(7))
+                throw new DomainException("逾期时间过长，无法续借");
+
+            using var transaction = await _borrowRepository.BeginDbContextTransactionAsync();
+            try
+            {
+                //延长应还日期
+                record.DueDate = record.DueDate.AddDays(30);
+                record.UpdateTime = DateTime.Now; //更新时间
+
+                //判断该图书是否续借过
+                if (record.RenewCount >= 1)
+                    throw new DomainException("每本书仅允许续借一次");
+
+                //记录续借次数
+                record.RenewCount = (record.RenewCount ?? 0) + 1;
+
+                await _borrowRepository.UpdateAsync(record);
+
+                await _borrowRepository.SaveChangesAsync();
+
+                await transaction.CommitAsync();
+            }
+            catch (Exception)
+            {
+                await transaction.RollbackAsync(); //回滚
+                throw;
+            }
+        }
+
+        /// <summary>
+        /// 检查指定用户是否存在未归还的借阅记录
         /// </summary>
         /// <param name="userId"></param>
         /// <returns></returns>
-        /// <exception cref="NotImplementedException"></exception>
         public async Task<bool> HasActiveBorrowAsync(int userId)
         {
             return await _borrowRepository.HasActiveBorrowAsync(userId);
@@ -183,10 +237,11 @@ namespace LibraryManagement.Services.Impl
         /// </summary>
         /// <param name="bookId"></param>
         /// <returns></returns>
-        /// <exception cref="NotImplementedException"></exception>
         public async Task<bool> HasUnreturnRecordAsync(int bookId)
         {
             return await _borrowRepository.HasUnreturnRecordAsync(bookId);
         }
+
+       
     }
 }

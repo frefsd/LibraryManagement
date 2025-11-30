@@ -29,6 +29,13 @@ namespace LibraryManagement.Services
         Task ReturnAsync(int id);
 
         /// <summary>
+        /// 续借图书
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        Task RenewAsync(int id);
+
+        /// <summary>
         /// 检查指定用户是否存在未归还的借阅记录
         /// </summary>
         /// <param name="userId"></param>

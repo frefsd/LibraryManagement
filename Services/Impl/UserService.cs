@@ -23,11 +23,10 @@ namespace LibraryManagement.Services.Impl
         /// </summary>
         /// <param name="name"></param>
         /// <param name="phone"></param>
-        /// <param name="cardName"></param>
+        /// <param name="cardNumber"></param>
         /// <param name="page"></param>
         /// <param name="pageSize"></param>
         /// <returns></returns>
-        /// <exception cref="NotImplementedException"></exception>
         public async Task<PageResult<User>> GetUsersAsync(string? name, string? phone, string? cardNumber, int page, int pageSize)
         {
             page = Math.Max(page, 1);
@@ -35,15 +34,17 @@ namespace LibraryManagement.Services.Impl
 
             var skip = (page - 1) * pageSize;
 
+            //获取用户列表
             var users = await _userRepository.GetPagedAsync(name, phone, cardNumber, page, pageSize);
+            //获取总用户数
             var total = await _userRepository.GetCountAsync(name, phone, cardNumber);
 
             return new PageResult<User>
             {
-               Total = total,
-               Page = page,
-               PageSize = pageSize,
-               Rows = users
+               Total = total, //总用户量
+               Page = page, //当前页面
+               PageSize = pageSize, //每页展示的数据
+               Rows = users //总用户列表
             };
         }
 

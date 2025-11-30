@@ -39,9 +39,17 @@ namespace LibraryManagement.Repository
         /// <summary>
         /// 根据id获取用户信息
         /// </summary>
+        /// <param name="id"></param>
         /// <returns></returns>
         Task<User?> GetByIdAsync(int id);
 
+        /// <summary>
+        /// 获取总用户数
+        /// </summary>
+        /// <param name="name"></param>
+        /// <param name="phone"></param>
+        /// <param name="cardNumber"></param>
+        /// <returns></returns>
         Task<int> GetCountAsync(string? name, string? phone, string? cardNumber);
 
         /// <summary>
@@ -61,7 +69,7 @@ namespace LibraryManagement.Repository
         /// 设置用户的状态（1.启用 2.禁用）
         /// </summary>
         /// <param name="id"></param>
-        /// <param name="v"></param>
+        /// <param name="status"></param>
         /// <returns></returns>
         Task<bool> SetStatusAsync(int id, int status);
 
@@ -75,7 +83,7 @@ namespace LibraryManagement.Repository
         /// <summary>
         /// 通过用户名查询该用户是否存在
         /// </summary>
-        /// <param name="v"></param>
+        /// <param name="username"></param>
         /// <returns></returns>
         Task<User?> GetByUsernameAsync(string username);
     }

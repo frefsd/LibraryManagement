@@ -21,12 +21,14 @@ namespace LibraryManagement.Repository
         /// <param name="id"></param>
         /// <returns></returns>
         Task<BorrowRecord?> GetByIdAsync(int id);
+
         /// <summary>
         /// 添加的借阅人信息
         /// </summary>
         /// <param name="entity"></param>
         /// <returns></returns>
         Task AddAsync(BorrowRecord entity);
+
         /// <summary>
         /// 修改借阅人信息
         /// </summary>

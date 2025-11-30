@@ -30,6 +30,7 @@ namespace LibraryManagement.Models
         public DateTime DueDate { get; set; } // 应还时间（如 BorrowDate + 30天）
         public DateTime? ActualReturnDate { get; set; } // 实际归还时间（null=未还）
         public int Status { get; set; } = 1;  // 状态：1-借阅中，2-已归还，3-逾期
+        public int? RenewCount { get; set; } // 续借 0-未续借 1-续借
 
         // 计算是否逾期
         [NotMapped]

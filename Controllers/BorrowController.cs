@@ -33,7 +33,7 @@ namespace LibraryManagement.Controllers
         }
 
         /// <summary>
-        /// 获取借阅信息
+        /// 新增借阅
         /// </summary>
         /// <param name="dto"></param>
         /// <returns></returns>
@@ -48,7 +48,7 @@ namespace LibraryManagement.Controllers
         }
 
         /// <summary>
-        /// 获取图书归还信息
+        /// 归还图书
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
@@ -57,6 +57,18 @@ namespace LibraryManagement.Controllers
         {
             await _borrowService.ReturnAsync(id);
             return Ok(new { code = true, msg = "归还成功" });
+        }
+
+        /// <summary>
+        /// 续借图书
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        [HttpPost]
+        public async Task<IActionResult> Renew(int id)
+        {
+            await _borrowService.RenewAsync(id);
+            return Ok(new { code = true, msg = "续借成功"});
         }
     }
 }
