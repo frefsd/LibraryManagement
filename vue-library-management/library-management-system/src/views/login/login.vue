@@ -8,39 +8,51 @@ let loginForm = ref({ username: '', password: '' })
 let router = useRouter()
 let route = useRoute()
 
+const loading = ref(false)
+
 //登录
 const login = async () => {
-  const result = await loginApi(loginForm.value)
-  if (result.code) {// 登录成功
-    ElMessage.success('登录成功')
-    localStorage.setItem('loginUser', JSON.stringify(result.data))
-    // 跳转到原页面或首页
-    const redirect = route.query.redirect || '/index'
-    router.push(redirect)
-  } else {
-    ElMessage.error(result.msg)
+  if (!loginForm.value.username || !loginForm.value.password) {
+    ElMessage.warning("请输入用户名和密码")
+    return
+  }
+  try {
+    const result = await loginApi(loginForm.value)
+    if (result.code) {// 登录成功
+      ElMessage.success('登录成功')
+      localStorage.setItem('loginUser', JSON.stringify(result.data))
+      // 跳转到原页面或首页
+      const redirect = route.query.redirect || '/index'
+      router.push(redirect)
+    } else {
+      ElMessage.error(result.msg || '登录失败')
+    }
+  } catch (err) {
+    console.error('登录异常:', err)
+    ElMessage.error('网络错误，请稍后重试')
+
+  } finally {
+    loading.value = false //无论成功失败，结束loading
   }
 }
 
-//取消
-const cancel = () => {
-  loginForm.value = {
-    username: '',
-    password: ''
+ //取消
+  const cancel = () => {
+    loginForm.value = {
+      username: '', password: ''
+    }
   }
-}
 </script>
 
 <template>
   <div id="container">
-    <!-- 彩色粒子 -->
     <div class="particle"></div>
     <div class="particle"></div>
     <div class="particle"></div>
     <div class="particle"></div>
     <div class="particle"></div>
-    
-    <div class="login-form">
+
+    <div class="login-form" @keyup.enter="login">
       <el-form label-width="80px">
         <p class="title">图书管理系统</p>
         <el-form-item label="用户名" prop="username">
@@ -64,16 +76,14 @@ const cancel = () => {
 #container {
   min-height: 100vh;
   padding: 0;
-  background: linear-gradient(
-    45deg,
-    #ff6b6b,
-    #4ecdc4,
-    #45b7d1,
-    #96ceb4,
-    #feca57,
-    #ff9ff3,
-    #54a0ff
-  );
+  background: linear-gradient(45deg,
+      #ff6b6b,
+      #4ecdc4,
+      #45b7d1,
+      #96ceb4,
+      #feca57,
+      #ff9ff3,
+      #54a0ff);
   background-size: 400% 400%;
   animation: gradientShift 8s ease infinite;
   display: flex;
@@ -87,9 +97,11 @@ const cancel = () => {
   0% {
     background-position: 0% 50%;
   }
+
   50% {
     background-position: 100% 50%;
   }
+
   100% {
     background-position: 0% 50%;
   }
@@ -102,7 +114,7 @@ const cancel = () => {
   left: -50%;
   width: 200%;
   height: 200%;
-  background: 
+  background:
     radial-gradient(circle at 20% 80%, rgba(255, 107, 107, 0.3) 0%, transparent 50%),
     radial-gradient(circle at 80% 20%, rgba(78, 205, 196, 0.3) 0%, transparent 50%),
     radial-gradient(circle at 40% 40%, rgba(255, 159, 243, 0.3) 0%, transparent 50%),
@@ -117,21 +129,22 @@ const cancel = () => {
   left: 0;
   right: 0;
   bottom: 0;
-  background: 
-    repeating-linear-gradient(
-      45deg,
+  background:
+    repeating-linear-gradient(45deg,
       transparent,
       transparent 10px,
       rgba(255, 255, 255, 0.1) 10px,
-      rgba(255, 255, 255, 0.1) 20px
-    );
+      rgba(255, 255, 255, 0.1) 20px);
   animation: slide 20s linear infinite;
 }
 
 @keyframes float {
-  0%, 100% {
+
+  0%,
+  100% {
     transform: translateY(0px) rotate(0deg);
   }
+
   50% {
     transform: translateY(-20px) rotate(180deg);
   }
@@ -141,6 +154,7 @@ const cancel = () => {
   0% {
     background-position: 0 0;
   }
+
   100% {
     background-position: 100px 100px;
   }
@@ -200,18 +214,23 @@ const cancel = () => {
 }
 
 @keyframes particleFloat {
-  0%, 100% {
+
+  0%,
+  100% {
     transform: translateY(0px) rotate(0deg) scale(1);
     opacity: 0.7;
   }
+
   25% {
     transform: translateY(-40px) rotate(90deg) scale(1.1);
     opacity: 1;
   }
+
   50% {
     transform: translateY(-20px) rotate(180deg) scale(0.9);
     opacity: 0.8;
   }
+
   75% {
     transform: translateY(-60px) rotate(270deg) scale(1.2);
     opacity: 0.9;
@@ -224,7 +243,7 @@ const cancel = () => {
   margin: 0;
   border: none;
   border-radius: 20px;
-  box-shadow: 
+  box-shadow:
     0 20px 40px rgba(0, 0, 0, 0.15),
     0 8px 24px rgba(0, 0, 0, 0.1),
     inset 0 1px 0 rgba(255, 255, 255, 0.2);
@@ -239,7 +258,7 @@ const cancel = () => {
 
 .login-form:hover {
   transform: translateY(-5px);
-  box-shadow: 
+  box-shadow:
     0 25px 50px rgba(0, 0, 0, 0.2),
     0 12px 30px rgba(0, 0, 0, 0.15),
     inset 0 1px 0 rgba(255, 255, 255, 0.2);
@@ -263,9 +282,12 @@ const cancel = () => {
 }
 
 @keyframes titleGradient {
-  0%, 100% {
+
+  0%,
+  100% {
     background-position: 0% 50%;
   }
+
   50% {
     background-position: 100% 50%;
   }
@@ -285,12 +307,16 @@ const cancel = () => {
 }
 
 @keyframes lineGradient {
-  0%, 100% {
+
+  0%,
+  100% {
     background: linear-gradient(90deg, #ff6b6b, #4ecdc4, #54a0ff);
   }
+
   33% {
     background: linear-gradient(90deg, #4ecdc4, #54a0ff, #ff6b6b);
   }
+
   66% {
     background: linear-gradient(90deg, #54a0ff, #ff6b6b, #4ecdc4);
   }
@@ -369,9 +395,12 @@ const cancel = () => {
 }
 
 @keyframes buttonGradient {
-  0%, 100% {
+
+  0%,
+  100% {
     background-position: 0% 50%;
   }
+
   50% {
     background-position: 100% 50%;
   }
@@ -400,16 +429,16 @@ const cancel = () => {
     padding: 40px 24px;
     margin: 20px;
   }
-  
+
   .title {
     font-size: 28px;
   }
-  
+
   :deep(.el-form-item__content) {
     flex-direction: column;
     align-items: center;
   }
-  
+
   .button {
     width: 100%;
     max-width: 200px;

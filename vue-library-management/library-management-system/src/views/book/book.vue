@@ -1,4 +1,6 @@
 <script setup>
+const loading = ref(false)
+
 import { onMounted, ref, watch } from 'vue'
 import {
   queryPageApi,
@@ -11,6 +13,7 @@ import { queryAllApi as queryAllCategoryApi } from '@/api/category'
 import { queryAllApi as queryAllPublisherApi } from '@/api/publisher'
 import { ElMessage, ElMessageBox } from 'element-plus'
 import { Plus } from '@element-plus/icons-vue'
+import { tr } from 'element-plus/es/locales.mjs'
 
 // ============ 搜索相关 ============
 const searchBook = ref({
@@ -85,6 +88,7 @@ const loadPublishers = async () => {
 
 // ============ 分页与搜索 ============
 const queryPage = async () => {
+  loading.value = true
   const result = await queryPageApi(
     searchBook.value.begin,
     searchBook.value.end,
@@ -92,6 +96,7 @@ const queryPage = async () => {
     pagination.value.currentPage,
     pagination.value.pageSize
   )
+  loading.value = false
 
   if (result.code) {
     tableData.value = result.data.rows || []
@@ -372,7 +377,7 @@ const formatDateTime = (dateStr) => {
     </div>
 
     <!-- 图书列表 -->
-    <div class="table-card">
+    <div class="table-card" v-loading="loading">
       <el-table :data="tableData" border style="width: 100%" fit class="data-table">
         <el-table-column label="序号" width="70" align="center">
           <template #default="scope">

@@ -181,6 +181,7 @@ namespace LibraryManagement.Services.Impl
             var bookCounts = await booksQuery
                 .GroupBy(b => b.CategoryId)
                 .ToDictionaryAsync(g => g.Key, g => g.Sum(x => x.TotalCopies));
+ 
 
             //3.查询每个分类的借阅总次数
             var borrowCounts = await (_borrowRepository.GetQueryableAsync())

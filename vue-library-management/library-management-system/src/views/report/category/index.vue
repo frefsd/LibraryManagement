@@ -62,10 +62,26 @@ const loadChartData = async () => {
 
 // 更新表格数据
 const updateTableData = () => {
-  const total = chartData.value.reduce((sum, curr) => sum + curr.bookCount, 0)
-  tableData.value = chartData.value.map(item => ({
+  const isBookCount = searchForm.value.type === 'bookCount'
+
+  //先拷贝原始数据
+  const data = chartData.value.map(item => ({ ...item }))
+
+  //按当前type排序，从大到小
+  data.sort((a, b) => {
+    const valueA = isBookCount ? a.bookCount : a.borrowCount
+    const valueB = isBookCount ? b.bookCount : b.borrowCount
+    return valueB - valueA //降序排列
+  })
+
+  //计算total
+  const total = chartData.value.reduce((sum, curr) => sum + (isBookCount ? curr.bookCount : curr.borrowCount), 0)
+
+  tableData.value = data.map(item => ({
     ...item,
-    percentage: total > 0 ? ((item.bookCount / total) * 100).toFixed(2) : '0.00'
+
+    //添加percentage
+    percentage: total > 0 ? (((isBookCount ? item.bookCount : item.borrowCount) / total) * 100).toFixed(2) : '0.00'
   }))
 }
 
@@ -74,7 +90,7 @@ const renderChart = () => {
   if (!chartInstance) return
 
   const isBookCount = searchForm.value.type === 'bookCount'
-  
+
   const option = {
     title: {
       text: isBookCount ? '各分类图书数量统计' : '各分类借阅次数统计',
@@ -149,13 +165,13 @@ const clear = () => {
 <template>
   <div>
     <div id="title">图书分类统计</div><br>
-    
+
     <!-- 统计条件筛选 -->
     <el-form :inline="true" :model="searchForm" class="demo-form-inline">
       <el-form-item label="统计类型">
         <el-select v-model="searchForm.type" placeholder="请选择统计类型" @change="loadChartData">
-          <el-option label="图书数量统计" value="bookCount"/>
-          <el-option label="借阅次数统计" value="borrowCount"/>
+          <el-option label="图书数量统计" value="bookCount" />
+          <el-option label="借阅次数统计" value="borrowCount" />
         </el-select>
       </el-form-item>
       <el-form-item>
@@ -208,10 +224,10 @@ const clear = () => {
         </div>
       </template>
       <el-table :data="tableData" border style="width: 100%">
-        <el-table-column type="index" label="序号" width="60" align="center"/>
-        <el-table-column prop="name" label="分类名称" align="center"/>
-        <el-table-column prop="bookCount" label="图书数量" align="center"/>
-        <el-table-column prop="borrowCount" label="借阅次数" align="center"/>
+        <el-table-column type="index" label="序号" width="60" align="center" />
+        <el-table-column prop="name" label="分类名称" align="center" />
+        <el-table-column prop="bookCount" label="图书数量" align="center" />
+        <el-table-column prop="borrowCount" label="借阅次数" align="center" />
         <el-table-column prop="percentage" label="占比" align="center">
           <template #default="scope">
             {{ scope.row.percentage }}%

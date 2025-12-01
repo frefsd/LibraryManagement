@@ -84,6 +84,18 @@ const loadTableData = async () => {
     if (res.data?.rows) {
       tableData.value = res.data.rows
       total.value = res.data.total || 0
+
+      // 排序：未归还的在前，已归还的在后；同组内按借出时间倒序
+      tableData.value.sort((a, b) => {
+        const aReturned = !!a.actualReturnDate
+        const bReturned = !!b.actualReturnDate
+
+        if (aReturned !== bReturned) {
+          return aReturned ? 1 : -1 // 未归还优先
+        }
+
+        return new Date(b.borrowDate) - new Date(a.borrowDate) // 时间倒序
+      })
     } else {
       tableData.value = []
       total.value = 0

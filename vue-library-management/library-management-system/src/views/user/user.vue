@@ -1,4 +1,6 @@
 <script setup>
+const loading = ref(false)
+
 import { onMounted, ref } from 'vue'
 import {
   queryPageApi,
@@ -55,6 +57,8 @@ onMounted(() => {
 
 // ============ 分页与搜索 ============
 const queryPage = async () => {
+  loading.value = true
+
   try {
     const res = await queryPageApi(
       searchUser.value.name,
@@ -63,6 +67,7 @@ const queryPage = async () => {
       pagination.value.currentPage,
       pagination.value.pageSize
     )
+    loading.value = false
 
     if (res.code && res.data) {
       tableData.value = res.data.rows || []
@@ -264,7 +269,7 @@ const delById = async (id) => {
     </div>
 
     <!-- 用户列表 -->
-    <div class="table-card">
+    <div class="table-card" v-loading="loading">
       <el-table :data="tableData" border style="width: 100%" fit>
         <el-table-column label="序号" width="70" align="center">
           <template #default="scope">
