@@ -70,6 +70,7 @@ namespace LibraryManagement.Controllers
             {
                 Name = request.Name,
                 Author = request.Author,
+                Price = request.Price,
                 PublishDate = request.PublishDate,
                 CategoryId = request.CategoryId,
                 PublisherId = request.PublisherId,
