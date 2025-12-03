@@ -92,12 +92,12 @@ namespace LibraryManagement.Services.Impl
             if (user.Status != 1) throw new DomainException("该用户已被禁用");
 
             //获取该借阅人借阅的书籍数量
-            var ActiveCount = await _borrowRepository.GetActiveBorrowCountAsync(userId);
+            var ActiveCount = await _borrowRepository.GetActiveBorrowCountAsync(user.Id);
             //判断
-            if (ActiveCount >= 5) throw new DomainException("每位用户最多可借阅 5 本书，请先归还部分图书后再借阅");
+            if (ActiveCount >= 3) throw new DomainException("每位用户最多可借阅 3 本书，请先归还部分图书后再借阅");
 
             //检查该用户是否已借阅此书且未归还
-            var existingRecord = await _borrowRepository.GetByUserIdAndBookIdAsync(userId, dto.BookId);
+            var existingRecord = await _borrowRepository.GetByUserIdAndBookIdAsync(user.Id, dto.BookId);
 
             //判断：如果记录存在，实际归还日期为空
             if (existingRecord != null && existingRecord.ActualReturnDate == null)
@@ -243,7 +243,5 @@ namespace LibraryManagement.Services.Impl
         {
             return await _borrowRepository.HasUnreturnRecordAsync(bookId);
         }
-
-       
     }
 }

@@ -114,8 +114,6 @@ namespace LibraryManagement.Services.Impl
             var existingBook = await _bookRepository.GetByIdAsync(book.Id);
             if (existingBook == null)
                 throw new DomainException($"图书ID {book.Id} 不存在");
-            if (book == null)
-                throw new DomainException("书名不能为空");
 
             // 2. 如果用户尝试将状态从 1（在库）改为 2（下架）
             if (existingBook.Status == 1 && book.Status == 2)
@@ -132,9 +130,12 @@ namespace LibraryManagement.Services.Impl
             existingBook.Price = book.Price;
             existingBook.CategoryId = book.CategoryId;
             existingBook.PublisherId = book.PublisherId;
-            existingBook.TotalCopies = book.TotalCopies;
             existingBook.Status = book.Status;
             existingBook.CoverUrl = book.CoverUrl;
+            if (book.TotalCopies > 0)
+            {
+                existingBook.TotalCopies = book.TotalCopies;
+            }
             existingBook.UpdateTime = DateTime.Now;
 
             await _bookRepository.UpdateAsync(existingBook); // ← 传已跟踪实体
