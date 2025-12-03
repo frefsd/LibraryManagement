@@ -2,6 +2,7 @@
 using LibraryManagement.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Storage;
+using System.Linq.Dynamic.Core;
 
 namespace LibraryManagement.Repository.Impl
 {
@@ -21,16 +22,31 @@ namespace LibraryManagement.Repository.Impl
         /// </summary>
         /// <param name="page"></param>
         /// <param name="pageSize"></param>
+        /// <param name="userName"></param>
+        /// <param name="status"></param>
         /// <returns></returns>
-        public async Task<(List<BorrowRecord> records, long total)> GetPageAsync(int page, int pageSize)
+        public async Task<(List<BorrowRecord> records, long total)> GetPageAsync(int page, int pageSize, string? userName, int? status)
         {
             var query = _applicationDbContext.BorrowRecords
                 .Include(b => b.Book)
                 .Include(b => b.User)
-                .OrderByDescending(b => b.CreateTime);
+                .AsQueryable();
+
+            //按借阅人姓名模糊查询
+            if (!string.IsNullOrWhiteSpace(userName))
+            {
+                query = query.Where(r => r.User.Name.Contains(userName));
+            }
+
+            //按状态进行筛选
+            if (status.HasValue)
+            {
+                query = query.Where(r => r.Status == status.Value);
+            }
 
             var total = await query.CountAsync();
             var records = await query
+                .OrderByDescending(r => r.BorrowDate)
                 .Skip((page - 1) * pageSize)
                 .Take(pageSize)
                 .ToListAsync();

@@ -31,10 +31,12 @@ namespace LibraryManagement.Services.Impl
         /// </summary>
         /// <param name="page"></param>
         /// <param name="pageSize"></param>
+        /// <param name="userName"></param>
+        /// <param name="status"></param>
         /// <returns></returns>
-        public async Task<PageResult<BorrowRecordDto>> GetPageAsync(int page, int pageSize)
+        public async Task<PageResult<BorrowRecordDto>> GetPageAsync(int page, int pageSize, string? userName, int? status)
         {
-            var (records, total) = await _borrowRepository.GetPageAsync(page, pageSize);
+            var (records, total) = await _borrowRepository.GetPageAsync(page, pageSize, userName, status);
             var dtos = records.Select(r => new BorrowRecordDto
             {
                 Id = r.Id,

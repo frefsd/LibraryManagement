@@ -1,6 +1,5 @@
 ﻿using LibraryManagement.Models;
 using LibraryManagement.Result;
-using System.Linq.Dynamic.Core;
 
 namespace LibraryManagement.Repository
 {

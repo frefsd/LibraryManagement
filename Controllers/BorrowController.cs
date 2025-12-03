@@ -26,9 +26,13 @@ namespace LibraryManagement.Controllers
         /// <param name="pageSize"></param>
         /// <returns></returns>
         [HttpGet]
-        public async Task<IActionResult> QueryPage(int page = 1, int pageSize = 10)
+        public async Task<IActionResult> QueryPage(
+            [FromQuery]int page = 1, 
+            [FromQuery]int pageSize = 10,
+            [FromQuery]string? userName = null,
+            [FromQuery]int? status = null)
         {
-            var result = await _borrowService.GetPageAsync(page, pageSize);
+            var result = await _borrowService.GetPageAsync(page, pageSize, userName, status);
             return Ok(new { code = true, data = new { rows = result.Rows, total = result.Total } });
         }
 

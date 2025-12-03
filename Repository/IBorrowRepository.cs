@@ -13,8 +13,11 @@ namespace LibraryManagement.Repository
         /// </summary>
         /// <param name="page"></param>
         /// <param name="pageSize"></param>
+        /// <param name="userName"></param>
+        /// <param name="status"></param>
         /// <returns></returns>
-        Task<(List<BorrowRecord> records, long total)> GetPageAsync(int page, int pageSize);
+        Task<(List<BorrowRecord> records, long total)> GetPageAsync(int page, int pageSize, string? userName, int? status);
+
         /// <summary>
         /// 通过id获取借阅信息
         /// </summary>
