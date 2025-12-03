@@ -13,7 +13,6 @@ import { queryAllApi as queryAllCategoryApi } from '@/api/category'
 import { queryAllApi as queryAllPublisherApi } from '@/api/publisher'
 import { ElMessage, ElMessageBox } from 'element-plus'
 import { Plus } from '@element-plus/icons-vue'
-import { tr } from 'element-plus/es/locales.mjs'
 
 // ============ 搜索相关 ============
 const searchBook = ref({

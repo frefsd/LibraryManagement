@@ -1,11 +1,11 @@
 import request from '@/utils/request'
 
 //分页查询
-export const queryPageApi = (page, pageSize) =>
+export const queryPageApi = (params) =>
   request({
     url: '/borrow/querypage',
     method: 'get',
-    params: { page, pageSize }
+    params
   })
 
 //新增借阅

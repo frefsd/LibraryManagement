@@ -13,7 +13,11 @@ const page = ref(1)
 const pageSize = ref(10)
 const booksLoading = ref(false)
 const bookOptions = ref([])
-
+//根据借阅人姓名或者借阅状态进行查询借阅信息
+const searchForm = ref({
+  userName: '',
+  status: ''
+})
 const showBorrowDialog = ref(false)
 const borrowForm = ref({
   bookId: null,
@@ -80,22 +84,18 @@ const handleDialogClosed = () => {
 const loadTableData = async () => {
   loading.value = true
   try {
-    const res = await queryPageApi(page.value, pageSize.value)
+    //构造查询条件
+    const params = {
+      page: page.value,
+      pageSize: pageSize.value,
+      userName: searchForm.value.userName.trim() || undefined, //空转undefined,避免""
+      status: searchForm.value.status === '' ? undefined : Number(searchForm.value.status)
+    }
+
+    const res = await queryPageApi(params)
     if (res.data?.rows) {
       tableData.value = res.data.rows
       total.value = res.data.total || 0
-
-      // 排序：未归还的在前，已归还的在后；同组内按借出时间倒序
-      tableData.value.sort((a, b) => {
-        const aReturned = !!a.actualReturnDate
-        const bReturned = !!b.actualReturnDate
-
-        if (aReturned !== bReturned) {
-          return aReturned ? 1 : -1 // 未归还优先
-        }
-
-        return new Date(b.borrowDate) - new Date(a.borrowDate) // 时间倒序
-      })
     } else {
       tableData.value = []
       total.value = 0
@@ -107,6 +107,12 @@ const loadTableData = async () => {
   }
 }
 
+const handleSearchReset = () => {
+  searchForm.value.userName = ''
+  searchForm.value.status = ''
+  page.value = 1 //重置到第一页
+  loadTableData()
+}
 const handleSizeChange = (val) => {
   pageSize.value = val
   page.value = 1
@@ -217,6 +223,22 @@ onMounted(() => {
 
     <!-- 借阅表格 -->
     <el-card shadow="never" style="margin-top: 16px;">
+      <!-- 搜索与筛选区域 -->
+      <div class="search-section"
+        style="margin-bottom: 16px; display: flex; gap: 16px; align-items: end; flex-wrap: wrap;">
+        <el-input size="large" v-model="searchForm.userName" placeholder="请输入借阅人姓名" style="width: 200px"
+          @keyup.enter="loadTableData" />
+
+        <el-select size="large" v-model="searchForm.status" placeholder="请选择状态" style="width: 160px"
+          @change="loadTableData">
+          <el-option :value="1" label="借阅中" />
+          <el-option :value="2" label="已归还" />
+          <el-option :value="3" label="逾期" />
+        </el-select>
+
+        <el-button type="primary" @click="loadTableData">查询</el-button>
+        <el-button @click="handleSearchReset">重置</el-button>
+      </div>
       <el-table :data="tableData" border stripe v-loading="loading" style="width: 100%" max-height="600">
         <el-table-column type="index" label="序号" width="60" align="center" />
         <el-table-column prop="bookName" label="图书名称" min-width="180" />
@@ -320,8 +342,6 @@ onMounted(() => {
     </el-dialog>
   </div>
 </template>
-
-
 
 <style scoped>
 .borrow-container {

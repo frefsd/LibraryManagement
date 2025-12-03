@@ -1,25 +1,15 @@
 <script setup>
 import { ref, onMounted } from 'vue'
 import { ElMessage, ElMessageBox } from 'element-plus'
-import {
-  queryPageApi,
-  addApi,
-  queryInfoApi,
-  updateApi,
-  deleteApi
-} from '@/api/category'
+import { queryPageApi, addApi, queryInfoApi, updateApi, deleteApi } from '@/api/category'
 
 const tableData = ref([])
 const pagination = ref({ currentPage: 1, pageSize: 10, total: 0 })
 const dialogVisible = ref(false)
 const formTitle = ref('')
 const categoryFormRef = ref()
-
-const category = ref({
-  id: '',
-  name: '',
-  status: 1
-})
+const loading = ref(false)
+const category = ref({ id: '', name: '', status: 1 })
 
 const rules = ref({
   name: [
@@ -33,7 +23,10 @@ onMounted(() => {
 })
 
 const queryPage = async () => {
+  loading.value = true
   const res = await queryPageApi(pagination.value.currentPage, pagination.value.pageSize)
+
+  loading.value = false
   if (res.code) {
     tableData.value = res.data.rows || []
     pagination.value.total = res.data.total || 0
@@ -114,13 +107,13 @@ const getStatusText = (status) => (status == 1 ? '启用' : '禁用')
 
     <!-- 操作区域 -->
     <div class="section-header">
-      <el-button type="success" @click="openDialog('add')" class="add-btn">
+      <el-button  type="success" @click="openDialog('add')" class="add-btn">
         新增分类
       </el-button>
     </div>
 
     <!-- 表格卡片 -->
-    <div class="table-card">
+    <div class="table-card" v-loading="loading">
       <el-table :data="tableData" border style="width: 100%" fit class="data-table">
         <el-table-column prop="id" label="ID" width="60" align="center" />
         <el-table-column prop="name" label="分类名称" min-width="180" />
@@ -139,17 +132,9 @@ const getStatusText = (status) => (status == 1 ? '启用' : '禁用')
 
       <!-- 分页 -->
       <div class="pagination-container">
-        <el-pagination
-          v-model:current-page="pagination.currentPage"
-          v-model:page-size="pagination.pageSize"
-          :total="pagination.total"
-          :page-sizes="[5, 10, 20]"
-          layout="total, sizes, prev, pager, next"
-          @size-change="handleSizeChange"
-          @current-change="handleCurrentChange"
-          class="pagination"
-          background
-        />
+        <el-pagination v-model:current-page="pagination.currentPage" v-model:page-size="pagination.pageSize"
+          :total="pagination.total" :page-sizes="[5, 10, 20]" layout="total, sizes, prev, pager, next"
+          @size-change="handleSizeChange" @current-change="handleCurrentChange" class="pagination" background />
       </div>
     </div>
 
@@ -160,13 +145,8 @@ const getStatusText = (status) => (status == 1 ? '启用' : '禁用')
           <el-input v-model="category.name" placeholder="请输入分类名称" />
         </el-form-item>
         <el-form-item label="状态">
-          <el-switch
-            v-model="category.status"
-            :active-value="1"
-            :inactive-value="0"
-            active-text="启用"
-            inactive-text="禁用"
-          />
+          <el-switch v-model="category.status" :active-value="1" :inactive-value="0" active-text="启用"
+            inactive-text="禁用" />
         </el-form-item>
       </el-form>
       <template #footer>
@@ -186,7 +166,8 @@ const getStatusText = (status) => (status == 1 ? '启用' : '禁用')
 
 /* 关键：统一样式容器，确保左对齐 */
 .section-header {
-  padding: 0; /* 不加额外 padding */
+  padding: 0;
+  /* 不加额外 padding */
   margin-bottom: 20px;
 }
 
@@ -194,7 +175,8 @@ const getStatusText = (status) => (status == 1 ? '启用' : '禁用')
   font-size: 24px;
   font-weight: 600;
   color: #303133;
-  margin: 0; /* 清除默认 margin */
+  margin: 0;
+  /* 清除默认 margin */
   line-height: 1.2;
 }
 
@@ -202,7 +184,8 @@ const getStatusText = (status) => (status == 1 ? '启用' : '禁用')
   border-radius: 4px;
   font-weight: 500;
   padding: 10px 20px;
-  margin: 0; /* 防止按钮自带 margin */
+  margin: 0;
+  /* 防止按钮自带 margin */
 }
 
 /* 表格卡片 */
