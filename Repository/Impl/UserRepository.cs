@@ -1,6 +1,5 @@
 ﻿using LibraryManagement.AppDbContext;
 using LibraryManagement.Models;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
 namespace LibraryManagement.Repository.Impl
@@ -29,7 +28,8 @@ namespace LibraryManagement.Repository.Impl
             var query = _applicationDbContext.Users.AsQueryable();
 
             if (!string.IsNullOrEmpty(name))
-                query = query.Where(u => u.Name!.Contains(name));
+                //精确查询
+                query = query.Where(u => u.Name.Equals(name));
             if (!string.IsNullOrEmpty(phone))
                 query = query.Where(u => u.Phone!.Contains(phone));
             if (!string.IsNullOrEmpty(cardNumber))
@@ -92,12 +92,19 @@ namespace LibraryManagement.Repository.Impl
             return await _applicationDbContext.Users.FindAsync(id);
         }
 
+        /// <summary>
+        /// 通过用户姓名，手机号，或者借书卡号查询用户信息
+        /// </summary>
+        /// <param name="name"></param>
+        /// <param name="phone"></param>
+        /// <param name="cardNumber"></param>
+        /// <returns></returns>
         public async Task<int> GetCountAsync(string? name, string? phone, string? cardNumber)
         {
             var query = _applicationDbContext.Users.AsQueryable();
 
             if (!string.IsNullOrEmpty(name))
-                query = query.Where(u => u.Name!.Contains(name));
+                query = query.Where(u => u.Name.Equals(name));
             if (!string.IsNullOrEmpty(phone))
                 query = query.Where(u => u.Phone!.Contains(phone));
             if (!string.IsNullOrEmpty(cardNumber))

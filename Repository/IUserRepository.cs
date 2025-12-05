@@ -44,7 +44,7 @@ namespace LibraryManagement.Repository
         Task<User?> GetByIdAsync(int id);
 
         /// <summary>
-        /// 获取总用户数
+        /// 通过用户姓名，手机号，或者借书卡号查询用户信息
         /// </summary>
         /// <param name="name"></param>
         /// <param name="phone"></param>
