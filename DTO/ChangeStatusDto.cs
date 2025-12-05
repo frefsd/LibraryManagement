@@ -2,6 +2,9 @@
 
 namespace LibraryManagement.DTO
 {
+    /// <summary>
+    /// 启用/禁用用户状态
+    /// </summary>
     public class ChangeStatusDto
     {
         [Required]

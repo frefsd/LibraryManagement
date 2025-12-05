@@ -1,11 +1,11 @@
 ﻿namespace LibraryManagement.DTO
 {
     /// <summary>
-    /// 用户前端发起借书请求时传参
+    /// 新增借阅请求参数
     /// </summary>
     public class BorrowRequestDto
     {
-            public int BookId { get; set; }
-            public string? UserInput { get; set; }
+            public int BookId { get; set; } //图书ID
+            public string? UserInput { get; set; } //用户输入用户名或者用户ID
     }
 }

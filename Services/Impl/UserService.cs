@@ -36,15 +36,15 @@ namespace LibraryManagement.Services.Impl
 
             //获取用户列表
             var users = await _userRepository.GetPagedAsync(name, phone, cardNumber, page, pageSize);
-            //获取总用户数
+            //根据用户名，手机号或者借书卡号获取用户信息
             var total = await _userRepository.GetCountAsync(name, phone, cardNumber);
 
             return new PageResult<User>
             {
-               Total = total, //总用户量
-               Page = page, //当前页面
-               PageSize = pageSize, //每页展示的数据
-               Rows = users //总用户列表
+                Total = total, //总用户量
+                Page = page, //当前页面
+                PageSize = pageSize, //每页展示的数据
+                Rows = users //总用户列表
             };
         }
 
@@ -56,8 +56,10 @@ namespace LibraryManagement.Services.Impl
         /// <exception cref="DomainException"></exception>
         public async Task<User?> AddUserAsync(User user)
         {
-            if (string.IsNullOrWhiteSpace(user.CardNumber)) throw new DomainException("借书卡号不能为空");
-            if (await _userRepository.ExistsByCardNumberAsync(user.CardNumber)) throw new DomainException($"借书卡号{user.CardNumber}已存在");
+            if (string.IsNullOrWhiteSpace(user.CardNumber))
+                throw new DomainException("借书卡号不能为空");
+            if (await _userRepository.ExistsByCardNumberAsync(user.CardNumber))
+                throw new DomainException($"借书卡号{user.CardNumber}已存在");
             user.CreateTime = DateTime.Now;
             user.Status = 1; //默认启用
 
@@ -81,9 +83,11 @@ namespace LibraryManagement.Services.Impl
         {
             //获取用户
             var existing = await _userRepository.GetByIdAsync(user.Id);
-            if (existing == null) throw new DomainException("用户不存在");
+            if (existing == null)
+                throw new DomainException("用户不存在");
 
-                if (!string.Equals(existing.CardNumber, user.CardNumber))
+            //判断用户的借书卡号existing.CardNumber == user.CardNumber
+            if (!string.Equals(existing.CardNumber, user.CardNumber))
             {
 
                 if (await _userRepository.ExistsByCardNumberAsync(user.CardNumber))
@@ -94,6 +98,7 @@ namespace LibraryManagement.Services.Impl
             existing.Email = user.Email;
             existing.CardNumber = user.CardNumber;
             existing.Status = user.Status;
+
             await _userRepository.UpdateAsync(existing);
             return existing;
         }
@@ -116,7 +121,7 @@ namespace LibraryManagement.Services.Impl
         /// <returns></returns>
         public async Task<bool> ChangeStatusAsync(int id, int status)
         {
-          return await _userRepository.SetStatusAsync(id, status);
+            return await _userRepository.SetStatusAsync(id, status);
         }
 
         /// <summary>

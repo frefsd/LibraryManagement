@@ -16,7 +16,7 @@ namespace LibraryManagement.Models
         public string? Phone { get; set; } // 手机号码
         public string? Email { get; set; } // 电子邮箱
         public string? CardNumber { get; set; } // 借书卡号（唯一标识读者）
-        public int Status { get; set; } = 1; // 用户状态：1-正常，0-禁用（如欠费、违规）
+        public int Status { get; set; } = 1; // 用户状态：1-正常，0-禁用
         public DateTime CreateTime { get; set; } // 账户创建时间
     }
 }

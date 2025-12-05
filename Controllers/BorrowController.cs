@@ -24,6 +24,8 @@ namespace LibraryManagement.Controllers
         /// </summary>
         /// <param name="page"></param>
         /// <param name="pageSize"></param>
+        /// <param name="userName"></param>
+        /// <param name="status"></param>
         /// <returns></returns>
         [HttpGet]
         public async Task<IActionResult> QueryPage(

@@ -17,7 +17,10 @@ namespace LibraryManagement.Controllers
         private readonly IOssService _ossService;
 
         //依赖注入
-        public BookController(IBookService bookService, IBorrowService borrowService, IOssService ossService)
+        public BookController(
+            IBookService bookService,
+            IBorrowService borrowService,
+            IOssService ossService)
         {
             _bookService = bookService;
             _borrowService = borrowService;
@@ -50,7 +53,7 @@ namespace LibraryManagement.Controllers
         {
             //验证模型
             if (string.IsNullOrWhiteSpace(request.Name))
-                return BadRequest(new { code = false, msg = "书名不能为空"});
+                return BadRequest(new { code = false, msg = "书名不能为空" });
 
             string? coverUrl = null;
             if (request.CoverFile != null)
@@ -60,9 +63,9 @@ namespace LibraryManagement.Controllers
                     //图片上传到aliyun的文件夹名称
                     coverUrl = await _ossService.UploadFileAsync(request.CoverFile, "bok-covers");
                 }
-                catch ( Exception ex)
+                catch (Exception ex)
                 {
-                    return BadRequest(new { code = false, msg = "封面上传失败：" +ex.Message});
+                    return BadRequest(new { code = false, msg = "封面上传失败：" + ex.Message });
                 }
             }
 
@@ -83,7 +86,7 @@ namespace LibraryManagement.Controllers
             };
 
             await _bookService.AddAsync(book);
-            return Ok(new { code = true, msg = "图书添加成功", data = new { book.Id, book.CoverUrl} });
+            return Ok(new { code = true, msg = "图书添加成功", data = new { book.Id, book.CoverUrl } });
         }
 
         /// <summary>
@@ -111,7 +114,7 @@ namespace LibraryManagement.Controllers
             //获取当前图书信息
             var existingBook = await _bookService.GetByIdAsync(request.Id);
             if (existingBook == null)
-                return NotFound(new { code = false, msg = "图书不存在"});
+                return NotFound(new { code = false, msg = "图书不存在" });
 
             if (request.Status == 2 && existingBook.Status != 2)
             {
@@ -121,7 +124,7 @@ namespace LibraryManagement.Controllers
                 {
                     return BadRequest(new { code = 400, msg = "该图书还有未归还的借阅记录，无法下架" });
                 }
-               
+
             }
 
             string? coverUrl = existingBook.CoverUrl; //默认保留原图
@@ -133,7 +136,7 @@ namespace LibraryManagement.Controllers
                 }
                 catch (Exception ex)
                 {
-                    return BadRequest(new { code = false, msg = "封面图片上传失败" + ex.Message});
+                    return BadRequest(new { code = false, msg = "封面图片上传失败" + ex.Message });
                 }
             }
 
@@ -149,7 +152,7 @@ namespace LibraryManagement.Controllers
             existingBook.UpdateTime = DateTime.Now;
 
             await _bookService.UpdateAsync(existingBook);
-            return Ok(new { code = true, msg = "更新成功", data = new { existingBook.Id, existingBook.CoverUrl} });
+            return Ok(new { code = true, msg = "更新成功", data = new { existingBook.Id, existingBook.CoverUrl } });
         }
 
         /// <summary>

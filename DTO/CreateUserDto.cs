@@ -2,6 +2,9 @@
 
 namespace LibraryManagement.DTO
 {
+    /// <summary>
+    /// 新增用户请求参数
+    /// </summary>
     public class CreateUserDto
     {
         [Required(ErrorMessage = "姓名不能为空")]

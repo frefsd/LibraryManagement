@@ -13,17 +13,17 @@ namespace LibraryManagement.Models
         public int Id { get; set; }
 
         /// <summary>
-        /// 登录用户名（唯一）
+        /// 登录用户名
         /// </summary>
         [Required, MaxLength(50)]
         [StringLength(50, MinimumLength = 3, ErrorMessage = "用户名长度为3-50个字符")]
-        public string Username { get; set; } = string.Empty;
+        public string? Username { get; set; }
 
         /// <summary>
-        /// 密码哈希值（BCrypt 加密存储）
+        /// 密码
         /// </summary>
         [Required]
-        public string Password { get; set; } = string.Empty;
+        public string? Password { get; set; }
 
         /// <summary>
         /// 真实姓名
@@ -31,7 +31,7 @@ namespace LibraryManagement.Models
         public string? RealName { get; set; }
 
         /// <summary>
-        /// 角色（预留，如：SuperAdmin / Librarian）
+        /// 角色
         /// </summary>
         public string Role { get; set; } = "Admin";
 

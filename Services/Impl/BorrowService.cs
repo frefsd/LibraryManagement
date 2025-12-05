@@ -66,7 +66,8 @@ namespace LibraryManagement.Services.Impl
         /// <returns></returns>
         public async Task BorrowAsync(BorrowRequestDto dto)
         {
-            if(string.IsNullOrWhiteSpace(dto.UserInput)) throw new DomainException("用户信息不能为空");
+            if(string.IsNullOrWhiteSpace(dto.UserInput)) 
+                throw new DomainException("用户信息不能为空");
 
             //1.查询图书
             var book = await _bookRepository.GetByIdAsync(dto.BookId);

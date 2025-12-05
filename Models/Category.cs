@@ -13,7 +13,7 @@ namespace LibraryManagement.Models
         public int Id { get; set; } // 主键，自增ID
 
         public string? Name { get; set; } // 分类名称
-        public int Sort { get; set; } // 排序序号，数值越小越靠前
+        public int Sort { get; set; } // 排序序号
         public int Status { get; set; } = 1; // 状态：1-启用，0-禁用
 
         // 反向导航属性：该分类下的所有图书

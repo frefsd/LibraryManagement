@@ -2,13 +2,16 @@
 
 namespace LibraryManagement.DTO
 {
+    /// <summary>
+    /// 新增图书请求参数
+    /// </summary>
     public class CreateBookRequest
     {
         [Required(ErrorMessage = "书名不能为空")]
-        public string Name { get; set; } = null!; //图书名称
+        public string? Name { get; set; } //图书名称
 
         [Required(ErrorMessage = "作者不能为空")]
-        public string Author { get; set; } = null!; //图书作者
+        public string? Author { get; set; } //图书作者
 
         public DateTime PublishDate { get; set; } //出版日期
 
