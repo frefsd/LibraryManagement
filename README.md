@@ -24,11 +24,10 @@
 ## 🖼 界面预览
 
 ![图书列表](screenshots/book.png)
-![分类列表](screenshots/category.png)
+![编辑图书](screenshots/editbook.png)
 ![用户管理](screenshots/user.png)
 ![借阅管理](screenshots/borrow.png)
 ![图书统计](screenshots/bookstatistics.png)
-![分类统计](screenshots/categorystatistics.png)
 ![借阅统计](screenshots/borrowstatistics.png)
 
 ## 🛠 技术栈
