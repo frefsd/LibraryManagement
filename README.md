@@ -50,9 +50,9 @@
 
 ### 数据库
 - **系统**：SQL Server（建议 2019+）
-- **迁移方式**：EF Core Code First 或 手动建表
+- **迁移方式**：手动建表
 
 ---
 
 ## 📦 项目结构（简要）
-![结构图](screenshots/borrowstatistics.png)
+![结构图](screenshots/structure%20chart.png)
