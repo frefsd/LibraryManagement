@@ -202,15 +202,29 @@ const resetForm = () => {
 }
 
 // ============ 封面处理 ============
-const handleCoverUploadChange = (uploadFile, uploadFiles) => {
-  if (uploadFile.raw && uploadFile.raw.type.startsWith('image/')) {
-    book.value.coverFile = uploadFile.raw
-    coverFileList.value = uploadFiles.slice(-1) // 只保留一个
-  } else {
+// ============ 封面处理 ============
+const handleCoverUploadChange = (uploadFile) => {
+  const file = uploadFile.raw
+
+  // 校验是否为图片
+  if (!file || !file.type.startsWith('image/')) {
     ElMessage.warning('请上传图片文件（JPG/PNG/GIF）')
     book.value.coverFile = null
     coverFileList.value = []
+    return
   }
+
+  const maxSize = 5 * 1024 * 1024 // 5MB
+  if (file.size > maxSize) {
+    ElMessage.warning('图片大小不能超过 5MB')
+    book.value.coverFile = null
+    coverFileList.value = []
+    return
+  }
+
+  // 通过校验，设置文件
+  book.value.coverFile = file
+  coverFileList.value = [uploadFile]
 }
 
 const handleCoverRemove = () => {

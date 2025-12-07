@@ -6,7 +6,7 @@ import router from '../router'
 //创建axios实例对象
 const request = axios.create({
   baseURL: 'https://localhost:7297',
-  timeout: 10000 //10000毫秒 = 10秒
+  timeout: 15000 //15000毫秒 = 15秒
 })
 
 //axios的请求 request 拦截器
