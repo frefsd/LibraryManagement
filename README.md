@@ -2,25 +2,12 @@
 
 一个基于前后端分离架构的图书管理平台，支持图书信息的增删改查、封面上传、分类与出版社管理等功能。项目采用现代化技术栈，代码结构清晰，易于部署与二次开发。
 
-[License](https://img.shields.io/badge/license-MIT-blue.svg)
-[Vue](https://img.shields.io/badge/Vue-3.x-4FC08D?logo=vue.js)
-[.NET](https://img.shields.io/badge/.NET-6+-512BD4?logo=.net)
-[SQL Server](https://img.shields.io/badge/SQL%20Server-2019+-CC2927?logo=microsoft-sql-server)
+![License](https://img.shields.io/badge/license-MIT-blue.svg)
+![Vue](https://img.shields.io/badge/Vue-3.x-4FC08D?logo=vue.js)
+![.NET](https://img.shields.io/badge/.NET-6+-512BD4?logo=.net)
+![SQL Server](https://img.shields.io/badge/SQL%20Server-2019+-CC2927?logo=microsoft-sql-server)
 
----
-
-<details>
-  <summary>📋 目录</summary>
-
-  - [功能特性](#features)
-  - [界面预览](#screenshots)
-  - [技术栈](#tech-stack)
-  - [项目结构](#project-structure)
-</details>
-
----
-
-## 🌟 功能特性 {#features}
+## 功能特性
 
 - ✅ 图书 CRUD 操作（创建、读取、更新、删除）
 - ✅ 支持图书封面图片上传（限制：仅 JPG/PNG/GIF，≤5MB）
@@ -33,18 +20,18 @@
 
 ---
 
-## 🖼 界面预览 {#screenshots}
+## 界面预览
 
-![图书列表](screenshots/book.png)  
-![编辑图书](screenshots/editbook.png)  
-![用户管理](screenshots/user.png)  
-![借阅管理](screenshots/borrow.png)  
-![图书统计](screenshots/bookstatistics.png)  
-![借阅统计](screenshots/borrowstatistics.png)
+[图书列表](screenshots/book.png)  
+[编辑图书](screenshots/editbook.png)  
+[用户管理](screenshots/user.png)  
+[借阅管理](screenshots/borrow.png)  
+[图书统计](screenshots/bookstatistics.png)  
+[借阅统计](screenshots/borrowstatistics.png)
 
 ---
 
-## 🛠 技术栈 {#tech-stack}
+## 技术栈
 
 ### 前端（Frontend）
 - **框架**：Vue 3 (Composition API + `<script setup>`)
@@ -67,6 +54,6 @@
 
 ---
 
-## 📦 项目结构 {#project-structure}
+## 项目结构
 
-![结构图](screenshots/structure%
+[结构图](screenshots/structure%20chart.png)
