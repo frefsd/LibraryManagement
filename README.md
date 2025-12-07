@@ -33,12 +33,17 @@
 
 ## 界面预览
 
+
+![登录界面](screenshots/log.png)  
 ![图书列表](screenshots/book.png)  
-![编辑图书](screenshots/editbook.png)  
 ![用户管理](screenshots/user.png)  
 ![借阅管理](screenshots/borrow.png)  
 ![图书统计](screenshots/bookstatistics.png)  
 ![借阅统计](screenshots/borrowstatistics.png)
+
+## 项目结构
+
+![结构图](screenshots/structure%20chart.png)
 
 ---
 
@@ -65,6 +70,5 @@
 
 ---
 
-## 项目结构
-
-![结构图](screenshots/structure%20chart.png)
+## 安装与运行
+- **克隆项目**：https://github.com/frefsd/LibraryManagement.git
