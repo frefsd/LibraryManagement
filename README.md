@@ -31,20 +31,7 @@
 
 ---
 
-## 安装与运行
-
-### 前置条件
-- [.NET 8 SDK](https://dotnet.microsoft.com/download/dotnet/8.0)
-- [Node.js 18+](注意：因为我没有配置反向代理，所以运行前端项目必须使用node.js版本是v20.19.0)
-- [Microsoft SQL Server](注意：我使用的是最新版本的sqlserver2025版本，如果是低于2025版本的，需要自己重新创建数据库)
-
-### 1. 克隆项目
-```bash
-git clone https://github.com/frefsd/LibraryManagement.git
-cd LibraryManagement
-
 ## 界面预览
-
 
 ![登录界面](screenshots/log.png)  
 ![图书列表](screenshots/book.png)  
@@ -80,5 +67,19 @@ cd LibraryManagement
 - **系统**：SQL Server（建议 2019+）
 - **迁移方式**：手动建表也可以 Code First
 
+---
 
+## 安装与运行
+
+### 前置条件
+- **.NET 8 SDK**：[https://dotnet.microsoft.com/download/dotnet/8.0]
+- **Node.js 18+**：[https://nodejs.org/zh-cn/download]
+(注意：因为我没有配置反向代理，所以运行前端项目必须使用node.js版本是v20.19.0)
+- **Microsoft SQL Server**：
+(注意：我使用的是最新版本的sqlserver2025版本，如果是低于2025版本的，需要自己重新创建数据库)
+
+### 1. 克隆项目
+```bash
+git clone https://github.com/frefsd/LibraryManagement.git
+cd LibraryManagement
 
