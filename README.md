@@ -37,7 +37,7 @@
 - **数据库**：Microsoft SQL Server
 - **ORM**：Entity Framework Core
 - **异步支持**：全程使用 `async/await`
-- **文件处理**：支持多部分表单（multipart/form-data）上传封面
+- **文件处理**：使用的阿里云的OOS（图片上传）
 
 ### 数据库
 - **系统**：SQL Server（建议 2019+）
