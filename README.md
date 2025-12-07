@@ -7,6 +7,17 @@
 ![.NET](https://img.shields.io/badge/.NET-6+-512BD4?logo=.net)
 ![SQL Server](https://img.shields.io/badge/SQL%20Server-2019+-CC2927?logo=microsoft-sql-server)
 
+<details>
+  <summary>📋 目录</summary>
+
+- [功能特性](#功能特性)
+- [界面预览](#界面预览)
+- [技术栈](#技术栈)
+- [项目结构](#项目结构)
+</details>
+
+---
+
 ## 功能特性
 
 - ✅ 图书 CRUD 操作（创建、读取、更新、删除）
@@ -22,12 +33,12 @@
 
 ## 界面预览
 
-[图书列表](screenshots/book.png)  
-[编辑图书](screenshots/editbook.png)  
-[用户管理](screenshots/user.png)  
-[借阅管理](screenshots/borrow.png)  
-[图书统计](screenshots/bookstatistics.png)  
-[借阅统计](screenshots/borrowstatistics.png)
+![图书列表](screenshots/book.png)  
+![编辑图书](screenshots/editbook.png)  
+![用户管理](screenshots/user.png)  
+![借阅管理](screenshots/borrow.png)  
+![图书统计](screenshots/bookstatistics.png)  
+![借阅统计](screenshots/borrowstatistics.png)
 
 ---
 
@@ -56,4 +67,4 @@
 
 ## 项目结构
 
-[结构图](screenshots/structure%20chart.png)
+![结构图](screenshots/structure%20chart.png)
