@@ -40,10 +40,6 @@
 ![图书统计](screenshots/bookstatistics.png)  
 ![借阅统计](screenshots/borrowstatistics.png)
 
-## 项目结构
-
-![结构图](screenshots/structure%20chart.png)
-
 ---
 
 ## 技术栈
