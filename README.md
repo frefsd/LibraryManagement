@@ -21,6 +21,15 @@
 - ✅ 后端采用异步编程（async/await），提升性能与可伸缩性
 
 ---
+## 🖼 界面预览
+
+![图书列表](screenshots/book.png)
+![分类列表](screenshots/category.png)
+![用户管理](screenshots/user.png)
+![借阅管理](screenshots/borrow.png)
+![图书统计](screenshots/bookstatistics.png)
+![分类统计](screenshots/categorystatistics.png)
+![借阅统计](screenshots/borrowstatistics.png)
 
 ## 🛠 技术栈
 
@@ -28,16 +37,16 @@
 - **框架**：Vue 3 (Composition API + `<script setup>`)
 - **UI 库**：Element Plus
 - **构建工具**：Vite
-- **状态管理**：无（轻量级，直接使用 `ref`/`reactive`）
+- **状态管理**：轻量级，直接使用 `ref`/`reactive`
 - **HTTP 客户端**：Axios
 
 ### 后端（Backend）
 - **语言**：C#
-- **框架**：ASP.NET Core Web API (.NET 6 或更高)
+- **框架**：ASP.NET Core Web API (.NET 8)
 - **数据库**：Microsoft SQL Server
 - **ORM**：Entity Framework Core
 - **异步支持**：全程使用 `async/await`
-- **文件处理**：使用的阿里云的OOS（图片上传）
+- **文件处理**：使用阿里云的OOS（图片上传）
 
 ### 数据库
 - **系统**：SQL Server（建议 2019+）
@@ -46,3 +55,4 @@
 ---
 
 ## 📦 项目结构（简要）
+![结构图](screenshots/borrowstatistics.png)
