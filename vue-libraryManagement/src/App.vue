@@ -7,6 +7,14 @@
   <router-view />
 </template>
 
-<style scoped>
-/* 可选：添加全局样式 */
+<style>
+<!-- 隐藏滚动条-->
+html::-webkit-scrollbar,
+body::-webkit-scrollbar {
+  display: none;
+}
+html {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
 </style>

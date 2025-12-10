@@ -461,7 +461,7 @@ const formatDateTime = (dateStr) => {
         </el-form-item>
 
         <el-form-item label="作者" :label-width="labelWidth" prop="author">
-          <el-input v-model="book.author" placeholder="请输入作者" :disabled="isEditing"/>
+          <el-input v-model="book.author" placeholder="请输入作者" :disabled="isEditing" />
         </el-form-item>
 
         <el-form-item label="出版日期" :label-width="labelWidth" prop="publishDate">

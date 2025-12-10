@@ -285,7 +285,6 @@ const logout = () => {
 .el-main {
   padding: 24px;
   background: #f8fafc;
-  overflow: auto;
 }
 
 :deep(.el-main > *) {
