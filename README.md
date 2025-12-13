@@ -2,11 +2,6 @@
 
 一个基于前后端分离架构的图书管理平台，支持图书信息的增删改查、封面上传、分类与出版社管理等功能。项目采用现代化技术栈，代码结构清晰，易于部署与二次开发。
 
-![License](https://img.shields.io/badge/license-MIT-blue.svg)
-![Vue](https://cn.vuejs.org/guide/quick-start.html)
-![.NET](https://dotnet.microsoft.com/zh-cn/download/dotnet-framework)
-![SQL Server](https://www.microsoft.com/zh-cn/sql-server/sql-server-downloads)
-
 ---
 
 ## 功能特性
