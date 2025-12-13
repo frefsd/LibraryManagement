@@ -7,15 +7,6 @@
 ![.NET](https://img.shields.io/badge/.NET-6+-512BD4?logo=.net)
 ![SQL Server](https://img.shields.io/badge/SQL%20Server-2019+-CC2927?logo=microsoft-sql-server)
 
-<details>
-  <summary>📋 目录</summary>
-
-- [功能特性](#功能特性)
-- [界面预览](#界面预览)
-- [技术栈](#技术栈)
-- [项目结构](#项目结构)
-</details>
-
 ---
 
 ## 功能特性
@@ -28,6 +19,15 @@
 - ✅ 响应式 UI，基于 Element Plus 组件库
 - ✅ 前后端完全分离，RESTful API 设计
 - ✅ 后端采用异步编程（async/await），提升性能与可伸缩性
+
+---
+
+## 数据库设计
+<img src="screenshots/adminbiao.png" width="100%" />
+<img src="screenshots/userbiao.png" width="100%" />
+<img src="screenshots/borrowrecordbiao.png" width="100%" />
+<img src="screenshots/categorybiao.png" width="100%" />
+<img src="screenshots/publisherbiao.png" width="100%" />
 
 ---
 
