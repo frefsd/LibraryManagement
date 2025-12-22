@@ -38,11 +38,23 @@ namespace LibraryManagement.Repository.Impl
                 query = query.Where(r => r.User.Name.Contains(userName));
             }
 
-            //按状态进行筛选
+            var now = DateTime.Now; //获取现在的时间
             if (status.HasValue)
             {
-                query = query.Where(r => r.Status == status.Value);
+                switch (status.Value)
+                {
+                    case 1: // 借阅中（未归还 + 未逾期）
+                        query = query.Where(r => r.ActualReturnDate == null && r.DueDate >= now);
+                        break;
+                    case 2: // 已归还
+                        query = query.Where(r => r.ActualReturnDate != null);
+                        break; // 借阅中（未归还 + 逾期）
+                    case 3:
+                        query = query.Where(r => r.ActualReturnDate == null && r.DueDate < now);
+                        break;
+                }
             }
+            
 
             var total = await query.CountAsync();
             var records = await query
