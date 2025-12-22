@@ -37,6 +37,8 @@ builder.Services.AddControllers()
         options.JsonSerializerOptions.ReferenceHandler = System.Text.Json.Serialization.ReferenceHandler.IgnoreCycles;
     });
 
+builder.Services.AddSignalR(); //添加SignalR()实现实时通信功能
+
 // 启用小写 URL 路由
 builder.Services.Configure<RouteOptions>(options =>
 {
@@ -88,4 +90,4 @@ app.UseAuthorization(); //授权
 app.UseRouting(); //启用路由
 app.MapControllers(); //映射控制器
 
-app.Run();
+app.Run(); //启动程序
