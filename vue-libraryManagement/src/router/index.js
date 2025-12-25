@@ -10,6 +10,7 @@ import LayoutView from '@/views/layout/index.vue';
 import BookReportView from '@/views/report/book/index.vue'
 import BorrowReportView from '@/views/report/borrow/index.vue'
 import CategoryReportView from '@/views/report/category/index.vue'
+import chatView from '@/views/agentchat/chat.vue'
 
 const routes = [
   // 根路径直接重定向到登录页
@@ -29,6 +30,7 @@ const routes = [
       { path: 'borrow', component: BorrowView },
       { path: 'category', component: CategoryView },
       { path: 'user', component: UserView },
+      { path: 'agentchat', component: chatView },
       { path: 'report/book', component: BookReportView },
       { path: 'report/borrow', component: BorrowReportView },
       { path: 'report/category', component: CategoryReportView },

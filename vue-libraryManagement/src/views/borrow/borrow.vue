@@ -203,8 +203,29 @@ const formatSimpleDate = (dateStr) => {
   return `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')}`
 }
 
-const getStatusText = (status) => {
-  return status === 1 ? '借阅中' : status === 2 ? '已归还' : '逾期'
+const getStatusText = (row) => {
+  if (row.actualReturnDate) {
+    return '已归还'
+  } else if (new Date() > new Date(row.dueDate)) {
+    return '逾期'
+  } else {
+    return '借阅中'
+  }
+}
+
+const getStatusType = (row) => {
+  if (row.actualReturnDate) return 'success'
+  if (new Date() > new Date(row.dueDate)) return 'danger'
+  return 'warning'
+}
+
+const canRenew = (row) => {
+  if (row.actualReturnDate) return false
+  const now = new Date()
+  const dueDate = new Date(row.dueDate)
+  const deadline = new Date(dueDate)
+  deadline.setDate(dueDate.getDate() + 7)
+  return now <= deadline
 }
 
 onMounted(() => {
@@ -256,11 +277,8 @@ onMounted(() => {
         </el-table-column>
         <el-table-column label="状态" width="100" align="center">
           <template #default="{ row }">
-            <el-tag :type="row.status === 1 ? 'warning' :
-              row.status === 2 ? 'success' :
-                'danger'
-              " effect="plain">
-              {{ getStatusText(row.status) }}
+            <el-tag :type="getStatusType(row)" effect="plain">
+              {{ getStatusText(row) }}
             </el-tag>
           </template>
         </el-table-column>
@@ -270,9 +288,8 @@ onMounted(() => {
             <el-button v-if="!row.actualReturnDate" size="default" type="primary" @click="handleReturn(row.id)">
               归还
             </el-button>
-            <!--续借按钮（仅未归还和 "借阅中" 时显示）-->
-            <el-button v-if="!row.actualReturnDate && row.status == 1" size="default" type="warning"
-              @click="handleRenew(row.id)">
+            <!--续借按钮（借阅中显示，逾期）-->
+            <el-button v-if="canRenew(row)" size="default" type="warning" @click="handleRenew(row.id)">
               续借
             </el-button>
             <span v-else-if="row.actualReturnDate">—</span>

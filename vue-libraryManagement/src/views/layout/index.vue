@@ -1,5 +1,5 @@
 <script setup>
-import { ref, onMounted } from 'vue'
+import { ref, onMounted, computed } from 'vue'
 import { ElMessage, ElMessageBox } from 'element-plus';
 import { useRouter } from 'vue-router'
 import { Document, Grid, Reading } from '@element-plus/icons-vue';
@@ -28,6 +28,17 @@ const logout = () => {
     router.push('/login')//跳转到登录页面
   })
 }
+
+// 👇 新增：跳转到聊天页
+const goToChat = () => {
+  router.push('/chat')
+}
+
+// 👇 新增：判断是否已登录
+const isLogin = computed(() => {
+  const loginUser = localStorage.getItem('loginUser')
+  return !!loginUser
+})
 </script>
 
 <template>
@@ -112,6 +123,10 @@ const logout = () => {
                 </el-icon>借阅信息统计
               </el-menu-item>
             </el-sub-menu>
+            <el-menu-item index="/agentchat">
+              <<el-icon>
+                <Search />智慧图灵</el-icon>
+            </el-menu-item>
           </el-menu>
         </el-aside>
 
@@ -204,6 +219,7 @@ const logout = () => {
 
 /* 侧边栏优化 */
 .aside {
+  position: relative;
   width: 260px;
   background: linear-gradient(180deg, #ffffff 0%, #f8fafc 100%);
   border-right: 1px solid #e1e8ed;
