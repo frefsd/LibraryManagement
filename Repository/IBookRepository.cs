@@ -80,5 +80,12 @@ namespace LibraryManagement.Repository
         /// <param name="pageSize"></param>
         /// <returns></returns>
         Task<PageResult<Book>> GetAvailableBooksAsync(string keyword, int page, int pageSize);
+
+        /// <summary>
+        /// ai关键词检索信息
+        /// </summary>
+        /// <param name="keyword"></param>
+        /// <returns></returns>
+        Task<List<Book>> GetBooksByKeywordAsync(string keyword);
     }
 }

@@ -1,5 +1,6 @@
 using LibraryManagement.AppDbContext;
 using LibraryManagement.Exceptions;
+using LibraryManagement.Options;
 using LibraryManagement.Repository;
 using LibraryManagement.Repository.Impl;
 using LibraryManagement.Services;
@@ -69,6 +70,13 @@ builder.Services.AddScoped<IReportService, ReportService>();
 builder.Services.AddScoped<IAdminService, AdminService>();
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IOssService, OssService>();
+
+// ===============新增：AI聊天服务==================
+builder.Services.Configure<DashScopeOptions>(builder.Configuration.GetSection("DashScope"));
+builder.Services.AddHttpClient(); //用于调用 Qwen API
+//注册自定义服务
+builder.Services.AddScoped<QwenApiService>();
+builder.Services.AddScoped<IChatService, ChatService>();
 
 //构建app
 var app = builder.Build();

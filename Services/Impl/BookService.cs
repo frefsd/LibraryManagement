@@ -171,5 +171,16 @@ namespace LibraryManagement.Services.Impl
         {
             return await _bookRepository.GetAvailableBooksAsync(keyword, page, pageSize);
         }
+
+        /// <summary>
+        /// ai关键词检索信息
+        /// </summary>
+        /// <param name="keyword"></param>
+        /// <returns></returns>
+        /// <exception cref="NotImplementedException"></exception>
+        public async Task<List<Book>> SearchBookByKeywordAsync(string keyword)
+        {
+            return await _bookRepository.GetBooksByKeywordAsync(keyword);
+        }
     }
 }

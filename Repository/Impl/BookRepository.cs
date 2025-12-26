@@ -166,5 +166,20 @@ namespace LibraryManagement.Repository.Impl
                 Rows = books
             };
         }
+
+        /// <summary>
+        /// ai关键词检索信息
+        /// </summary>
+        /// <param name="keyword"></param>
+        /// <returns></returns>
+        /// <exception cref="NotImplementedException"></exception>
+        public async Task<List<Book>> GetBooksByKeywordAsync(string keyword)
+        {
+            return await _context.Books
+                .Include(b => b.Category)
+                .Where(b => 
+                EF.Functions.Like(b.Name, $"%{keyword}%") ||
+                EF.Functions.Like(b.Author, $"%{keyword}%")).ToListAsync();
+        }
     }
 }
