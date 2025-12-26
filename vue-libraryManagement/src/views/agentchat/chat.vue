@@ -1,7 +1,7 @@
 <script setup>
 import { onMounted, ref, watch } from 'vue'
-import axios from 'axios'
 import { v4 as uuidv4 } from 'uuid'
+import { sendChatMessageStreamApi } from '../../api/chat'
 
 const messaggListRef = ref()
 const isSending = ref(false)
@@ -35,53 +35,33 @@ const sendMessage = () => {
 
 const sendRequest = (message) => {
   isSending.value = true
-  const userMsg = {
-    isUser: true,
-    content: message,
-    isTyping: false,
-    isThinking: false,
-  }
-  //第一条默认发送的用户消息”你好“不放入会话列表
-  if (messages.value.length > 0) {
-    messages.value.push(userMsg)
-  }
 
+  const userMsg = { isUser: true, content: message, isTyping: false }
+  if (messages.value.length > 0) messages.value.push(userMsg)
 
-  // 添加机器人加载消息
-  const botMsg = {
-    isUser: false,
-    content: '', // 增量填充
-    isTyping: true, // 显示加载动画
-    isThinking: false,
-  }
+  let fullText = ''
+  const botMsg = {isUser:false,content:'',isTyping:true};
   messages.value.push(botMsg)
-  const lastMsg = messages.value[messages.value.length - 1]
-  scrollToBottom()
 
-  axios
-    .post(
-      '/api/xiaozhi/chat',
-      { memoryId: uuid.value, message },
-      {
-        responseType: 'stream', // 必须为合法值 "text"
-        onDownloadProgress: (e) => {
-          const fullText = e.event.target.responseText // 累积的完整文本
-          let newText = fullText.substring(lastMsg.content.length)
-          lastMsg.content += newText //增量更新
-          console.log(lastMsg)
-          scrollToBottom() // 实时滚动
-        },
-      }
-    )
+  // 开始流式请求
+  sendChatMessageStreamApi(
+    message,
+    (chunk) => {
+       console.log("[CHUNK RECEIVED]:", chunk); 
+      fullText += chunk;
+      botMsg.content = convertStreamOutput(fullText);
+      scrollToBottom() // 可选：实时滚动
+    }
+  )
     .then(() => {
-      // 流结束后隐藏加载动画
-      messages.value.at(-1).isTyping = false
+      // 流结束
+      botMsg.isTyping = false
       isSending.value = false
     })
     .catch((error) => {
-      console.error('流式错误:', error)
-      messages.value.at(-1).content = '请求失败，请重试'
-      messages.value.at(-1).isTyping = false
+      console.error('流式请求失败:', error)
+      botMsg.content = '网络错误，请重试'
+      botMsg.isTyping = false
       isSending.value = false
     })
 }
@@ -142,8 +122,8 @@ const newChat = () => {
             ">
             <!-- 会话图标 -->
             <i :class="message.isUser
-                ? 'fa-solid fa-user message-icon'
-                : 'fa-solid fa-robot message-icon'
+              ? 'fa-solid fa-user message-icon'
+              : 'fa-solid fa-robot message-icon'
               "></i>
             <!-- 会话内容 -->
             <span>

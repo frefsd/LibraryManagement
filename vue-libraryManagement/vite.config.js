@@ -13,5 +13,12 @@ export default defineConfig({
   },
   server: {
     port: 6060,
+    proxy: {
+      '/chat': {
+        target: 'http://localhost:5149',
+        changeOrigin: true,
+        secure: false
+      }
+    }
   }
 })
