@@ -2,6 +2,6 @@
 {
     public class DashScopeOptions
     {
-        public string? ApiKey { get; set; }
+        public string ApiKey { get; set; } = string.Empty;
     }
 }

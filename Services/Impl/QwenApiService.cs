@@ -1,5 +1,4 @@
-﻿using Azure.Core.Serialization;
-using LibraryManagement.Exceptions;
+﻿using LibraryManagement.Exceptions;
 using LibraryManagement.Options;
 using Microsoft.Extensions.Options;
 using System.Text.Json;
@@ -18,23 +17,18 @@ namespace LibraryManagement.Services.Impl
             _apiKey = options.Value.ApiKey;
         }
 
-        public async Task<string> GenerateResponseAsync(string prompt)
+        public async IAsyncEnumerable<string> GenerateResponseStreamAsync(string prompt)
         {
             var requestBody = new
             {
                 model = "qwen-turbo",
-                input = new
-                {
-                    messages = new[]
+                messages = new[]
                     {
-                        new {role = "system", content = "你是一个专业、简洁的图书管理员助手."},
-                        new {role = "user", content = prompt}
-                    }
+                    new { role = "system", content = "你是一个专业、简洁的图书管理员助手." },
+                    new { role = "user", content = prompt }
                 },
-                parameters = new
-                {
-                    result_format = "message"
-                }
+                stream = true
+
             };
             var json = JsonSerializer.Serialize(requestBody);
             using var content = new StringContent(json, System.Text.Encoding.UTF8, "application/json");
@@ -42,7 +36,7 @@ namespace LibraryManagement.Services.Impl
             _httpClient.DefaultRequestHeaders.Authorization = new("Bearer", _apiKey);
 
             var response = await _httpClient.PostAsync(
-                "https://dashscope.aliyuncs.com/api/v1/services/aigc/text-generation/generation", content);
+                "https://dashscope.aliyuncs.com/compatible-mode/v1/chat/completions", content);
 
             if (!response.IsSuccessStatusCode)
             {
@@ -50,16 +44,41 @@ namespace LibraryManagement.Services.Impl
                 throw new DomainException($"Qwen API 调用失败：{response.StatusCode},{error}");
             }
 
-            var responseBody = await response.Content.ReadAsStringAsync();
-            using var doc = JsonDocument.Parse(responseBody);
-            var text = doc.RootElement
-                .GetProperty("output")
-                .GetProperty("choices")[0]
-                .GetProperty("message")
-                .GetProperty("content")
-                .GetString();
+            await using var stream = await response.Content.ReadAsStreamAsync();
+            using var reader = new StreamReader(stream);
 
-            return text ?? "抱歉，我暂时无法回答这个问题。";
+            while (!reader.EndOfStream)
+            {
+                var line = await reader.ReadLineAsync().ConfigureAwait(false);
+                if (string.IsNullOrEmpty(line)) continue;
+
+                if (line.StartsWith("data:"))
+                {
+                    var jsonData = line["data:".Length..].Trim();
+                    if (jsonData == "[DONE]") break;
+
+                    string? text = null;
+                    try
+                    {
+                        using var doc = JsonDocument.Parse(jsonData);
+                        text = doc.RootElement
+                              .GetProperty("choices")[0]
+                              .GetProperty("delta")
+                              .GetProperty("content")
+                              .GetString();
+                    }
+                    catch (Exception ex)
+                    {
+                        continue;
+                    }
+
+                    if (!string.IsNullOrEmpty(text))
+                    {
+                        yield return text;
+                    }
+                }
+               
+            }
         }
     }
 }

@@ -1,7 +1,13 @@
-﻿namespace LibraryManagement.Services
+﻿
+namespace LibraryManagement.Services
 {
     public interface IChatService
     {
-        Task<string> AskAsync(string message);
+        /// <summary>
+        /// 采用流式方式回答用户的信息
+        /// </summary>
+        /// <param name="message"></param>
+        /// <returns></returns>
+        IAsyncEnumerable<string> AskStreamAsync(string message);
     }
 }
