@@ -1,6 +1,7 @@
 ﻿using LibraryManagement.DTO;
 using LibraryManagement.Services;
 using Microsoft.AspNetCore.Mvc;
+using System.Text;
 
 namespace LibraryManagement.Controllers
 {
@@ -8,7 +9,7 @@ namespace LibraryManagement.Controllers
     /// AI智能聊天
     /// </summary>
     [ApiController]
-    [Route("[controller]/[action]")]
+    [Route("chat")]
     public class ChatController : ControllerBase
     {
         private readonly IChatService _chatService;
@@ -19,11 +20,29 @@ namespace LibraryManagement.Controllers
             _chatService = chatService;
         }
 
-        [HttpPost]
-        public async Task<IActionResult> sendMessage([FromBody] ChatMessageDto dto)
+        /// <summary>
+        /// 采用流式打印输出
+        /// </summary>
+        /// <param name="dto"></param>
+        /// <returns></returns>
+        [HttpPost("stream")]
+        public async Task streamMessage([FromBody] ChatMessageDto dto)
         {
-            var reply = await _chatService.AskAsync(dto.Message);
-            return Ok(new { reply });
+            //禁用响应缓冲，立即输出
+            Response.Headers.Append("Content-Type", "text/plain; charset=utf-8");
+            Response.Headers.Append("Cache-Control", "no-cache");
+            Response.Headers.Append("Connection", "Keep-alive");
+
+            var fullReply = await _chatService.AskAsync(dto.Message);
+
+            //模拟“打字”效果，逐字发送
+            foreach (var item in fullReply)
+            {
+                await Response.BodyWriter.WriteAsync(Encoding.UTF8.GetBytes(item.ToString()));
+                await Response.Body.FlushAsync();
+                await Task.Delay(20); //控制打字速度
+            }
+           
         }
     }
 }
