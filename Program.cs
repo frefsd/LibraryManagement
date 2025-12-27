@@ -1,10 +1,10 @@
-using LibraryManagement.AppDbContext;
-using LibraryManagement.Exceptions;
+using LibraryManagement.LM.Common.AppDbContext;
+using LibraryManagement.LM.Common.Exceptions;
+using LibraryManagement.LM.Service.Repository;
+using LibraryManagement.LM.Service.Repository.Impl;
+using LibraryManagement.LM.Service.Services;
+using LibraryManagement.LM.Service.Services.Impl;
 using LibraryManagement.Options;
-using LibraryManagement.Repository;
-using LibraryManagement.Repository.Impl;
-using LibraryManagement.Services;
-using LibraryManagement.Services.Impl;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
