@@ -29,12 +29,12 @@ const logout = () => {
   })
 }
 
-// 👇 新增：跳转到聊天页
+// 新增：跳转到聊天页
 const goToChat = () => {
   router.push('/chat')
 }
 
-// 👇 新增：判断是否已登录
+// 新增：判断是否已登录
 const isLogin = computed(() => {
   const loginUser = localStorage.getItem('loginUser')
   return !!loginUser
@@ -124,8 +124,9 @@ const isLogin = computed(() => {
               </el-menu-item>
             </el-sub-menu>
             <el-menu-item index="/agentchat">
-              <<el-icon>
-                <Search />智慧图灵</el-icon>
+              <el-icon>
+                <Search />智慧图灵
+              </el-icon>
             </el-menu-item>
           </el-menu>
         </el-aside>
@@ -141,16 +142,20 @@ const isLogin = computed(() => {
 </template>
 
 <style scoped>
+.common-layout::-webkit-scrollbar {
+  display: none;
+}
+
 .common-layout {
-  height: 100vh;
-  background: linear-gradient(135deg, #f5f7fa 0%, #e4e8f0 100%);
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+  overflow: hidden; 
 }
 
 .el-container {
   height: 100%;
 }
 
-/* Header 区域优化 */
 .header {
   background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #667eea 100%);
   background-size: 200% 200%;

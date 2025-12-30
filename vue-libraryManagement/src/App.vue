@@ -8,7 +8,6 @@
 </template>
 
 <style>
-<!-- 隐藏滚动条-->
 html::-webkit-scrollbar,
 body::-webkit-scrollbar {
   display: none;

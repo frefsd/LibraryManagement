@@ -398,4 +398,16 @@ onMounted(() => {
   flex: 1;
   margin-right: 10px;
 }
+
+/* === 隐藏右侧滚动条 === */
+.main-content::-webkit-scrollbar,
+.message-list::-webkit-scrollbar {
+  display: none;
+}
+
+.main-content,
+.message-list {
+  -ms-overflow-style: none;  /* IE/Edge */
+  scrollbar-width: none;     /* Firefox */
+}
 </style>
