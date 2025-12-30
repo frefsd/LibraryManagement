@@ -219,13 +219,10 @@ const getStatusType = (row) => {
   return 'warning'
 }
 
+// 判断是否显示续借按钮
 const canRenew = (row) => {
-  if (row.actualReturnDate) return false
-  const now = new Date()
-  const dueDate = new Date(row.dueDate)
-  const deadline = new Date(dueDate)
-  deadline.setDate(dueDate.getDate() + 7)
-  return now <= deadline
+  // 未归还 且 续借次数小于1次
+  return !row.actualReturnDate && (row.renewCount || 0) < 1;
 }
 
 onMounted(() => {
