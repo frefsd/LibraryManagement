@@ -1,5 +1,6 @@
 ﻿using LibraryManagement.LM.Pojo.dto;
 using LibraryManagement.LM.Pojo.Models;
+using LibraryManagement.LM.Pojo.vo;
 using LibraryManagement.LM.Service.Repository;
 using Microsoft.EntityFrameworkCore;
 
@@ -167,7 +168,7 @@ namespace LibraryManagement.LM.Service.Services.Impl
         /// 图书分类统计
         /// </summary>
         /// <returns></returns>
-        public async Task<CategoryStatsResponseDTO> GetCategoryStatsAsync(string type)
+        public async Task<CategoryStatsVO> GetCategoryStatsAsync(string type)
         {
             //1.获取所有分类
             var allCategories = await _categoryRepository.GetAllAsync();
@@ -222,7 +223,7 @@ namespace LibraryManagement.LM.Service.Services.Impl
                 ? Math.Round((decimal)totalBookCopies / allCategories.Count, 1) : 0
             };
 
-            return new CategoryStatsResponseDTO
+            return new CategoryStatsVO
             {
                 Stats = stats,
                 Summary = summary
@@ -234,7 +235,7 @@ namespace LibraryManagement.LM.Service.Services.Impl
         /// </summary>
         /// <param name="request"></param>
         /// <returns></returns>
-        public async Task<BorrowStatsResponseDTO> GetBorrowStatsAsync(BorrowStatsRequestDTO request)
+        public async Task<BorrowStatsVO> GetBorrowStatsAsync(BorrowStatsRequestDTO request)
         {
             var borrowQuery = _borrowRepository.GetQueryableAsync();
             var summary = await GetBorrowSummaryAsync(borrowQuery);
@@ -248,7 +249,7 @@ namespace LibraryManagement.LM.Service.Services.Impl
                 _ => await GetMonthBorrowStatsAsync(borrowQuery, request.StartDate, request.EndDate)
             };
 
-            return new BorrowStatsResponseDTO
+            return new BorrowStatsVO
             {
                 Stats = stats,
                 Summary = summary

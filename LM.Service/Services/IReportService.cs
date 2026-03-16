@@ -1,5 +1,6 @@
 ﻿using LibraryManagement.LM.Pojo.dto;
 using LibraryManagement.LM.Pojo.DTO;
+using LibraryManagement.LM.Pojo.vo;
 
 namespace LibraryManagement.LM.Service.Services
 {
@@ -28,13 +29,13 @@ namespace LibraryManagement.LM.Service.Services
         /// </summary>
         /// <param name="type"></param>
         /// <returns></returns>
-        Task<CategoryStatsResponseDTO> GetCategoryStatsAsync(string type);
+        Task<CategoryStatsVO> GetCategoryStatsAsync(string type);
 
         /// <summary>
         /// 获取借阅统计数据
         /// </summary>
         /// <param name="request"></param>
         /// <returns></returns>
-        Task<BorrowStatsResponseDTO> GetBorrowStatsAsync(BorrowStatsRequestDTO request);
+        Task<BorrowStatsVO> GetBorrowStatsAsync(BorrowStatsRequestDTO request);
     }
 }

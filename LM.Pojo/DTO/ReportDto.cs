@@ -41,12 +41,6 @@
         public decimal AvgBooksPerCategory { get; set; } //平均图书数
     }
 
-    public class CategoryStatsResponseDTO
-    {
-        public List<CategoryStatsItemDTO> Stats { get; set; } = new();
-        public CategorySummaryDTO Summary { get; set; } = new();
-    }
-
     /// <summary>
     /// 借阅信息统计
     /// </summary>
@@ -70,11 +64,5 @@
         public int CurrentBorrowing { get; set; } //当前借阅中
         public int OverdueCount { get; set; } //逾期数量
         public int AvgBorrowDays { get; set; } //平均借阅时长
-    }
-
-    public class BorrowStatsResponseDTO
-    {
-        public List<BorrowStatItemDTO> Stats { get; set; } = new();
-        public BorrowSummaryDTO Summary { get; set; } = new();
     }
 }
