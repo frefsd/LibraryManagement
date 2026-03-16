@@ -1,4 +1,5 @@
-﻿using LibraryManagement.LM.Pojo.Models;
+﻿using LibraryManagement.LM.Pojo.dto;
+using LibraryManagement.LM.Pojo.Models;
 using LibraryManagement.LM.Service.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
@@ -31,7 +32,7 @@ namespace LibraryManagement.LM.Service.Controllers
         /// <param name="login"></param>
         /// <returns></returns>
         [HttpPost]
-        public async Task<IActionResult> Login([FromBody] LoginDto login)
+        public async Task<IActionResult> Login([FromBody] LoginDTO login)
         {
             //获取用户名和密码
             var admin = await _adminService.ValidateCredentialsAsync(login.Username, login.Password);

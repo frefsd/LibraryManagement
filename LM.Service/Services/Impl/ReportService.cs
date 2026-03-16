@@ -33,7 +33,7 @@ namespace LibraryManagement.LM.Service.Services.Impl
         /// 获取图书统计报表数据
         /// </summary>
         /// <returns></returns>
-        public async Task<BookSummaryDto> GetBookSummaryAsync()
+        public async Task<BookSummaryDTO> GetBookSummaryAsync()
         {
             //获取所有图书总量
             var totalBooks = await _bookRepository.GetTotalCopiesAsync();
@@ -44,7 +44,7 @@ namespace LibraryManagement.LM.Service.Services.Impl
             //获取所有分类
             var categoryCount = await _categoryRepository.CountAsync();
 
-            return new BookSummaryDto
+            return new BookSummaryDTO
             {
                 TotalBooks = totalBooks,
                 AvailableBooks = availableBooks,
@@ -61,7 +61,7 @@ namespace LibraryManagement.LM.Service.Services.Impl
         /// <param name="endYear"></param>
         /// <returns></returns>
         /// <exception cref="ArgumentException"></exception>
-        public async Task<List<ChartDataDto>> GetBookStatsAsync(string dimension, int? startYear = null, int? endYear = null)
+        public async Task<List<ChartDataDTO>> GetBookStatsAsync(string dimension, int? startYear = null, int? endYear = null)
         {
             var query = _bookRepository.GetQueryableAsync();
 
@@ -85,7 +85,7 @@ namespace LibraryManagement.LM.Service.Services.Impl
         /// </summary>
         /// <param name="query"></param>
         /// <returns></returns>
-        private async Task<List<ChartDataDto>> GetByCategory(IQueryable<Book> query)
+        private async Task<List<ChartDataDTO>> GetByCategory(IQueryable<Book> query)
         {
             //获取所有分类
             var categories = await _categoryRepository.GetAllAsync();
@@ -106,7 +106,7 @@ namespace LibraryManagement.LM.Service.Services.Impl
                  {
                      var categoryName = categoryMap.TryGetValue(item.CategoryId, out var name) ? name : $"分类{item.CategoryId}";
 
-                     return new ChartDataDto
+                     return new ChartDataDTO
                      {
                          Name = categoryName,
                          Count = item.Count
@@ -121,7 +121,7 @@ namespace LibraryManagement.LM.Service.Services.Impl
         /// </summary>
         /// <param name="query"></param>
         /// <returns></returns>
-        private async Task<List<ChartDataDto>> GetByStatus(IQueryable<Book> query)
+        private async Task<List<ChartDataDTO>> GetByStatus(IQueryable<Book> query)
         {
             var statusMap = new Dictionary<int, string>
             {
@@ -135,7 +135,7 @@ namespace LibraryManagement.LM.Service.Services.Impl
                 .Select(g => new { Status = g.Key, Count = g.Sum(x => x.TotalCopies) })
                 .ToListAsync();
 
-            return rawData.Select(x => new ChartDataDto
+            return rawData.Select(x => new ChartDataDTO
             {
                 Name = statusMap.TryGetValue(x.Status, out var name) ? name : $"状{x.Status}",
                 Count = x.Count
@@ -148,11 +148,11 @@ namespace LibraryManagement.LM.Service.Services.Impl
         /// <param name="query"></param>
         /// <returns></returns>
         /// <exception cref="NotImplementedException"></exception>
-        private async Task<List<ChartDataDto>> GetByYear(IQueryable<Book> query)
+        private async Task<List<ChartDataDTO>> GetByYear(IQueryable<Book> query)
         {
             var data = await query
                 .GroupBy(b => b.PublishDate.Year)
-                .Select(g => new ChartDataDto
+                .Select(g => new ChartDataDTO
                 {
                     Name = g.Key.ToString(),
                     Count = g.Sum(x => x.TotalCopies)
@@ -167,7 +167,7 @@ namespace LibraryManagement.LM.Service.Services.Impl
         /// 图书分类统计
         /// </summary>
         /// <returns></returns>
-        public async Task<CategoryStatsResponseDto> GetCategoryStatsAsync(string type)
+        public async Task<CategoryStatsResponseDTO> GetCategoryStatsAsync(string type)
         {
             //1.获取所有分类
             var allCategories = await _categoryRepository.GetAllAsync();
@@ -201,7 +201,7 @@ namespace LibraryManagement.LM.Service.Services.Impl
                 var bookCount = bookCounts.TryGetValue(category.Id, out var bc) ? bc : 0;
                 var borrowCount = borrowCounts.TryGetValue(category.Id, out var br) ? br : 0;
 
-                return new CategoryStatsItemDto
+                return new CategoryStatsItemDTO
                 {
                     Name = category.Name,
                     BookCount = bookCount,
@@ -213,7 +213,7 @@ namespace LibraryManagement.LM.Service.Services.Impl
             var totalBookCopies = stats.Sum(s => s.BookCount);
             var maxCategory = stats.OrderByDescending(s => s.BookCount).FirstOrDefault();
 
-            var summary = new CategorySummaryDto
+            var summary = new CategorySummaryDTO
             {
                 TotalCategories = allCategories.Count,
                 EnabledCategories = allCategories.Count(c => c.Status == 1),
@@ -222,7 +222,7 @@ namespace LibraryManagement.LM.Service.Services.Impl
                 ? Math.Round((decimal)totalBookCopies / allCategories.Count, 1) : 0
             };
 
-            return new CategoryStatsResponseDto
+            return new CategoryStatsResponseDTO
             {
                 Stats = stats,
                 Summary = summary
@@ -234,7 +234,7 @@ namespace LibraryManagement.LM.Service.Services.Impl
         /// </summary>
         /// <param name="request"></param>
         /// <returns></returns>
-        public async Task<BorrowStatsResponseDto> GetBorrowStatsAsync(BorrowStatsRequestDto request)
+        public async Task<BorrowStatsResponseDTO> GetBorrowStatsAsync(BorrowStatsRequestDTO request)
         {
             var borrowQuery = _borrowRepository.GetQueryableAsync();
             var summary = await GetBorrowSummaryAsync(borrowQuery);
@@ -248,7 +248,7 @@ namespace LibraryManagement.LM.Service.Services.Impl
                 _ => await GetMonthBorrowStatsAsync(borrowQuery, request.StartDate, request.EndDate)
             };
 
-            return new BorrowStatsResponseDto
+            return new BorrowStatsResponseDTO
             {
                 Stats = stats,
                 Summary = summary
@@ -262,7 +262,7 @@ namespace LibraryManagement.LM.Service.Services.Impl
         /// <param name="limit"></param>
         /// <returns></returns>
         /// <exception cref="NotImplementedException"></exception>
-        private async Task<List<BorrowStatItemDto>> GetTopCategoriesBorrowStatsAsync(IQueryable<BorrowRecord> borrowQuery, int limit)
+        private async Task<List<BorrowStatItemDTO>> GetTopCategoriesBorrowStatsAsync(IQueryable<BorrowRecord> borrowQuery, int limit)
         {
             var bookQuery = _bookRepository.GetQueryableAsync();
             var categoryQuery = _categoryRepository.GetQueryableAsync();
@@ -276,7 +276,7 @@ namespace LibraryManagement.LM.Service.Services.Impl
                 .Take(limit)
                 .ToListAsync();
 
-            return result.Select(x => new BorrowStatItemDto
+            return result.Select(x => new BorrowStatItemDTO
             {
                 Name = x.Name,
                 BorrowCount = x.Count
@@ -290,7 +290,7 @@ namespace LibraryManagement.LM.Service.Services.Impl
         /// <param name="limit"></param>
         /// <returns></returns>
         /// <exception cref="NotImplementedException"></exception>
-        private async Task<List<BorrowStatItemDto>> GetTopUsersBorrowStatsAsync(IQueryable<BorrowRecord> borrowQuery, int limit)
+        private async Task<List<BorrowStatItemDTO>> GetTopUsersBorrowStatsAsync(IQueryable<BorrowRecord> borrowQuery, int limit)
         {
             var useQuery = _userRepository.GetQueryableAsync();
 
@@ -305,7 +305,7 @@ namespace LibraryManagement.LM.Service.Services.Impl
                 .Take(limit)
                 .ToListAsync();
 
-            return result.Select(x => new BorrowStatItemDto
+            return result.Select(x => new BorrowStatItemDTO
             {
                 Name = x.Name,
                 BorrowCount = x.Count
@@ -319,7 +319,7 @@ namespace LibraryManagement.LM.Service.Services.Impl
         /// <param name="limit"></param>
         /// <returns></returns>
         /// <exception cref="NotImplementedException"></exception>
-        private async Task<List<BorrowStatItemDto>> GetTopBooksBorrowStatsAsync(IQueryable<BorrowRecord> borrowQuery, int limit)
+        private async Task<List<BorrowStatItemDTO>> GetTopBooksBorrowStatsAsync(IQueryable<BorrowRecord> borrowQuery, int limit)
         {
             var bookQuery = _bookRepository.GetQueryableAsync();
 
@@ -334,7 +334,7 @@ namespace LibraryManagement.LM.Service.Services.Impl
                 .Take(limit)
                 .ToListAsync();
 
-            return result.Select(x => new BorrowStatItemDto
+            return result.Select(x => new BorrowStatItemDTO
             {
                 Name = x.Name,
                 BorrowCount = x.Count
@@ -350,7 +350,7 @@ namespace LibraryManagement.LM.Service.Services.Impl
         /// <param name="end"></param>
         /// <returns></returns>
         /// <exception cref="NotImplementedException"></exception>
-        private async Task<List<BorrowStatItemDto>> GetMonthBorrowStatsAsync(IQueryable<BorrowRecord> query, string? start, string? end)
+        private async Task<List<BorrowStatItemDTO>> GetMonthBorrowStatsAsync(IQueryable<BorrowRecord> query, string? start, string? end)
         {
             DateTime startDate = string.IsNullOrEmpty(start)
                 ? DateTime.Now.AddMonths(-5).Date
@@ -372,7 +372,7 @@ namespace LibraryManagement.LM.Service.Services.Impl
 
             //2.在内存中格式化Name并排序
             var result = rawData
-                .Select(x => new BorrowStatItemDto
+                .Select(x => new BorrowStatItemDTO
                 {
                     Name = $"{x.Year}-{x.Month:D2}", //在内存中执行
                     BorrowCount = x.Count
@@ -388,7 +388,7 @@ namespace LibraryManagement.LM.Service.Services.Impl
         /// </summary>
         /// <param name="query"></param>
         /// <returns></returns>
-        private async Task<BorrowSummaryDto> GetBorrowSummaryAsync(IQueryable<BorrowRecord> query)
+        private async Task<BorrowSummaryDTO> GetBorrowSummaryAsync(IQueryable<BorrowRecord> query)
         {
             var total = await query.CountAsync();
             var current = await query.CountAsync(r => r.Status == 1); //1.借阅中
@@ -404,7 +404,7 @@ namespace LibraryManagement.LM.Service.Services.Impl
                 ? returnedRecords.Average(r => (r.ActualReturnDate.Value - r.BorrowDate).TotalDays)
                 : 0.0;
 
-            return new BorrowSummaryDto
+            return new BorrowSummaryDTO
             {
                 TotalBorrows = total,
                 CurrentBorrowing = current,

@@ -1,4 +1,5 @@
 ﻿using LibraryManagement.LM.Common.Exceptions;
+using LibraryManagement.LM.Pojo.dto;
 using LibraryManagement.LM.Pojo.DTO;
 using LibraryManagement.LM.Pojo.Models;
 using LibraryManagement.LM.Service.Repository;
@@ -67,7 +68,7 @@ namespace LibraryManagement.LM.Service.Services.Impl
         /// </summary>
         /// <param name="dto"></param>
         /// <returns></returns>
-        public async Task AddAsync([FromBody]CategoryDto dto)
+        public async Task AddAsync([FromBody]CategoryDTO dto)
         {
             //判断
             if (string.IsNullOrWhiteSpace(dto.Name))         
@@ -93,7 +94,7 @@ namespace LibraryManagement.LM.Service.Services.Impl
         /// <param name="id"></param>
         /// <param name="dto"></param>
         /// <returns></returns>
-        public async Task UpdateAsync(int id, CategoryDto dto)
+        public async Task UpdateAsync(int id, CategoryDTO dto)
         {
             //从GetByIdAsync()方法中获取id
             var category = await _categoryRepository.GetByIdAsync(id);

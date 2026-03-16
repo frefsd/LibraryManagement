@@ -1,4 +1,5 @@
-﻿using LibraryManagement.LM.Pojo.DTO;
+﻿using LibraryManagement.LM.Pojo.dto;
+using LibraryManagement.LM.Pojo.DTO;
 using LibraryManagement.LM.Pojo.Models;
 using LibraryManagement.LM.Service.Services;
 using Microsoft.AspNetCore.Mvc;
@@ -54,7 +55,7 @@ namespace LibraryManagement.LM.Service.Controllers
         /// 新增用户信息
         /// </summary>
         [HttpPost]
-        public async Task<IActionResult> Add([FromBody] CreateUserDto dto)
+        public async Task<IActionResult> Add([FromBody] CreateUserDTO dto)
         {
             if (!ModelState.IsValid)
             {
@@ -80,7 +81,7 @@ namespace LibraryManagement.LM.Service.Controllers
         /// 编辑用户信息
         /// </summary>
         [HttpPut]
-        public async Task<IActionResult> Update(int id, [FromBody] UpdateUserDto dto)
+        public async Task<IActionResult> Update(int id, [FromBody] UpdateUserDTO dto)
         {
             if (!ModelState.IsValid)
             {
@@ -145,7 +146,7 @@ namespace LibraryManagement.LM.Service.Controllers
         /// 启用/禁用用户
         /// </summary>
         [HttpPut]
-        public async Task<IActionResult> Status(int id, [FromBody] ChangeStatusDto dto)
+        public async Task<IActionResult> Status(int id, [FromBody] ChangeStatusDTO dto)
         {
             if (id <= 0 || (dto.Status != 0 && dto.Status != 1))
                 return BadRequest(new { code = false, msg = "参数无效" });

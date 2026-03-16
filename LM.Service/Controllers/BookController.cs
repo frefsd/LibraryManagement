@@ -1,4 +1,4 @@
-﻿using LibraryManagement.LM.Pojo.DTO;
+﻿using LibraryManagement.LM.Pojo.dto;
 using LibraryManagement.LM.Pojo.Models;
 using LibraryManagement.LM.Service.Services;
 using Microsoft.AspNetCore.Mvc;
@@ -49,7 +49,7 @@ namespace LibraryManagement.LM.Service.Controllers
         /// <param name="book"></param>
         /// <returns></returns>
         [HttpPost]
-        public async Task<IActionResult> Add([FromForm] CreateBookRequest request)
+        public async Task<IActionResult> Add([FromForm] CreateBookRequestDTO request)
         {
             //验证模型
             if (string.IsNullOrWhiteSpace(request.Name))

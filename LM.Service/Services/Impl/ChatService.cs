@@ -1,6 +1,4 @@
-﻿using LibraryManagement.LM.Service.Services;
-
-namespace LibraryManagement.LM.Service.Services.Impl
+﻿namespace LibraryManagement.LM.Service.Services.Impl
 {
     public class ChatService : IChatService
     {

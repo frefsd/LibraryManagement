@@ -1,6 +1,5 @@
 ﻿using LibraryManagement.LM.Common.AppDbContext;
 using LibraryManagement.LM.Pojo.Models;
-using LibraryManagement.LM.Service.Services;
 using Microsoft.EntityFrameworkCore;
 
 namespace LibraryManagement.LM.Service.Services.Impl

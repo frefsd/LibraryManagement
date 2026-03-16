@@ -1,4 +1,5 @@
 ﻿using LibraryManagement.LM.Common.Result;
+using LibraryManagement.LM.Pojo.dto;
 using LibraryManagement.LM.Pojo.DTO;
 
 namespace LibraryManagement.LM.Service.Services
@@ -16,13 +17,13 @@ namespace LibraryManagement.LM.Service.Services
         /// <param name="userName"></param>
         /// <param name="status"></param>
         /// <returns></returns>
-        Task<PageResult<BorrowRecordDto>> GetPageAsync(int page, int pageSize, string? userName, int? status);
+        Task<PageResult<BorrowRecordDTO>> GetPageAsync(int page, int pageSize, string? userName, int? status);
         /// <summary>
         /// 获取借阅信息
         /// </summary>
         /// <param name="dto"></param>
         /// <returns></returns>
-        Task BorrowAsync(BorrowRequestDto dto);
+        Task BorrowAsync(BorrowRequestDTO dto);
         /// <summary>
         /// 获取借阅人是否归还图书
         /// </summary>

@@ -1,4 +1,5 @@
-﻿using LibraryManagement.LM.Pojo.DTO;
+﻿using LibraryManagement.LM.Pojo.dto;
+using LibraryManagement.LM.Pojo.DTO;
 using LibraryManagement.LM.Service.Services;
 using Microsoft.AspNetCore.Mvc;
 using System.Text;
@@ -16,7 +17,7 @@ public class ChatController : ControllerBase
     }
 
     [HttpPost("stream")]
-    public async Task Stream([FromBody] ChatMessageDto request, CancellationToken ct)
+    public async Task Stream([FromBody] ChatMessageDTO request, CancellationToken ct)
     {
         Response.ContentType = "text/event-stream; charset=utf-8";
         Response.Headers.Add("Cache-Control", "no-cache");

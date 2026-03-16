@@ -1,4 +1,4 @@
-﻿using LibraryManagement.LM.Pojo.DTO;
+﻿using LibraryManagement.LM.Pojo.dto;
 using LibraryManagement.LM.Service.Services;
 using Microsoft.AspNetCore.Mvc;
 
@@ -67,7 +67,7 @@ namespace LibraryManagement.LM.Service.Controllers
         /// <param name="dto"></param>
         /// <returns></returns>
         [HttpPost]
-        public async Task<IActionResult> Add([FromBody] CategoryDto dto)
+        public async Task<IActionResult> Add([FromBody] CategoryDTO dto)
         {
 
             await _categoryService.AddAsync(dto);
@@ -93,7 +93,7 @@ namespace LibraryManagement.LM.Service.Controllers
         /// <param name="dto"></param>
         /// <returns></returns>
         [HttpPut]
-        public async Task<IActionResult> Update(int id, [FromBody] CategoryDto dto)
+        public async Task<IActionResult> Update(int id, [FromBody] CategoryDTO dto)
         {         
                 await _categoryService.UpdateAsync(id, dto);
                 return Ok(new { code = true, msg = "修改成功" });                     

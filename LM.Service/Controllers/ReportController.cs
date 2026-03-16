@@ -1,4 +1,5 @@
-﻿using LibraryManagement.LM.Pojo.DTO;
+﻿using LibraryManagement.LM.Pojo.dto;
+using LibraryManagement.LM.Pojo.DTO;
 using LibraryManagement.LM.Service.Services;
 using Microsoft.AspNetCore.Mvc;
 
@@ -62,7 +63,7 @@ namespace LibraryManagement.LM.Service.Controllers
         /// <param name="request"></param>
         /// <returns></returns>
         [HttpGet("borrow/stats")]
-        public async Task<IActionResult> BorrowStats([FromQuery]BorrowStatsRequestDto request)
+        public async Task<IActionResult> BorrowStats([FromQuery]BorrowStatsRequestDTO request)
         {
             var data = await _reportService.GetBorrowStatsAsync(request);
             return Ok(new { code = true, data});

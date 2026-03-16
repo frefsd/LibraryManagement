@@ -1,5 +1,6 @@
 ﻿using LibraryManagement.LM.Common.Exceptions;
 using LibraryManagement.LM.Common.Result;
+using LibraryManagement.LM.Pojo.dto;
 using LibraryManagement.LM.Pojo.DTO;
 using LibraryManagement.LM.Pojo.Models;
 using LibraryManagement.LM.Service.Repository;
@@ -34,10 +35,10 @@ namespace LibraryManagement.LM.Service.Services.Impl
         /// <param name="userName"></param>
         /// <param name="status"></param>
         /// <returns></returns>
-        public async Task<PageResult<BorrowRecordDto>> GetPageAsync(int page, int pageSize, string? userName, int? status)
+        public async Task<PageResult<BorrowRecordDTO>> GetPageAsync(int page, int pageSize, string? userName, int? status)
         {
             var (records, total) = await _borrowRepository.GetPageAsync(page, pageSize, userName, status);
-            var dtos = records.Select(r => new BorrowRecordDto
+            var dtos = records.Select(r => new BorrowRecordDTO
             {
                 Id = r.Id,
                 BookId = r.BookId,
@@ -50,7 +51,7 @@ namespace LibraryManagement.LM.Service.Services.Impl
                 Status = r.Status
             }).ToList();
 
-            return new PageResult<BorrowRecordDto>
+            return new PageResult<BorrowRecordDTO>
             {
                 Total = (int)total,
                 Page = page,
@@ -64,7 +65,7 @@ namespace LibraryManagement.LM.Service.Services.Impl
         /// </summary>
         /// <param name="dto"></param>
         /// <returns></returns>
-        public async Task BorrowAsync(BorrowRequestDto dto)
+        public async Task BorrowAsync(BorrowRequestDTO dto)
         {
             if(string.IsNullOrWhiteSpace(dto.UserInput)) 
                 throw new DomainException("用户信息不能为空");

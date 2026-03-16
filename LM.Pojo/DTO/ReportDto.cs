@@ -14,7 +14,7 @@
     /// <summary>
     /// 图书信息统计饼状图
     /// </summary>
-    public class ChartDataDto
+    public class ChartDataDTO
     {
         public string? Name { get; set; }
         public int Count { get; set; }
@@ -23,7 +23,7 @@
     /// <summary>
     /// 按分类统计图书数量
     /// </summary>
-    public class CategoryStatsItemDto
+    public class CategoryStatsItemDTO
     {
         public string? Name { get; set; } //分类名称
         public int BookCount { get; set; } //图书数量
@@ -33,7 +33,7 @@
     /// <summary>
     /// 分类信息统计
     /// </summary>
-    public class CategorySummaryDto
+    public class CategorySummaryDTO
     {
         public int TotalCategories { get; set; } //总分类数
         public int EnabledCategories { get; set; } //启用的分类数
@@ -41,16 +41,16 @@
         public decimal AvgBooksPerCategory { get; set; } //平均图书数
     }
 
-    public class CategoryStatsResponseDto
+    public class CategoryStatsResponseDTO
     {
-        public List<CategoryStatsItemDto> Stats { get; set; } = new();
-        public CategorySummaryDto Summary { get; set; } = new();
+        public List<CategoryStatsItemDTO> Stats { get; set; } = new();
+        public CategorySummaryDTO Summary { get; set; } = new();
     }
 
     /// <summary>
     /// 借阅信息统计
     /// </summary>
-    public class BorrowStatsRequestDto
+    public class BorrowStatsRequestDTO
     {
         public string Dimension { get; set; } = "month"; //按月统计借阅信息
         public int Limit { get; set; } = 10; //默认展示10条数据
@@ -58,13 +58,13 @@
         public string? EndDate { get; set; }   // "2025-11" //结束时间
     }
 
-    public class BorrowStatItemDto
+    public class BorrowStatItemDTO
     {
         public string? Name { get; set; }
         public int BorrowCount { get; set; }
     }
 
-    public class BorrowSummaryDto
+    public class BorrowSummaryDTO
     {
         public int TotalBorrows { get; set; } //总借阅次数
         public int CurrentBorrowing { get; set; } //当前借阅中
@@ -72,9 +72,9 @@
         public int AvgBorrowDays { get; set; } //平均借阅时长
     }
 
-    public class BorrowStatsResponseDto
+    public class BorrowStatsResponseDTO
     {
-        public List<BorrowStatItemDto> Stats { get; set; } = new();
-        public BorrowSummaryDto Summary { get; set; } = new();
+        public List<BorrowStatItemDTO> Stats { get; set; } = new();
+        public BorrowSummaryDTO Summary { get; set; } = new();
     }
 }

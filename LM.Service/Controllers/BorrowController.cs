@@ -1,4 +1,4 @@
-﻿using LibraryManagement.LM.Pojo.DTO;
+﻿using LibraryManagement.LM.Pojo.dto;
 using LibraryManagement.LM.Service.Services;
 using Microsoft.AspNetCore.Mvc;
 
@@ -44,7 +44,7 @@ namespace LibraryManagement.LM.Service.Controllers
         /// <param name="dto"></param>
         /// <returns></returns>
         [HttpPost]
-        public async Task<IActionResult> Borrow([FromBody] BorrowRequestDto dto)
+        public async Task<IActionResult> Borrow([FromBody] BorrowRequestDTO dto)
         {
             if (!ModelState.IsValid)
                 return Ok(new { code = false, msg = "参数无效" });

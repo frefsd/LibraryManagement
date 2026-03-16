@@ -1,4 +1,4 @@
-﻿using LibraryManagement.LM.Pojo.DTO;
+﻿using LibraryManagement.LM.Pojo.dto;
 using LibraryManagement.LM.Pojo.Models;
 using Microsoft.AspNetCore.Mvc;
 
@@ -35,14 +35,14 @@ namespace LibraryManagement.LM.Service.Services
         /// </summary>
         /// <param name="dto"></param>
         /// <returns></returns>
-        Task AddAsync([FromBody]CategoryDto dto);
+        Task AddAsync([FromBody]CategoryDTO dto);
 
         /// <summary>
         /// 更新分类
         /// </summary>
         /// <param name="dto"></param>
         /// <returns></returns>
-        Task UpdateAsync(int id, CategoryDto dto);
+        Task UpdateAsync(int id, CategoryDTO dto);
 
         /// <summary>
         /// 删除分类
