@@ -1,6 +1,6 @@
 ﻿namespace LibraryManagement.LM.Pojo.DTO
 {
-    public class UpdateUserDto
+    public class UpdateUserDTO
     {
         public string? Name { get; set; }     
         public string? Phone { get; set; }    

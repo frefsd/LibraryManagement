@@ -1,9 +1,9 @@
-﻿namespace LibraryManagement.LM.Pojo.DTO
+﻿namespace LibraryManagement.LM.Pojo.dto
 {
     /// <summary>
     /// 用户封装用户借阅记录返回的结果
     /// </summary>
-    public class BorrowRecordDto
+    public class BorrowRecordDTO
     {
         public int Id { get; set; } //主键
         public int BookId { get; set; } // 关联的图书ID

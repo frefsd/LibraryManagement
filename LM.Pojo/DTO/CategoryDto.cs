@@ -1,9 +1,9 @@
-﻿namespace LibraryManagement.LM.Pojo.DTO
+﻿namespace LibraryManagement.LM.Pojo.dto
 {
     /// <summary>
     /// 用于封装分类返回的结果
     /// </summary>
-    public class CategoryDto
+    public class CategoryDTO
     {
         public string? Name { get; set; } //分类名称
         public int Sort { get; set; } //排序序号

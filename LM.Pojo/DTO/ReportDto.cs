@@ -1,9 +1,9 @@
-﻿namespace LibraryManagement.LM.Pojo.DTO
+﻿namespace LibraryManagement.LM.Pojo.dto
 {
     /// <summary>
     /// 图书信息统计概览数据
     /// </summary>
-    public class BookSummaryDto
+    public class BookSummaryDTO
     {
         public int TotalBooks { get; set; } //图书总量
         public int AvailableBooks { get; set; } //仓库中剩余书籍

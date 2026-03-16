@@ -1,8 +1,8 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace LibraryManagement.LM.Pojo.DTO
+namespace LibraryManagement.LM.Pojo.dto
 {
-    public class UpdateBookRequest
+    public class UpdateBookRequestDTO
     {
         public int Id { get; set; }
 

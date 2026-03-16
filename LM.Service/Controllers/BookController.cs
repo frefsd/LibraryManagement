@@ -109,7 +109,7 @@ namespace LibraryManagement.LM.Service.Controllers
         /// <param name="book"></param>
         /// <returns></returns>
         [HttpPut]
-        public async Task<IActionResult> Update([FromForm] UpdateBookRequest request)
+        public async Task<IActionResult> Update([FromForm] UpdateBookRequestDTO request)
         {
             //获取当前图书信息
             var existingBook = await _bookService.GetByIdAsync(request.Id);

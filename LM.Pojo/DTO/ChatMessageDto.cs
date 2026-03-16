@@ -1,6 +1,6 @@
-﻿namespace LibraryManagement.LM.Pojo.DTO
+﻿namespace LibraryManagement.LM.Pojo.dto
 {
-    public class ChatMessageDto
+    public class ChatMessageDTO
     {
         public string Message { get; set; } = string.Empty;
     }

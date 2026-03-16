@@ -1,5 +1,4 @@
-﻿using LibraryManagement.LM.Pojo.DTO;
-using LibraryManagement.LM.Pojo.Models;
+﻿using LibraryManagement.LM.Pojo.Models;
 using LibraryManagement.LM.Service.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;

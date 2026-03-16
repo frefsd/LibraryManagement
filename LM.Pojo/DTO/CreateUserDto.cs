@@ -1,11 +1,11 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace LibraryManagement.LM.Pojo.DTO
+namespace LibraryManagement.LM.Pojo.dto
 {
     /// <summary>
     /// 新增用户请求参数
     /// </summary>
-    public class CreateUserDto
+    public class CreateUserDTO
     {
         [Required(ErrorMessage = "姓名不能为空")]
         public string? Name { get; set; }

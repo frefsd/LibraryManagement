@@ -1,11 +1,11 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace LibraryManagement.LM.Pojo.DTO
+namespace LibraryManagement.LM.Pojo.dto
 {
     /// <summary>
     /// 新增图书请求参数
     /// </summary>
-    public class CreateBookRequest
+    public class CreateBookRequestDTO
     {
         [Required(ErrorMessage = "书名不能为空")]
         public string? Name { get; set; } //图书名称

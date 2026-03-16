@@ -1,7 +1,6 @@
-﻿using LibraryManagement.LM.Pojo.DTO;
+﻿using LibraryManagement.LM.Pojo.dto;
 using LibraryManagement.LM.Pojo.Models;
 using LibraryManagement.LM.Service.Repository;
-using LibraryManagement.LM.Service.Services;
 using Microsoft.EntityFrameworkCore;
 
 namespace LibraryManagement.LM.Service.Services.Impl
