@@ -30,7 +30,6 @@ builder.Services.ConfigureHttpJsonOptions(options =>
     options.SerializerOptions.ReferenceHandler = System.Text.Json.Serialization.ReferenceHandler.IgnoreCycles;
 });
 
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddControllers()
     .AddJsonOptions(options =>
     {
@@ -38,30 +37,38 @@ builder.Services.AddControllers()
         options.JsonSerializerOptions.ReferenceHandler = System.Text.Json.Serialization.ReferenceHandler.IgnoreCycles;
     });
 
-builder.Services.AddSignalR(); //添加SignalR()实现实时通信功能
+builder.Services.AddSignalR();
 
-// 启用小写 URL 路由
 builder.Services.Configure<RouteOptions>(options =>
 {
     options.LowercaseUrls = true;
 });
 
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
 
-// 添加数据库上下文
+builder.Services.AddSwaggerGen(options =>
+{
+    options.SwaggerDoc("v1", new Microsoft.OpenApi.Models.OpenApiInfo
+    {
+        Title = "图书管理系统API",
+        Version = "v1",
+        Description = "管理员接口、图书管理、借阅、认证相关接口"
+    });
+});
+// ====================================================================
+
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlServer(
         builder.Configuration.GetConnectionString("DefaultConnection")));
 
-
-//添加仓储层
+//仓储
 builder.Services.AddScoped<IBookRepository, BookRepository>();
 builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
 builder.Services.AddScoped<IPublisherRepository, PublisherRepository>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IBorrowRepository, BorrowRepository>();
-//添加服务层
+
+//服务
 builder.Services.AddScoped<IBookService, BookService>();
 builder.Services.AddScoped<ICategoryService, CategoryService>();
 builder.Services.AddScoped<IPublisherService, PublisherService>();
@@ -71,14 +78,12 @@ builder.Services.AddScoped<IAdminService, AdminService>();
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IOssService, OssService>();
 
-// ===============新增：AI聊天服务==================
+// AI
 builder.Services.Configure<DashScopeOptions>(builder.Configuration.GetSection("DashScope"));
-builder.Services.AddHttpClient(); //用于调用 Qwen API
-//注册自定义服务
+builder.Services.AddHttpClient();
 builder.Services.AddScoped<QwenApiService>();
 builder.Services.AddScoped<IChatService, ChatService>();
 
-//构建app
 var app = builder.Build();
 
 if (app.Environment.IsDevelopment())
@@ -87,15 +92,11 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-app.UseExceptionHandlerMiddleware(); //异常捕获
+app.UseExceptionHandlerMiddleware();
+app.UseHttpsRedirection();
+app.UseCors("AllowAll");
+app.UseAuthorization();
+app.UseRouting();
+app.MapControllers();
 
-app.UseHttpsRedirection(); //Https重定向
-
-app.UseCors("AllowAll");  //CORS
-
-app.UseAuthorization(); //授权
-
-app.UseRouting(); //启用路由
-app.MapControllers(); //映射控制器
-
-app.Run(); //启动程序
+app.Run();
