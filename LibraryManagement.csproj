@@ -7,17 +7,17 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Aliyun.OSS.SDK.NetCore" Version="2.12.0" />
-    <PackageReference Include="BCrypt.Net-Next" Version="4.0.3" />
-    <PackageReference Include="Microsoft.AspNetCore.SignalR" Version="1.2.0" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="9.0.8">
+    <PackageReference Include="Aliyun.OSS.SDK.NetCore" Version="2.12.0" />   <!-- 阿里云OSS -->
+    <PackageReference Include="BCrypt.Net-Next" Version="4.0.3" />  <!-- 密码加密 -->
+    <PackageReference Include="Microsoft.AspNetCore.SignalR" Version="1.2.0" />  <!-- 实时推送（如通知、消息） -->
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="9.0.8"> <!-- 数据库设计 -->
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-    </PackageReference>
-    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="9.0.8" />
-    <PackageReference Include="Microsoft.Extensions.Http" Version="10.0.1" />
-    <PackageReference Include="Swashbuckle.AspNetCore" Version="6.6.2" />
-    <PackageReference Include="Volo.Abp.Core" Version="10.0.0" />
+    </PackageReference>  
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="9.0.8" />  <!-- SQL Server + EF Core ORM-->
+    <PackageReference Include="Microsoft.Extensions.Http" Version="10.0.1" />  <!-- 网络请求 -->
+    <PackageReference Include="Swashbuckle.AspNetCore" Version="6.6.2" />  <!-- 接口文档 -->
+    <PackageReference Include="Volo.Abp.Core" Version="10.0.0" />  <!-- 基础框架 -->
   </ItemGroup>
 
 </Project>
