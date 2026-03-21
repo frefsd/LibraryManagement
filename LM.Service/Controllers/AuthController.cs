@@ -33,12 +33,28 @@ namespace LibraryManagement.LM.Service.Controllers
         [HttpPost]
         public async Task<IActionResult> Login([FromBody] LoginDTO login)
         {
-            var admin = await _adminService.ValidateCredentialsAsync(login.Username, login.Password);
+            if (login == null || string.IsNullOrWhiteSpace(login.Username) || string.IsNullOrWhiteSpace(login.Password))
+            {
+                return BadRequest(new { code = false, msg = "用户名和密码不能为空" });
+            }
+
+            var admin = await _adminService.ValidateCredentialsAsync(login.Username.Trim(), login.Password);
 
             if (admin == null)
-                return Ok(new { code = false, msg = "用户名或密码错误" });
+                return Unauthorized(new { code = false, msg = "用户名或密码错误" });
 
             var token = GenerateJwtToken(admin);
+
+            // 将 token 同时写入 HttpOnly cookie，以提高安全性（前端无法通过 JS 读取）
+            var cookieOptions = new CookieOptions
+            {
+                HttpOnly = true,
+                Secure = true,
+                // 使用 None 以允许跨站点（不同端口）时浏览器发送 Cookie（需配合 AllowCredentials）
+                SameSite = SameSiteMode.None,
+                Expires = DateTime.UtcNow.AddHours(24)
+            };
+            Response.Cookies.Append("access_token", token, cookieOptions);
 
             return Ok(new
             {
@@ -46,7 +62,6 @@ namespace LibraryManagement.LM.Service.Controllers
                 msg = "登录成功",
                 data = new
                 {
-                    token,
                     user = new { admin.Id, admin.Username, admin.RealName, admin.Role }
                 }
             });

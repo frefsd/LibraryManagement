@@ -13,6 +13,9 @@ using LibraryManagement.LM.Service.Services.Impl;
 using LibraryManagement.Options;
 // 引入 EF Core 提供的扩展方法（例如 UseSqlServer）
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
 
 // 创建 Web 应用程序构建器，负责收集配置、注册服务等
 var builder = WebApplication.CreateBuilder(args);
@@ -27,9 +30,40 @@ builder.Services.AddCors(options =>
             "http://localhost:6060"
             )
         .AllowAnyHeader()
-        .AllowAnyMethod();
+        .AllowAnyMethod()
+        .AllowCredentials();
     });
 });
+
+// ================== JWT 认证配置 ==================
+var jwtKey = builder.Configuration["Jwt:Key"];
+var jwtIssuer = builder.Configuration["Jwt:Issuer"];
+var jwtAudience = builder.Configuration["Jwt:Audience"];
+if (string.IsNullOrWhiteSpace(jwtKey))
+{
+    throw new InvalidOperationException("JWT Key is not configured. Please set configuration value 'Jwt:Key'.");
+}
+
+builder.Services.AddAuthentication(options =>
+{
+    options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+})
+    .AddJwtBearer(options =>
+    {
+        options.TokenValidationParameters = new TokenValidationParameters
+        {
+            ValidateIssuerSigningKey = true,
+            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtKey)),
+            ValidateIssuer = !string.IsNullOrWhiteSpace(jwtIssuer),
+            ValidIssuer = jwtIssuer,
+            ValidateAudience = !string.IsNullOrWhiteSpace(jwtAudience),
+            ValidAudience = jwtAudience,
+            ValidateLifetime = true,
+            ClockSkew = TimeSpan.FromMinutes(2),
+            RoleClaimType = "role"
+        };
+    });
 
 
 // ================== JSON 全局配置（HttpResults + MVC 统一序列化规则） ==================
@@ -75,7 +109,6 @@ builder.Services.AddSwaggerGen(options =>
         Description = "管理员接口、图书管理、借阅、认证相关接口"
     });
 });
-// ====================================================================
 
 // ================== 数据库上下文配置 ==================
 // 注册 ApplicationDbContext，并指定使用 SQL Server 与配置文件中的连接字符串
@@ -127,12 +160,15 @@ if (app.Environment.IsDevelopment())
 app.UseExceptionHandlerMiddleware();
 // 强制将 HTTP 请求重定向为 HTTPS，提高安全性（生产环境视部署情况可调整）
 app.UseHttpsRedirection();
-// 启用前面配置的 CORS 策略，允许前端跨域访问
-app.UseCors("AllowAll");
-// 启用授权中间件（如后续增加认证/授权机制，会在此处生效）
-app.UseAuthorization();
+
 // 启用路由匹配（应在大多数中间件之前/之后保持合理顺序）
 app.UseRouting();
+// 启用前面配置的 CORS 策略，允许前端跨域访问
+app.UseCors("AllowAll");
+// 启用认证中间件，必须在 UseAuthorization 之前
+app.UseAuthentication();
+// 启用授权中间件（如后续增加认证/授权机制，会在此处生效）
+app.UseAuthorization();
 // 映射所有基于控制器的路由到终结点管线
 app.MapControllers();
 

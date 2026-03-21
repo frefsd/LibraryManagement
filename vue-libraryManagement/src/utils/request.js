@@ -6,17 +6,15 @@ import router from '../router'
 //创建axios实例对象
 const request = axios.create({
   baseURL: 'https://localhost:7297',
+  // 允许携带跨域 Cookie（后端将 token 写入 HttpOnly cookie 时需要）
+  withCredentials: true,
   timeout: 15000 //15000毫秒 = 15秒
 })
 
 //axios的请求 request 拦截器
 request.interceptors.request.use(
   (config) => {
-    const loginUser = JSON.parse(localStorage.getItem('loginUser'))
-    if (loginUser && loginUser.token) {
-      //使用Authorization
-      config.headers.Authorization = `Bearer ${loginUser.token}`
-    }
+    // 不再从 localStorage 读取 token。认证由 HttpOnly cookie 管理，浏览器会自动带上 Cookie
     return config
   },
   (error) =>{

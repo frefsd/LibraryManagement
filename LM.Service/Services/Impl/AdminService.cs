@@ -25,16 +25,20 @@ namespace LibraryManagement.LM.Service.Services.Impl
         /// <returns></returns>
         public async Task<Admin?> ValidateCredentialsAsync(string username, string password)
         {
+            if (string.IsNullOrWhiteSpace(username) || string.IsNullOrWhiteSpace(password))
+                return null;
+
             var admin = await _applicationDbContext.Admin
                 .FirstOrDefaultAsync(a => a.Username == username && a.IsActive);
             if (admin == null) return null;
 
             if (BCrypt.Net.BCrypt.Verify(password, admin.Password))
             {
-                admin.LastLoginAt = DateTime.Now;
+                admin.LastLoginAt = DateTime.UtcNow;
                 await _applicationDbContext.SaveChangesAsync();
                 return admin;
             }
+
             return null;
         }
     }

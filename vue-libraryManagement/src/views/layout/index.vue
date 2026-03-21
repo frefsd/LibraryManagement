@@ -7,12 +7,19 @@ import { Document, Grid, Reading } from '@element-plus/icons-vue';
 let router = useRouter()
 
 const loginName = ref('')
-//定义钩子函数, 获取登录用户名
+  //定义钩子函数, 获取登录用户名
 onMounted(() => {
-  //获取登录用户名
-  let loginUser = JSON.parse(localStorage.getItem('loginUser'))
-  if (loginUser && loginUser.user.realName) {
-    loginName.value = loginUser.user.realName
+  //获取登录用户名（localStorage 中只保存 minimal user info）
+  try {
+    const s = localStorage.getItem('loginUser')
+    if (s) {
+      const loginUser = JSON.parse(s)
+      if (loginUser && loginUser.user && loginUser.user.realName) {
+        loginName.value = loginUser.user.realName
+      }
+    }
+  } catch (e) {
+    // 忽略解析错误
   }
 })
 

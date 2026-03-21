@@ -49,15 +49,27 @@ const router = createRouter({
 });
 
 // ========== 全局路由守卫 ==========
+function parseLoginUser() {
+  try {
+    const s = localStorage.getItem('loginUser')
+    if (!s) return null
+    return JSON.parse(s)
+  } catch (e) {
+    return null
+  }
+}
+
 router.beforeEach((to, from, next) => {
-  const isLoggedIn = !!localStorage.getItem('loginUser');
+  const loginUser = parseLoginUser()
+  // 认证由 HttpOnly cookie 管理，前端只能基于本地保存的 minimal user info 判定是否已登录
+  const isLoggedIn = !!(loginUser && loginUser.user)
 
   console.log('路由守卫:', { to: to.path, isLoggedIn, requiresAuth: to.meta.requiresAuth })
 
   // 如果访问根路径且未登录，直接到登录页
   if (to.path === '/' && !isLoggedIn) {
     console.log('访问根路径且未登录，直接到登录页')
-    next('/login');
+    next('/login')
   }
   // 需要认证但未登录
   else if (to.meta.requiresAuth && !isLoggedIn) {
@@ -65,18 +77,18 @@ router.beforeEach((to, from, next) => {
     next({
       path: '/login',
       query: { redirect: to.fullPath }
-    });
+    })
   }
   // 已登录但访问登录页
   else if (to.path === '/login' && isLoggedIn) {
     console.log('已登录访问登录页，跳转到首页')
-    next('/index');
+    next('/index')
   }
   // 正常访问
   else {
     console.log('正常访问')
-    next();
+    next()
   }
-});
+})
 
 export default router;

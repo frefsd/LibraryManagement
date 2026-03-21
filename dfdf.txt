@@ -1,0 +1,1564 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>LibraryManagement</name>
+    </assembly>
+    <members>
+        <member name="T:LibraryManagement.LM.Common.AppDbContext.ApplicationDbContext">
+            <summary>
+            配置数据库上下文
+            </summary>
+        </member>
+        <member name="T:LibraryManagement.LM.Common.Exceptions.ExceptionHandlerMiddleware">
+            <summary>
+            全局异常处理类
+            </summary>
+        </member>
+        <member name="T:LibraryManagement.LM.Common.Result.PageResult`1">
+            <summary>
+            分页查询返回的结果
+            </summary>
+            <typeparam name="T"></typeparam>
+        </member>
+        <member name="T:LibraryManagement.LM.Pojo.dto.BorrowRecordDTO">
+            <summary>
+            用户封装用户借阅记录返回的结果
+            </summary>
+        </member>
+        <member name="T:LibraryManagement.LM.Pojo.dto.BorrowRequestDTO">
+            <summary>
+            新增借阅请求参数
+            </summary>
+        </member>
+        <member name="T:LibraryManagement.LM.Pojo.dto.CategoryDTO">
+            <summary>
+            用于封装分类返回的结果
+            </summary>
+        </member>
+        <member name="T:LibraryManagement.LM.Pojo.dto.ChangeStatusDTO">
+            <summary>
+            启用/禁用用户状态
+            </summary>
+        </member>
+        <member name="T:LibraryManagement.LM.Pojo.dto.CreateBookRequestDTO">
+            <summary>
+            新增图书请求参数
+            </summary>
+        </member>
+        <member name="T:LibraryManagement.LM.Pojo.dto.CreateUserDTO">
+            <summary>
+            新增用户请求参数
+            </summary>
+        </member>
+        <member name="T:LibraryManagement.LM.Pojo.dto.LoginDTO">
+            <summary>
+            登录请求参数
+            </summary>
+        </member>
+        <member name="T:LibraryManagement.LM.Pojo.dto.BookSummaryDTO">
+            <summary>
+            图书信息统计概览数据
+            </summary>
+        </member>
+        <member name="T:LibraryManagement.LM.Pojo.dto.ChartDataDTO">
+            <summary>
+            图书信息统计饼状图
+            </summary>
+        </member>
+        <member name="T:LibraryManagement.LM.Pojo.dto.CategoryStatsItemDTO">
+            <summary>
+            按分类统计图书数量
+            </summary>
+        </member>
+        <member name="T:LibraryManagement.LM.Pojo.dto.CategorySummaryDTO">
+            <summary>
+            分类信息统计
+            </summary>
+        </member>
+        <member name="T:LibraryManagement.LM.Pojo.dto.BorrowStatsRequestDTO">
+            <summary>
+            借阅信息统计
+            </summary>
+        </member>
+        <member name="T:LibraryManagement.LM.Pojo.Models.Admin">
+            <summary>
+            系统管理员
+            </summary>
+        </member>
+        <member name="P:LibraryManagement.LM.Pojo.Models.Admin.Username">
+            <summary>
+            登录用户名
+            </summary>
+        </member>
+        <member name="P:LibraryManagement.LM.Pojo.Models.Admin.Password">
+            <summary>
+            密码
+            </summary>
+        </member>
+        <member name="P:LibraryManagement.LM.Pojo.Models.Admin.RealName">
+            <summary>
+            真实姓名
+            </summary>
+        </member>
+        <member name="P:LibraryManagement.LM.Pojo.Models.Admin.Role">
+            <summary>
+            角色
+            </summary>
+        </member>
+        <member name="P:LibraryManagement.LM.Pojo.Models.Admin.IsActive">
+            <summary>
+            账户是否启用
+            </summary>
+        </member>
+        <member name="P:LibraryManagement.LM.Pojo.Models.Admin.CreatedAt">
+            <summary>
+            创建时间
+            </summary>
+        </member>
+        <member name="P:LibraryManagement.LM.Pojo.Models.Admin.LastLoginAt">
+            <summary>
+            最后登录时间
+            </summary>
+        </member>
+        <member name="T:LibraryManagement.LM.Pojo.Models.Book">
+            <summary>
+            图书表
+            </summary>
+        </member>
+        <member name="T:LibraryManagement.LM.Pojo.Models.BorrowRecord">
+            <summary>
+            借阅记录表
+            </summary>
+        </member>
+        <member name="T:LibraryManagement.LM.Pojo.Models.Category">
+            <summary>
+            图书分类表
+            </summary>
+        </member>
+        <member name="T:LibraryManagement.LM.Pojo.Models.Publisher">
+            <summary>
+            出版商类
+            </summary>
+        </member>
+        <member name="T:LibraryManagement.LM.Pojo.Models.User">
+            <summary>
+            用户表（读者/借阅者）
+            </summary>
+        </member>
+        <member name="T:LibraryManagement.LM.Service.Controllers.AuthController">
+            <summary>
+            认证授权接口（登录、JWT颁发）
+            </summary>
+        </member>
+        <member name="M:LibraryManagement.LM.Service.Controllers.AuthController.Login(LibraryManagement.LM.Pojo.dto.LoginDTO)">
+            <summary>
+            管理员登录
+            </summary>
+            <param name="login">登录参数：用户名、密码</param>
+            <returns>返回JWT令牌与用户信息</returns>
+        </member>
+        <member name="M:LibraryManagement.LM.Service.Controllers.AuthController.GenerateJwtToken(LibraryManagement.LM.Pojo.Models.Admin)">
+            <summary>
+            生成JWT令牌
+            </summary>
+            <param name="admin">管理员实体</param>
+            <returns>JWT字符串</returns>
+        </member>
+        <member name="T:LibraryManagement.LM.Service.Controllers.BookController">
+            <summary>
+            图书管理模块
+            </summary>
+        </member>
+        <member name="M:LibraryManagement.LM.Service.Controllers.BookController.QueryPage(System.String,System.String,System.String,System.Int32,System.Int32)">
+            <summary>
+            分页查询
+            </summary>
+            <param name="begin"></param>
+            <param name="end"></param>
+            <param name="name"></param>
+            <param name="page"></param>
+            <param name="pageSize"></param>
+            <returns></returns>
+        </member>
+        <member name="M:LibraryManagement.LM.Service.Controllers.BookController.Add(LibraryManagement.LM.Pojo.dto.CreateBookRequestDTO)">
+            <summary>
+            添加图书
+            </summary>
+            <param name="book"></param>
+            <returns></returns>
+        </member>
+        <member name="M:LibraryManagement.LM.Service.Controllers.BookController.QueryInfo(System.Int32)">
+            <summary>
+            根据id获取图书信息
+            </summary>
+            <param name="id"></param>
+            <returns></returns>
+        </member>
+        <member name="M:LibraryManagement.LM.Service.Controllers.BookController.Update(LibraryManagement.LM.Pojo.dto.UpdateBookRequestDTO)">
+            <summary>
+            修改图书信息
+            </summary>
+            <param name="book"></param>
+            <returns></returns>
+        </member>
+        <member name="M:LibraryManagement.LM.Service.Controllers.BookController.Delete(System.Int32)">
+            <summary>
+            删除图书信息
+            </summary>
+            <param name="id"></param>
+            <returns></returns>
+        </member>
+        <member name="M:LibraryManagement.LM.Service.Controllers.BookController.Available(System.String,System.Int32,System.Int32)">
+            <summary>
+            获取可借阅的图书（未删除且有库存）
+            </summary>
+            <param name="keyword"></param>
+            <param name="page"></param>
+            <param name="pageSize"></param>
+            <returns></returns>
+        </member>
+        <member name="T:LibraryManagement.LM.Service.Controllers.BorrowController">
+            <summary>
+            借阅管理模块
+            </summary>
+        </member>
+        <member name="M:LibraryManagement.LM.Service.Controllers.BorrowController.QueryPage(System.Int32,System.Int32,System.String,System.Nullable{System.Int32})">
+            <summary>
+            分页查询
+            </summary>
+            <param name="page"></param>
+            <param name="pageSize"></param>
+            <param name="userName"></param>
+            <param name="status"></param>
+            <returns></returns>
+        </member>
+        <member name="M:LibraryManagement.LM.Service.Controllers.BorrowController.Borrow(LibraryManagement.LM.Pojo.dto.BorrowRequestDTO)">
+            <summary>
+            新增借阅
+            </summary>
+            <param name="dto"></param>
+            <returns></returns>
+        </member>
+        <member name="M:LibraryManagement.LM.Service.Controllers.BorrowController.Return(System.Int32)">
+            <summary>
+            归还图书
+            </summary>
+            <param name="id"></param>
+            <returns></returns>
+        </member>
+        <member name="M:LibraryManagement.LM.Service.Controllers.BorrowController.Renew(System.Int32)">
+            <summary>
+            续借图书
+            </summary>
+            <param name="id"></param>
+            <returns></returns>
+        </member>
+        <member name="T:LibraryManagement.LM.Service.Controllers.CategoryController">
+            <summary>
+            图书分类模块
+            </summary>
+        </member>
+        <member name="M:LibraryManagement.LM.Service.Controllers.CategoryController.QueryAll">
+            <summary>
+            获取所有分类
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:LibraryManagement.LM.Service.Controllers.CategoryController.QueryPage(System.Int32,System.Int32)">
+            <summary>
+            分页查询
+            </summary>
+            <param name="page"></param>
+            <param name="pageSize"></param>
+            <returns></returns>
+        </member>
+        <member name="M:LibraryManagement.LM.Service.Controllers.CategoryController.QueryInfo(System.Int32)">
+            <summary>
+            根据id获取分类
+            </summary>
+            <param name="id"></param>
+            <returns></returns>
+        </member>
+        <member name="M:LibraryManagement.LM.Service.Controllers.CategoryController.Add(LibraryManagement.LM.Pojo.dto.CategoryDTO)">
+            <summary>
+            添加分类
+            </summary>
+            <param name="dto"></param>
+            <returns></returns>
+        </member>
+        <member name="M:LibraryManagement.LM.Service.Controllers.CategoryController.Delete(System.Int32)">
+            <summary>
+            删除分类
+            </summary>
+            <param name="id"></param>
+            <returns></returns>
+        </member>
+        <member name="M:LibraryManagement.LM.Service.Controllers.CategoryController.Update(System.Int32,LibraryManagement.LM.Pojo.dto.CategoryDTO)">
+            <summary>
+            修改分类
+            </summary>
+            <param name="id"></param>
+            <param name="dto"></param>
+            <returns></returns>
+        </member>
+        <member name="T:LibraryManagement.LM.Service.Controllers.PublisherController">
+            <summary>
+            出版社
+            </summary>
+        </member>
+        <member name="T:LibraryManagement.LM.Service.Controllers.ReportController">
+            <summary>
+            数据信息统计报表
+            </summary>
+        </member>
+        <member name="M:LibraryManagement.LM.Service.Controllers.ReportController.BookSummary">
+            <summary>
+             获取图书概览数据
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:LibraryManagement.LM.Service.Controllers.ReportController.BookStats(System.String,System.Nullable{System.Int32},System.Nullable{System.Int32})">
+             <summary>
+            获取图书统计报表数据
+             </summary>
+             <param name="dimension"></param>
+             <param name="startYear"></param>
+             <param name="endYear"></param>
+             <returns></returns>
+        </member>
+        <member name="M:LibraryManagement.LM.Service.Controllers.ReportController.CategoryStats(System.String)">
+            <summary>
+            获取分类统计数据
+            </summary>
+            <param name="type"></param>
+            <returns></returns>
+        </member>
+        <member name="M:LibraryManagement.LM.Service.Controllers.ReportController.BorrowStats(LibraryManagement.LM.Pojo.dto.BorrowStatsRequestDTO)">
+            <summary>
+            获取借阅统计数据
+            </summary>
+            <param name="request"></param>
+            <returns></returns>
+        </member>
+        <member name="T:LibraryManagement.LM.Service.Controllers.UserController">
+            <summary>
+            用户管理模块
+            </summary>
+        </member>
+        <member name="M:LibraryManagement.LM.Service.Controllers.UserController.QueryPage(System.String,System.String,System.String,System.Int32,System.Int32)">
+            <summary>
+            分页查询
+            </summary>
+        </member>
+        <member name="M:LibraryManagement.LM.Service.Controllers.UserController.GetUser(System.Int32)">
+            <summary>
+            根据id获取用户信息
+            </summary>
+        </member>
+        <member name="M:LibraryManagement.LM.Service.Controllers.UserController.Add(LibraryManagement.LM.Pojo.dto.CreateUserDTO)">
+            <summary>
+            新增用户信息
+            </summary>
+        </member>
+        <member name="M:LibraryManagement.LM.Service.Controllers.UserController.Update(System.Int32,LibraryManagement.LM.Pojo.DTO.UpdateUserDTO)">
+            <summary>
+            编辑用户信息
+            </summary>
+        </member>
+        <member name="M:LibraryManagement.LM.Service.Controllers.UserController.Delete(System.Int32)">
+            <summary>
+            删除用户信息
+            </summary>
+        </member>
+        <member name="M:LibraryManagement.LM.Service.Controllers.UserController.Status(System.Int32,LibraryManagement.LM.Pojo.dto.ChangeStatusDTO)">
+            <summary>
+            启用/禁用用户
+            </summary>
+        </member>
+        <member name="M:LibraryManagement.LM.Service.Repository.IBookRepository.GetQueryable">
+            <summary>
+            获取可查询的图书集合（包括分类和出版社）
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:LibraryManagement.LM.Service.Repository.IBookRepository.GetByIdAsync(System.Int32)">
+            <summary>
+            根据id获取图书信息
+            </summary>
+            <param name="id"></param>
+            <returns></returns>
+        </member>
+        <member name="M:LibraryManagement.LM.Service.Repository.IBookRepository.AddAsync(LibraryManagement.LM.Pojo.Models.Book)">
+            <summary>
+            添加图书信息
+            </summary>
+            <param name="book"></param>
+            <returns></returns>
+        </member>
+        <member name="M:LibraryManagement.LM.Service.Repository.IBookRepository.UpdateAsync(LibraryManagement.LM.Pojo.Models.Book)">
+            <summary>
+            更新图书信息
+            </summary>
+            <param name="book"></param>
+            <returns></returns>
+        </member>
+        <member name="M:LibraryManagement.LM.Service.Repository.IBookRepository.DeleteAsync(System.Int32)">
+            <summary>
+            删除图书信息
+            </summary>
+            <param name="id"></param>
+            <returns></returns>
+        </member>
+        <member name="M:LibraryManagement.LM.Service.Repository.IBookRepository.SoftDeleteAsync(System.Int32)">
+            <summary>
+            软删除
+            </summary>
+            <param name="id"></param>
+            <returns></returns>
+        </member>
+        <member name="M:LibraryManagement.LM.Service.Repository.IBookRepository.HasBooksByCategoryIdAsync(System.Int32)">
+            <summary>
+            判断该分类下是否有书籍
+            </summary>
+            <param name="id"></param>
+            <returns></returns>
+        </member>
+        <member name="M:LibraryManagement.LM.Service.Repository.IBookRepository.GetTotalCopiesAsync">
+            <summary>
+            获取图书的总数量（不包括已下架，损坏等）
+            </summary>
+            <returns></returns> 
+        </member>
+        <member name="M:LibraryManagement.LM.Service.Repository.IBookRepository.GetBorrowedCopiesAsync">
+            <summary>
+            借阅出去的书籍总数量
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:LibraryManagement.LM.Service.Repository.IBookRepository.GetQueryableAsync">
+             <summary>
+            查询所有书籍不包括（已下架）
+             </summary>
+             <returns></returns>
+        </member>
+        <member name="M:LibraryManagement.LM.Service.Repository.IBookRepository.GetAvailableBooksAsync(System.String,System.Int32,System.Int32)">
+            <summary>
+            获取可借阅的图书（未删除且有库存）
+            </summary>
+            <param name="keyword"></param>
+            <param name="page"></param>
+            <param name="pageSize"></param>
+            <returns></returns>
+        </member>
+        <member name="M:LibraryManagement.LM.Service.Repository.IBookRepository.GetBooksByKeywordAsync(System.String)">
+            <summary>
+            ai关键词检索信息
+            </summary>
+            <param name="keyword"></param>
+            <returns></returns>
+        </member>
+        <member name="T:LibraryManagement.LM.Service.Repository.IBorrowRepository">
+            <summary>
+            借阅管理模块接口
+            </summary>
+        </member>
+        <member name="M:LibraryManagement.LM.Service.Repository.IBorrowRepository.GetPageAsync(System.Int32,System.Int32,System.String,System.Nullable{System.Int32})">
+            <summary>
+            分页查询数据
+            </summary>
+            <param name="page"></param>
+            <param name="pageSize"></param>
+            <param name="userName"></param>
+            <param name="status"></param>
+            <returns></returns>
+        </member>
+        <member name="M:LibraryManagement.LM.Service.Repository.IBorrowRepository.GetByIdAsync(System.Int32)">
+            <summary>
+            通过id获取借阅信息
+            </summary>
+            <param name="id"></param>
+            <returns></returns>
+        </member>
+        <member name="M:LibraryManagement.LM.Service.Repository.IBorrowRepository.AddAsync(LibraryManagement.LM.Pojo.Models.BorrowRecord)">
+            <summary>
+            添加的借阅人信息
+            </summary>
+            <param name="entity"></param>
+            <returns></returns>
+        </member>
+        <member name="M:LibraryManagement.LM.Service.Repository.IBorrowRepository.UpdateAsync(LibraryManagement.LM.Pojo.Models.BorrowRecord)">
+            <summary>
+            修改借阅人信息
+            </summary>
+            <param name="entity"></param>
+            <returns></returns>
+        </member>
+        <member name="M:LibraryManagement.LM.Service.Repository.IBorrowRepository.GetQueryableAsync">
+            <summary>
+            获取借阅信息
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:LibraryManagement.LM.Service.Repository.IBorrowRepository.HasActiveBorrowAsync(System.Int32)">
+            <summary>
+            检查图书是否正在被借阅（存在未归还记录）
+            </summary>
+            <param name="userId"></param>
+            <returns></returns>
+        </member>
+        <member name="M:LibraryManagement.LM.Service.Repository.IBorrowRepository.HasUnreturnRecordAsync(System.Int32)">
+            <summary>
+            检查指定图书是否存在未归还的借阅记录
+            </summary>
+            <param name="bookId"></param>
+            <returns></returns>
+        </member>
+        <member name="M:LibraryManagement.LM.Service.Repository.IBorrowRepository.GetActiveBorrowCountAsync(System.Int32)">
+            <summary>
+            检查该借阅人借阅的书籍数量
+            </summary>
+            <param name="userId"></param>
+            <returns></returns>
+        </member>
+        <member name="M:LibraryManagement.LM.Service.Repository.IBorrowRepository.GetByUserIdAndBookIdAsync(System.Int32,System.Int32)">
+            <summary>
+            检查该用户是否已借阅此书且未归还
+            </summary>
+            <param name="userId"></param>
+            <param name="bookId"></param>
+            <returns></returns>
+        </member>
+        <member name="M:LibraryManagement.LM.Service.Repository.ICategoryRepository.GetAllAsync">
+            <summary>
+            获取所有分类
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:LibraryManagement.LM.Service.Repository.ICategoryRepository.GetByIdAsync(System.Int32)">
+            <summary>
+            根据id获取分类信息
+            </summary>
+            <param name="id"></param>
+            <returns></returns>
+        </member>
+        <member name="M:LibraryManagement.LM.Service.Repository.ICategoryRepository.AddAsync(LibraryManagement.LM.Pojo.Models.Category)">
+            <summary>
+            添加分类
+            </summary>
+            <param name="dto"></param>
+            <returns></returns>
+        </member>
+        <member name="M:LibraryManagement.LM.Service.Repository.ICategoryRepository.UpdateAsync(LibraryManagement.LM.Pojo.Models.Category)">
+            <summary>
+            更新分类
+            </summary>
+            <param name="id"></param>
+            <param name="dto"></param>
+            <returns></returns>
+        </member>
+        <member name="M:LibraryManagement.LM.Service.Repository.ICategoryRepository.DeleteAsync(System.Int32)">
+            <summary>
+            删除分类
+            </summary>
+            <param name="id"></param>
+            <returns></returns>
+        </member>
+        <member name="M:LibraryManagement.LM.Service.Repository.ICategoryRepository.CountAsync">
+            <summary>
+            获取分类的数量
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:LibraryManagement.LM.Service.Repository.Impl.BookRepository.GetQueryable">
+            <summary>
+            获取所有图书信息
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:LibraryManagement.LM.Service.Repository.Impl.BookRepository.GetByIdAsync(System.Int32)">
+            <summary>
+            根据id获取图书信息
+            </summary>
+            <param name="id"></param>
+            <returns></returns>
+        </member>
+        <member name="M:LibraryManagement.LM.Service.Repository.Impl.BookRepository.AddAsync(LibraryManagement.LM.Pojo.Models.Book)">
+             <summary>
+            添加图书
+             </summary>
+             <param name="book"></param>
+             <returns></returns>
+        </member>
+        <member name="M:LibraryManagement.LM.Service.Repository.Impl.BookRepository.UpdateAsync(LibraryManagement.LM.Pojo.Models.Book)">
+            <summary>
+            更新图书信息
+            </summary>
+            <param name="book"></param>
+            <returns></returns>
+        </member>
+        <member name="M:LibraryManagement.LM.Service.Repository.Impl.BookRepository.DeleteAsync(System.Int32)">
+            <summary>
+            删除图书信息
+            </summary>
+            <param name="id"></param>
+            <returns></returns>
+        </member>
+        <member name="M:LibraryManagement.LM.Service.Repository.Impl.BookRepository.SoftDeleteAsync(System.Int32)">
+            <summary>
+            查询已归还的图书
+            </summary>
+            <param name="id"></param>
+            <returns></returns>
+        </member>
+        <member name="M:LibraryManagement.LM.Service.Repository.Impl.BookRepository.HasBooksByCategoryIdAsync(System.Int32)">
+            <summary>
+            判断该分类下是否有书籍
+            </summary>
+            <param name="categoryId"></param>
+            <returns></returns>
+        </member>
+        <member name="M:LibraryManagement.LM.Service.Repository.Impl.BookRepository.GetQueryableAsync">
+            <summary>
+            查询所有书籍不包括（已下架）
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:LibraryManagement.LM.Service.Repository.Impl.BookRepository.GetTotalCopiesAsync">
+            <summary>
+            获取图书的总数量（不包括已下架，损坏等）
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:LibraryManagement.LM.Service.Repository.Impl.BookRepository.GetBorrowedCopiesAsync">
+            <summary>
+            借阅出去的书籍总数量
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:LibraryManagement.LM.Service.Repository.Impl.BookRepository.GetAvailableBooksAsync(System.String,System.Int32,System.Int32)">
+            <summary>
+            获取可借阅的图书（未删除且有库存）
+            </summary>
+            <param name="keyword"></param>
+            <param name="page"></param>
+            <param name="pageSize"></param>
+            <returns></returns>
+        </member>
+        <member name="M:LibraryManagement.LM.Service.Repository.Impl.BookRepository.GetBooksByKeywordAsync(System.String)">
+            <summary>
+            ai关键词检索信息
+            </summary>
+            <param name="keyword"></param>
+            <returns></returns>
+            <exception cref="T:System.NotImplementedException"></exception>
+        </member>
+        <member name="M:LibraryManagement.LM.Service.Repository.Impl.BorrowRepository.GetPageAsync(System.Int32,System.Int32,System.String,System.Nullable{System.Int32})">
+            <summary>
+            分页查询数据
+            </summary>
+            <param name="page"></param>
+            <param name="pageSize"></param>
+            <param name="userName"></param>
+            <param name="status"></param>
+            <returns></returns>
+        </member>
+        <member name="M:LibraryManagement.LM.Service.Repository.Impl.BorrowRepository.GetByIdAsync(System.Int32)">
+            <summary>
+            通过id获取借阅人信息
+            </summary>
+            <param name="id"></param>
+            <returns></returns>
+        </member>
+        <member name="M:LibraryManagement.LM.Service.Repository.Impl.BorrowRepository.AddAsync(LibraryManagement.LM.Pojo.Models.BorrowRecord)">
+            <summary>
+            添加借阅人信息
+            </summary>
+            <param name="entity"></param>
+            <returns></returns>
+        </member>
+        <member name="M:LibraryManagement.LM.Service.Repository.Impl.BorrowRepository.UpdateAsync(LibraryManagement.LM.Pojo.Models.BorrowRecord)">
+            <summary>
+            修改借阅人信息
+            </summary>
+            <param name="entity"></param>
+            <returns></returns>
+        </member>
+        <member name="M:LibraryManagement.LM.Service.Repository.Impl.BorrowRepository.GetQueryableAsync">
+            <summary>
+            获取借阅信息
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:LibraryManagement.LM.Service.Repository.Impl.BorrowRepository.HasActiveBorrowAsync(System.Int32)">
+            <summary>
+            检查图书是否正在被借阅（存在未归还记录）
+            </summary>
+            <param name="userId"></param>
+            <returns></returns>
+            <exception cref="T:System.NotImplementedException"></exception>
+        </member>
+        <member name="M:LibraryManagement.LM.Service.Repository.Impl.BorrowRepository.HasUnreturnRecordAsync(System.Int32)">
+            <summary>
+            检查指定图书是否存在未归还的借阅记录
+            </summary>
+            <param name="bookId"></param>
+            <returns></returns>
+        </member>
+        <member name="M:LibraryManagement.LM.Service.Repository.Impl.BorrowRepository.GetActiveBorrowCountAsync(System.Int32)">
+            <summary>
+            检查该借阅人借阅书籍的数量
+            </summary>
+            <param name="userId"></param>
+            <returns></returns>
+        </member>
+        <member name="M:LibraryManagement.LM.Service.Repository.Impl.BorrowRepository.GetByUserIdAndBookIdAsync(System.Int32,System.Int32)">
+            <summary>
+            检查该用户是否已借阅此书且未归还
+            </summary>
+            <param name="userId"></param>
+            <param name="bookId"></param>
+            <returns></returns>
+        </member>
+        <member name="M:LibraryManagement.LM.Service.Repository.Impl.CategoryRepository.GetAllAsync">
+            <summary>
+            获取所有分类
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:LibraryManagement.LM.Service.Repository.Impl.CategoryRepository.GetByIdAsync(System.Int32)">
+            <summary>
+            根据id获取分类信息
+            </summary>
+            <param name="id"></param>
+            <returns></returns>
+        </member>
+        <member name="M:LibraryManagement.LM.Service.Repository.Impl.CategoryRepository.AddAsync(LibraryManagement.LM.Pojo.Models.Category)">
+            <summary>
+            添加分类
+            </summary>
+            <param name="dto"></param>
+            <returns></returns>
+        </member>
+        <member name="M:LibraryManagement.LM.Service.Repository.Impl.CategoryRepository.UpdateAsync(LibraryManagement.LM.Pojo.Models.Category)">
+            <summary>
+            更新分类
+            </summary>
+            <param name="id"></param>
+            <param name="dto"></param>
+            <returns></returns>
+        </member>
+        <member name="M:LibraryManagement.LM.Service.Repository.Impl.CategoryRepository.DeleteAsync(System.Int32)">
+            <summary>
+            删除分类
+            </summary>
+            <param name="id"></param>
+            <returns></returns>
+        </member>
+        <member name="M:LibraryManagement.LM.Service.Repository.Impl.CategoryRepository.CountAsync">
+            <summary>
+            获取分类的数量
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:LibraryManagement.LM.Service.Repository.Impl.UserRepository.GetPagedAsync(System.String,System.String,System.String,System.Int32,System.Int32)">
+            <summary>
+            分页查询
+            </summary>
+            <param name="name"></param>
+            <param name="phone"></param>
+            <param name="cardName"></param>
+            <param name="skip"></param>
+            <param name="take"></param>
+            <returns></returns>
+        </member>
+        <member name="M:LibraryManagement.LM.Service.Repository.Impl.UserRepository.AddUserAsync(LibraryManagement.LM.Pojo.Models.User)">
+            <summary>
+            新增用户信息
+            </summary>
+            <param name="user"></param>
+            <returns></returns>
+            <exception cref="T:System.NotImplementedException"></exception>
+        </member>
+        <member name="M:LibraryManagement.LM.Service.Repository.Impl.UserRepository.DeleteUserAsync(System.Int32)">
+            <summary>
+            根据id删除用户信息
+            </summary>
+            <param name="id"></param>
+            <returns></returns>
+            <exception cref="T:System.NotImplementedException"></exception>
+        </member>
+        <member name="M:LibraryManagement.LM.Service.Repository.Impl.UserRepository.ExistsByCardNumberAsync(System.String)">
+            <summary>
+            通过借书卡号判读该用户是否存在
+            </summary>
+            <param name="cardNumber"></param>
+            <returns></returns>
+            <exception cref="T:System.NotImplementedException"></exception>
+        </member>
+        <member name="M:LibraryManagement.LM.Service.Repository.Impl.UserRepository.GetByIdAsync(System.Int32)">
+            <summary>
+            通过id获取用户信息
+            </summary>
+            <param name="id"></param>
+            <returns></returns>
+        </member>
+        <member name="M:LibraryManagement.LM.Service.Repository.Impl.UserRepository.GetCountAsync(System.String,System.String,System.String)">
+            <summary>
+            通过用户姓名，手机号，或者借书卡号查询用户信息
+            </summary>
+            <param name="name"></param>
+            <param name="phone"></param>
+            <param name="cardNumber"></param>
+            <returns></returns>
+        </member>
+        <member name="M:LibraryManagement.LM.Service.Repository.Impl.UserRepository.UpdateAsync(LibraryManagement.LM.Pojo.Models.User)">
+            <summary>
+            编辑用户信息
+            </summary>
+            <param name="user"></param>
+            <returns></returns>
+        </member>
+        <member name="M:LibraryManagement.LM.Service.Repository.Impl.UserRepository.SetStatusAsync(System.Int32,System.Int32)">
+            <summary>
+            启用/禁用用户
+            </summary>
+            <param name="id"></param>
+            <param name="status"></param>
+            <returns></returns>
+            <exception cref="T:System.NotImplementedException"></exception>
+        </member>
+        <member name="M:LibraryManagement.LM.Service.Repository.Impl.UserRepository.GetQueryableAsync">
+            <summary>
+            获取未被禁用的用户（未禁用）
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:LibraryManagement.LM.Service.Repository.Impl.UserRepository.HasActiveBorrowAsync(System.Int32)">
+            <summary>
+            检查用户是否有未归还的借阅记录
+            </summary>
+            <param name="userId"></param>
+            <returns></returns>
+            <exception cref="T:System.NotImplementedException"></exception>
+        </member>
+        <member name="M:LibraryManagement.LM.Service.Repository.Impl.UserRepository.GetByUsernameAsync(System.String)">
+            <summary>
+            通过用户名查询该用户是否存在
+            </summary>
+            <param name="username"></param>
+            <returns></returns>
+        </member>
+        <member name="M:LibraryManagement.LM.Service.Repository.IUserRepository.GetPagedAsync(System.String,System.String,System.String,System.Int32,System.Int32)">
+            <summary>
+            分页查询
+            </summary>
+            <param name="name"></param>
+            <param name="phone"></param>
+            <param name="cardName"></param>
+            <param name="pageSize"></param>
+            <returns></returns>
+        </member>
+        <member name="M:LibraryManagement.LM.Service.Repository.IUserRepository.AddUserAsync(LibraryManagement.LM.Pojo.Models.User)">
+            <summary>
+            新增用户信息
+            </summary>
+            <param name="user"></param>
+            <returns></returns>
+        </member>
+        <member name="M:LibraryManagement.LM.Service.Repository.IUserRepository.UpdateAsync(LibraryManagement.LM.Pojo.Models.User)">
+            <summary>
+            编辑用户信息
+            </summary>
+            <param name="user"></param>
+            <returns></returns>
+        </member>
+        <member name="M:LibraryManagement.LM.Service.Repository.IUserRepository.DeleteUserAsync(System.Int32)">
+            <summary>
+            根据id删除用户信息
+            </summary>
+            <param name="id"></param>
+            <returns></returns>
+        </member>
+        <member name="M:LibraryManagement.LM.Service.Repository.IUserRepository.GetByIdAsync(System.Int32)">
+            <summary>
+            根据id获取用户信息
+            </summary>
+            <param name="id"></param>
+            <returns></returns>
+        </member>
+        <member name="M:LibraryManagement.LM.Service.Repository.IUserRepository.GetCountAsync(System.String,System.String,System.String)">
+            <summary>
+            通过用户姓名，手机号，或者借书卡号查询用户信息
+            </summary>
+            <param name="name"></param>
+            <param name="phone"></param>
+            <param name="cardNumber"></param>
+            <returns></returns>
+        </member>
+        <member name="M:LibraryManagement.LM.Service.Repository.IUserRepository.ExistsByCardNumberAsync(System.String)">
+            <summary>
+            判断借书卡号是否存在
+            </summary>
+            <param name="cardNumber"></param>
+            <returns></returns>
+        </member>
+        <member name="M:LibraryManagement.LM.Service.Repository.IUserRepository.GetQueryableAsync">
+            <summary>
+            获取可用的用户（未禁用）
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:LibraryManagement.LM.Service.Repository.IUserRepository.SetStatusAsync(System.Int32,System.Int32)">
+            <summary>
+            设置用户的状态（1.启用 2.禁用）
+            </summary>
+            <param name="id"></param>
+            <param name="status"></param>
+            <returns></returns>
+        </member>
+        <member name="M:LibraryManagement.LM.Service.Repository.IUserRepository.HasActiveBorrowAsync(System.Int32)">
+            <summary>
+            检查用户是否有未归还的借阅记录
+            </summary>
+            <param name="userId"></param>
+            <returns></returns>
+        </member>
+        <member name="M:LibraryManagement.LM.Service.Repository.IUserRepository.GetByUsernameAsync(System.String)">
+            <summary>
+            通过用户名查询该用户是否存在
+            </summary>
+            <param name="username"></param>
+            <returns></returns>
+        </member>
+        <member name="T:LibraryManagement.LM.Service.Services.IAdminService">
+            <summary>
+            管理员接口实现
+            </summary>
+        </member>
+        <member name="M:LibraryManagement.LM.Service.Services.IAdminService.ValidateCredentialsAsync(System.String,System.String)">
+            <summary>
+            创建管理员
+            </summary>
+            <param name="username"></param>
+            <param name="password"></param>
+            <returns></returns>
+        </member>
+        <member name="T:LibraryManagement.LM.Service.Services.IBookService">
+            <summary>
+            图书管理接口实现
+            </summary>
+        </member>
+        <member name="M:LibraryManagement.LM.Service.Services.IBookService.GetPageAsync(System.String,System.String,System.String,System.Int32,System.Int32)">
+            <summary>
+            分页查询
+            </summary>
+            <param name="begin"></param>
+            <param name="end"></param>
+            <param name="name"></param>
+            <param name="page"></param>
+            <param name="pageSize"></param>
+            <returns></returns>
+        </member>
+        <member name="M:LibraryManagement.LM.Service.Services.IBookService.AddAsync(LibraryManagement.LM.Pojo.Models.Book)">
+            <summary>
+            添加图书
+            </summary>
+            <param name="book"></param>
+            <returns></returns>
+        </member>
+        <member name="M:LibraryManagement.LM.Service.Services.IBookService.GetByIdAsync(System.Int32)">
+            <summary>
+            根据id来获取图书信息
+            </summary>
+            <param name="id"></param>
+            <returns></returns>
+        </member>
+        <member name="M:LibraryManagement.LM.Service.Services.IBookService.UpdateAsync(LibraryManagement.LM.Pojo.Models.Book)">
+            <summary>
+            修改图书信息
+            </summary>
+            <param name="book"></param>
+            <returns></returns>
+        </member>
+        <member name="M:LibraryManagement.LM.Service.Services.IBookService.DeleteAsync(System.Int32)">
+            <summary>
+            删除图书信息
+            </summary>
+            <param name="id"></param>
+            <returns></returns>
+        </member>
+        <member name="M:LibraryManagement.LM.Service.Services.IBookService.GetAvailableBooksAsync(System.String,System.Int32,System.Int32)">
+            <summary>
+            获取可借阅的图书（未删除且有库存）
+            </summary>
+            <param name="keyword"></param>
+            <param name="page"></param>
+            <param name="pageSize"></param>
+            <returns></returns>
+        </member>
+        <member name="M:LibraryManagement.LM.Service.Services.IBookService.SearchBookByKeywordAsync(System.String)">
+            <summary>
+            ai关键词检索信息
+            </summary>
+            <param name="keyword"></param>
+            <returns></returns>
+        </member>
+        <member name="T:LibraryManagement.LM.Service.Services.IBorrowService">
+            <summary>
+            借阅管理接口实现
+            </summary>
+        </member>
+        <member name="M:LibraryManagement.LM.Service.Services.IBorrowService.GetPageAsync(System.Int32,System.Int32,System.String,System.Nullable{System.Int32})">
+            <summary>
+            分页查询
+            </summary>
+            <param name="page"></param>
+            <param name="pageSize"></param>
+            <param name="userName"></param>
+            <param name="status"></param>
+            <returns></returns>
+        </member>
+        <member name="M:LibraryManagement.LM.Service.Services.IBorrowService.BorrowAsync(LibraryManagement.LM.Pojo.dto.BorrowRequestDTO)">
+            <summary>
+            获取借阅信息
+            </summary>
+            <param name="dto"></param>
+            <returns></returns>
+        </member>
+        <member name="M:LibraryManagement.LM.Service.Services.IBorrowService.ReturnAsync(System.Int32)">
+            <summary>
+            获取借阅人是否归还图书
+            </summary>
+            <param name="id"></param>
+            <returns></returns>
+        </member>
+        <member name="M:LibraryManagement.LM.Service.Services.IBorrowService.RenewAsync(System.Int32)">
+            <summary>
+            续借图书
+            </summary>
+            <param name="id"></param>
+            <returns></returns>
+        </member>
+        <member name="M:LibraryManagement.LM.Service.Services.IBorrowService.HasActiveBorrowAsync(System.Int32)">
+            <summary>
+            检查指定用户是否存在未归还的借阅记录
+            </summary>
+            <param name="userId"></param>
+            <returns></returns>
+        </member>
+        <member name="M:LibraryManagement.LM.Service.Services.IBorrowService.HasUnreturnRecordAsync(System.Int32)">
+            <summary>
+            检查指定图书是否存在未归还的借阅记录
+            </summary>
+            <param name="bookId"></param>
+            <returns></returns>
+        </member>
+        <member name="T:LibraryManagement.LM.Service.Services.ICategoryService">
+            <summary>
+            分类管理接口实现
+            </summary>
+        </member>
+        <member name="M:LibraryManagement.LM.Service.Services.ICategoryService.GetAllAsync">
+            <summary>
+            获取所有分类
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:LibraryManagement.LM.Service.Services.ICategoryService.GetPageAsync(System.Int32,System.Int32)">
+            <summary>
+            分页查询
+            </summary>
+            <param name="page"></param>
+            <param name="pageSize"></param>
+            <returns></returns>
+        </member>
+        <member name="M:LibraryManagement.LM.Service.Services.ICategoryService.GetByIdAsync(System.Int32)">
+            <summary>
+            通过id获取分类
+            </summary>
+            <param name="id"></param>
+            <returns></returns>
+        </member>
+        <member name="M:LibraryManagement.LM.Service.Services.ICategoryService.AddAsync(LibraryManagement.LM.Pojo.dto.CategoryDTO)">
+            <summary>
+            添加分类
+            </summary>
+            <param name="dto"></param>
+            <returns></returns>
+        </member>
+        <member name="M:LibraryManagement.LM.Service.Services.ICategoryService.UpdateAsync(System.Int32,LibraryManagement.LM.Pojo.dto.CategoryDTO)">
+            <summary>
+            更新分类
+            </summary>
+            <param name="dto"></param>
+            <returns></returns>
+        </member>
+        <member name="M:LibraryManagement.LM.Service.Services.ICategoryService.DeleteAsync(System.Int32)">
+            <summary>
+            删除分类
+            </summary>
+            <param name="id"></param>
+            <returns></returns>
+        </member>
+        <member name="M:LibraryManagement.LM.Service.Services.IChatService.AskStreamAsync(System.String)">
+            <summary>
+            采用流式方式回答用户的信息
+            </summary>
+            <param name="message"></param>
+            <returns></returns>
+        </member>
+        <member name="T:LibraryManagement.LM.Service.Services.Impl.AdminService">
+            <summary>
+            系统管理员
+            </summary>
+        </member>
+        <member name="M:LibraryManagement.LM.Service.Services.Impl.AdminService.ValidateCredentialsAsync(System.String,System.String)">
+            <summary>
+            创建管理员
+            </summary>
+            <param name="username"></param>
+            <param name="password"></param>
+            <returns></returns>
+        </member>
+        <member name="T:LibraryManagement.LM.Service.Services.Impl.BookService">
+            <summary>
+            图书管理业务代码开发
+            </summary>
+        </member>
+        <member name="M:LibraryManagement.LM.Service.Services.Impl.BookService.GetPageAsync(System.String,System.String,System.String,System.Int32,System.Int32)">
+            <summary>
+            分页查询
+            </summary>
+            <param name="begin"></param>
+            <param name="end"></param>
+            <param name="name"></param>
+            <param name="page"></param>
+            <param name="pageSize"></param>
+            <returns></returns>
+        </member>
+        <member name="M:LibraryManagement.LM.Service.Services.Impl.BookService.AddAsync(LibraryManagement.LM.Pojo.Models.Book)">
+            <summary>
+            添加图书
+            </summary>
+            <param name="book"></param>
+            <returns></returns>
+        </member>
+        <member name="M:LibraryManagement.LM.Service.Services.Impl.BookService.GetByIdAsync(System.Int32)">
+            <summary>
+            根据id获取图书信息
+            </summary>
+            <param name="id"></param>
+            <returns></returns>
+        </member>
+        <member name="M:LibraryManagement.LM.Service.Services.Impl.BookService.UpdateAsync(LibraryManagement.LM.Pojo.Models.Book)">
+            <summary>
+            修改图书信息
+            </summary>
+            <param name="book"></param>
+            <returns></returns>
+        </member>
+        <member name="M:LibraryManagement.LM.Service.Services.Impl.BookService.DeleteAsync(System.Int32)">
+            <summary>
+            删除图书信息
+            </summary>
+            <param name="id"></param>
+            <returns></returns>
+        </member>
+        <member name="M:LibraryManagement.LM.Service.Services.Impl.BookService.GetAvailableBooksAsync(System.String,System.Int32,System.Int32)">
+            <summary>
+            获取可借阅的图书（未删除且有库存）
+            </summary>
+            <param name="keyword"></param>
+            <param name="page"></param>
+            <param name="pageSize"></param>
+            <returns></returns>
+        </member>
+        <member name="M:LibraryManagement.LM.Service.Services.Impl.BookService.SearchBookByKeywordAsync(System.String)">
+            <summary>
+            ai关键词检索信息
+            </summary>
+            <param name="keyword"></param>
+            <returns></returns>
+            <exception cref="T:System.NotImplementedException"></exception>
+        </member>
+        <member name="T:LibraryManagement.LM.Service.Services.Impl.BorrowService">
+            <summary>
+            借阅管理业务逻辑实现
+            </summary>
+        </member>
+        <member name="M:LibraryManagement.LM.Service.Services.Impl.BorrowService.GetPageAsync(System.Int32,System.Int32,System.String,System.Nullable{System.Int32})">
+            <summary>
+            分页查询
+            </summary>
+            <param name="page"></param>
+            <param name="pageSize"></param>
+            <param name="userName"></param>
+            <param name="status"></param>
+            <returns></returns>
+        </member>
+        <member name="M:LibraryManagement.LM.Service.Services.Impl.BorrowService.BorrowAsync(LibraryManagement.LM.Pojo.dto.BorrowRequestDTO)">
+            <summary>
+            新增借阅
+            </summary>
+            <param name="dto"></param>
+            <returns></returns>
+        </member>
+        <member name="M:LibraryManagement.LM.Service.Services.Impl.BorrowService.ReturnAsync(System.Int32)">
+            <summary>
+            归还图书
+            </summary>
+            <param name="id"></param>
+            <returns></returns>
+        </member>
+        <member name="M:LibraryManagement.LM.Service.Services.Impl.BorrowService.RenewAsync(System.Int32)">
+            <summary>
+            续借图书
+            </summary>
+            <param name="id"></param>
+            <returns></returns>
+        </member>
+        <member name="M:LibraryManagement.LM.Service.Services.Impl.BorrowService.HasActiveBorrowAsync(System.Int32)">
+            <summary>
+            检查指定用户是否存在未归还的借阅记录
+            </summary>
+            <param name="userId"></param>
+            <returns></returns>
+        </member>
+        <member name="M:LibraryManagement.LM.Service.Services.Impl.BorrowService.HasUnreturnRecordAsync(System.Int32)">
+            <summary>
+            检查指定图书是否存在未归还的借阅记录
+            </summary>
+            <param name="bookId"></param>
+            <returns></returns>
+        </member>
+        <member name="T:LibraryManagement.LM.Service.Services.Impl.CategoryService">
+            <summary>
+            分类管理业务代码实现
+            </summary>
+        </member>
+        <member name="M:LibraryManagement.LM.Service.Services.Impl.CategoryService.GetAllAsync">
+            <summary>
+            获取启用的分类
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:LibraryManagement.LM.Service.Services.Impl.CategoryService.GetPageAsync(System.Int32,System.Int32)">
+            <summary>
+            分页查询
+            </summary>
+            <param name="page"></param>
+            <param name="pageSize"></param>
+            <returns></returns>
+        </member>
+        <member name="M:LibraryManagement.LM.Service.Services.Impl.CategoryService.GetByIdAsync(System.Int32)">
+            <summary>
+            根据id获取分类
+            </summary>
+            <param name="id"></param>
+            <returns></returns>
+        </member>
+        <member name="M:LibraryManagement.LM.Service.Services.Impl.CategoryService.AddAsync(LibraryManagement.LM.Pojo.dto.CategoryDTO)">
+            <summary>
+            添加分类
+            </summary>
+            <param name="dto"></param>
+            <returns></returns>
+        </member>
+        <member name="M:LibraryManagement.LM.Service.Services.Impl.CategoryService.UpdateAsync(System.Int32,LibraryManagement.LM.Pojo.dto.CategoryDTO)">
+            <summary>
+            更新分类
+            </summary>
+            <param name="id"></param>
+            <param name="dto"></param>
+            <returns></returns>
+        </member>
+        <member name="M:LibraryManagement.LM.Service.Services.Impl.CategoryService.DeleteAsync(System.Int32)">
+            <summary>
+            删除分类
+            </summary>
+            <param name="id"></param>
+            <returns></returns>
+        </member>
+        <member name="M:LibraryManagement.LM.Service.Services.Impl.ChatService.AskStreamAsync(System.String)">
+            <summary>
+            采用流式方式回答用户的信息
+            </summary>
+            <param name="message"></param>
+            <returns></returns>
+        </member>
+        <member name="T:LibraryManagement.LM.Service.Services.Impl.OssService">
+            <summary>
+            配置阿里云OSS文件上传
+            </summary>
+        </member>
+        <member name="T:LibraryManagement.LM.Service.Services.Impl.PublisherService">
+            <summary>
+            出版社
+            </summary>
+        </member>
+        <member name="T:LibraryManagement.LM.Service.Services.Impl.ReportService">
+            <summary>
+            数据报表统计
+            </summary>
+        </member>
+        <member name="M:LibraryManagement.LM.Service.Services.Impl.ReportService.GetBookSummaryAsync">
+            <summary>
+            获取图书统计报表数据
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:LibraryManagement.LM.Service.Services.Impl.ReportService.GetBookStatsAsync(System.String,System.Nullable{System.Int32},System.Nullable{System.Int32})">
+            <summary>
+            获取图书概览数据
+            </summary>
+            <param name="dimension"></param>
+            <param name="startYear"></param>
+            <param name="endYear"></param>
+            <returns></returns>
+            <exception cref="T:System.ArgumentException"></exception>
+        </member>
+        <member name="M:LibraryManagement.LM.Service.Services.Impl.ReportService.GetByCategory(System.Linq.IQueryable{LibraryManagement.LM.Pojo.Models.Book})">
+            <summary>
+            通过分类统计图书报表
+            </summary>
+            <param name="query"></param>
+            <returns></returns>
+        </member>
+        <member name="M:LibraryManagement.LM.Service.Services.Impl.ReportService.GetByStatus(System.Linq.IQueryable{LibraryManagement.LM.Pojo.Models.Book})">
+            <summary>
+            通过状态统计图书报表
+            </summary>
+            <param name="query"></param>
+            <returns></returns>
+        </member>
+        <member name="M:LibraryManagement.LM.Service.Services.Impl.ReportService.GetByYear(System.Linq.IQueryable{LibraryManagement.LM.Pojo.Models.Book})">
+            <summary>
+            通过图书出版年份统计图书报表
+            </summary>
+            <param name="query"></param>
+            <returns></returns>
+            <exception cref="T:System.NotImplementedException"></exception>
+        </member>
+        <member name="M:LibraryManagement.LM.Service.Services.Impl.ReportService.GetCategoryStatsAsync(System.String)">
+            <summary>
+            图书分类统计
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:LibraryManagement.LM.Service.Services.Impl.ReportService.GetBorrowStatsAsync(LibraryManagement.LM.Pojo.dto.BorrowStatsRequestDTO)">
+            <summary>
+            借阅信息统计
+            </summary>
+            <param name="request"></param>
+            <returns></returns>
+        </member>
+        <member name="M:LibraryManagement.LM.Service.Services.Impl.ReportService.GetTopCategoriesBorrowStatsAsync(System.Linq.IQueryable{LibraryManagement.LM.Pojo.Models.BorrowRecord},System.Int32)">
+            <summary>
+            按分类统计借阅信息
+            </summary>
+            <param name="borrowQuery"></param>
+            <param name="limit"></param>
+            <returns></returns>
+            <exception cref="T:System.NotImplementedException"></exception>
+        </member>
+        <member name="M:LibraryManagement.LM.Service.Services.Impl.ReportService.GetTopUsersBorrowStatsAsync(System.Linq.IQueryable{LibraryManagement.LM.Pojo.Models.BorrowRecord},System.Int32)">
+            <summary>
+            按借阅用户统计借阅信息
+            </summary>
+            <param name="borrowQuery"></param>
+            <param name="limit"></param>
+            <returns></returns>
+            <exception cref="T:System.NotImplementedException"></exception>
+        </member>
+        <member name="M:LibraryManagement.LM.Service.Services.Impl.ReportService.GetTopBooksBorrowStatsAsync(System.Linq.IQueryable{LibraryManagement.LM.Pojo.Models.BorrowRecord},System.Int32)">
+            <summary>
+            按借阅的图书统计借阅信息
+            </summary>
+            <param name="borrowQuery"></param>
+            <param name="limit"></param>
+            <returns></returns>
+            <exception cref="T:System.NotImplementedException"></exception>
+        </member>
+        <member name="M:LibraryManagement.LM.Service.Services.Impl.ReportService.GetMonthBorrowStatsAsync(System.Linq.IQueryable{LibraryManagement.LM.Pojo.Models.BorrowRecord},System.String,System.String)">
+            <summary>
+            按月统计借阅信息
+            </summary>
+            <param name="query"></param>
+            <param name="start"></param>
+            <param name="end"></param>
+            <returns></returns>
+            <exception cref="T:System.NotImplementedException"></exception>
+        </member>
+        <member name="M:LibraryManagement.LM.Service.Services.Impl.ReportService.GetBorrowSummaryAsync(System.Linq.IQueryable{LibraryManagement.LM.Pojo.Models.BorrowRecord})">
+            <summary>
+            借阅信息统计
+            </summary>
+            <param name="query"></param>
+            <returns></returns>
+        </member>
+        <member name="T:LibraryManagement.LM.Service.Services.Impl.UserService">
+            <summary>
+            用户管理业务代码开发
+            </summary>
+        </member>
+        <member name="M:LibraryManagement.LM.Service.Services.Impl.UserService.GetUsersAsync(System.String,System.String,System.String,System.Int32,System.Int32)">
+            <summary>
+            分页查询
+            </summary>
+            <param name="name"></param>
+            <param name="phone"></param>
+            <param name="cardNumber"></param>
+            <param name="page"></param>
+            <param name="pageSize"></param>
+            <returns></returns>
+        </member>
+        <member name="M:LibraryManagement.LM.Service.Services.Impl.UserService.AddUserAsync(LibraryManagement.LM.Pojo.Models.User)">
+            <summary>
+            新增用户信息
+            </summary>
+            <param name="user"></param>
+            <returns></returns>
+            <exception cref="T:LibraryManagement.LM.Common.Exceptions.DomainException"></exception>
+        </member>
+        <member name="M:LibraryManagement.LM.Service.Services.Impl.UserService.DeleteUserAsync(System.Int32)">
+            <summary>
+            根据id删除用户信息
+            </summary>
+            <param name="id"></param>
+            <returns></returns>
+        </member>
+        <member name="M:LibraryManagement.LM.Service.Services.Impl.UserService.UpdateUserAsync(LibraryManagement.LM.Pojo.Models.User)">
+            <summary>
+            编辑用户信息
+            </summary>
+            <param name="user"></param>
+            <returns></returns>
+            <exception cref="T:LibraryManagement.LM.Common.Exceptions.DomainException"></exception>
+        </member>
+        <member name="M:LibraryManagement.LM.Service.Services.Impl.UserService.GetByIdAsync(System.Int32)">
+            <summary>
+            根据id获取用户信息
+            </summary>
+            <param name="id"></param>
+            <returns></returns>
+        </member>
+        <member name="M:LibraryManagement.LM.Service.Services.Impl.UserService.ChangeStatusAsync(System.Int32,System.Int32)">
+            <summary>
+            启用/禁用用户
+            </summary>
+            <param name="id"></param>
+            <param name="status"></param>
+            <returns></returns>
+        </member>
+        <member name="M:LibraryManagement.LM.Service.Services.Impl.UserService.HasActiveBorrowAsync(System.Int32)">
+            <summary>
+            检查用户是否有未归还的借阅记录
+            </summary>
+            <param name="userId"></param>
+            <returns></returns>
+        </member>
+        <member name="T:LibraryManagement.LM.Service.Services.IOssService">
+            <summary>
+            OSS文件上传
+            </summary>
+        </member>
+        <member name="T:LibraryManagement.LM.Service.Services.IPublisherService">
+            <summary>
+            出版社管理接口
+            </summary>
+        </member>
+        <member name="T:LibraryManagement.LM.Service.Services.IReportService">
+            <summary>
+            数据报表统计接口
+            </summary>
+        </member>
+        <member name="M:LibraryManagement.LM.Service.Services.IReportService.GetBookSummaryAsync">
+            <summary>
+            获取图书统计图表数据
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:LibraryManagement.LM.Service.Services.IReportService.GetBookStatsAsync(System.String,System.Nullable{System.Int32},System.Nullable{System.Int32})">
+            <summary>
+            获取图书概览数据
+            </summary>
+            <param name="dimension"></param>
+            <param name="startYear"></param>
+            <param name="endYear"></param>
+            <returns></returns>
+        </member>
+        <member name="M:LibraryManagement.LM.Service.Services.IReportService.GetCategoryStatsAsync(System.String)">
+            <summary>
+            获取分类统计数据
+            </summary>
+            <param name="type"></param>
+            <returns></returns>
+        </member>
+        <member name="M:LibraryManagement.LM.Service.Services.IReportService.GetBorrowStatsAsync(LibraryManagement.LM.Pojo.dto.BorrowStatsRequestDTO)">
+            <summary>
+            获取借阅统计数据
+            </summary>
+            <param name="request"></param>
+            <returns></returns>
+        </member>
+        <member name="T:LibraryManagement.LM.Service.Services.IUserService">
+            <summary>
+            用户管理接口
+            </summary>
+        </member>
+        <member name="M:LibraryManagement.LM.Service.Services.IUserService.GetUsersAsync(System.String,System.String,System.String,System.Int32,System.Int32)">
+            <summary>
+            分页查询
+            </summary>
+            <param name="name"></param>
+            <param name="phone"></param>
+            <param name="cardName"></param>
+            <param name="page"></param>
+            <param name="pageSize"></param>
+            <returns></returns>
+        </member>
+        <member name="M:LibraryManagement.LM.Service.Services.IUserService.AddUserAsync(LibraryManagement.LM.Pojo.Models.User)">
+            <summary>
+            新增用户信息
+            </summary>
+            <param name="user"></param>
+            <returns></returns>
+        </member>
+        <member name="M:LibraryManagement.LM.Service.Services.IUserService.UpdateUserAsync(LibraryManagement.LM.Pojo.Models.User)">
+            <summary>
+            编辑用户信息
+            </summary>
+            <param name="book"></param>
+            <returns></returns>
+        </member>
+        <member name="M:LibraryManagement.LM.Service.Services.IUserService.DeleteUserAsync(System.Int32)">
+            <summary>
+            删除用户信息
+            </summary>
+            <param name="id"></param>
+            <returns></returns>
+        </member>
+        <member name="M:LibraryManagement.LM.Service.Services.IUserService.GetByIdAsync(System.Int32)">
+            <summary>
+            根据id获取用户信息
+            </summary>
+            <param name="id"></param>
+            <returns></returns>
+        </member>
+        <member name="M:LibraryManagement.LM.Service.Services.IUserService.ChangeStatusAsync(System.Int32,System.Int32)">
+            <summary>
+            判断用户的状态（1.正常 2.禁用）
+            </summary>
+            <param name="id"></param>
+            <param name="status"></param>
+            <returns></returns>
+        </member>
+        <member name="M:LibraryManagement.LM.Service.Services.IUserService.HasActiveBorrowAsync(System.Int32)">
+            <summary>
+            检查用户是否有未归还的记录
+            </summary>
+            <param name="userId"></param>
+            <returns></returns>
+        </member>
+    </members>
+</doc>

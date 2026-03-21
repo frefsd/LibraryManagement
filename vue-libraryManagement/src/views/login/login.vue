@@ -20,7 +20,8 @@ const login = async () => {
     const result = await loginApi(loginForm.value)
     if (result.code) {// 登录成功
       ElMessage.success('登录成功')
-      localStorage.setItem('loginUser', JSON.stringify(result.data))
+      // 只保存 minimal user 信息 到 localStorage（不存 token，token 由 HttpOnly cookie 管理）
+      localStorage.setItem('loginUser', JSON.stringify({ user: result.data.user }))
       // 跳转到原页面或首页
       const redirect = route.query.redirect || '/index'
       router.push(redirect)
