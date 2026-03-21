@@ -1,4 +1,4 @@
-﻿namespace LibraryManagement.Options
+﻿namespace LibraryManagement.ai.Options
 {
     public class DashScopeOptions
     {

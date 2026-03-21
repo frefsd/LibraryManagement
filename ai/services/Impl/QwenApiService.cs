@@ -1,12 +1,12 @@
-﻿using LibraryManagement.LM.Common.Exceptions;
-using LibraryManagement.Options;
+﻿using LibraryManagement.ai.Options;
+using LibraryManagement.LM.Common.Exceptions;
 using Microsoft.Extensions.Options;
 using System.Net.Http.Headers;
 using System.Text;
 using System.Text.Json;
 using System.Text.RegularExpressions;
 
-namespace LibraryManagement.LM.Service.Services.Impl
+namespace LibraryManagement.ai.services.Impl
 {
     public class QwenApiService
     {

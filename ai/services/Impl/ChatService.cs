@@ -1,4 +1,4 @@
-﻿namespace LibraryManagement.LM.Service.Services.Impl
+﻿namespace LibraryManagement.ai.services.Impl
 {
     public class ChatService : IChatService
     {

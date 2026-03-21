@@ -1,4 +1,4 @@
-﻿namespace LibraryManagement.LM.Service.Services
+﻿namespace LibraryManagement.ai.services
 {
     public interface IChatService
     {

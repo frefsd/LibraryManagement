@@ -10,12 +10,14 @@ using LibraryManagement.LM.Service.Repository.Impl;
 using LibraryManagement.LM.Service.Services;
 using LibraryManagement.LM.Service.Services.Impl;
 // 引入用于绑定配置的选项类（例如 DashScope AI 配置）
-using LibraryManagement.Options;
 // 引入 EF Core 提供的扩展方法（例如 UseSqlServer）
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
+using LibraryManagement.ai.Options;
+using LibraryManagement.ai.services;
+using LibraryManagement.ai.services.Impl;
 
 // 创建 Web 应用程序构建器，负责收集配置、注册服务等
 var builder = WebApplication.CreateBuilder(args);

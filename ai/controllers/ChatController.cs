@@ -1,5 +1,5 @@
-﻿using LibraryManagement.LM.Pojo.dto;
-using LibraryManagement.LM.Service.Services;
+﻿using LibraryManagement.ai.services;
+using LibraryManagement.LM.Pojo.dto;
 using Microsoft.AspNetCore.Mvc;
 using System.Text;
 using System.Text.Json;
